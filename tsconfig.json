@@ -16,7 +16,8 @@
     "pretty": true,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*",

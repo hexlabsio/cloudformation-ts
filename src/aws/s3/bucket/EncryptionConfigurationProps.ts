@@ -1,0 +1,7 @@
+import { Value } from '../../../kloudformation/Value';
+
+export function encryptionConfigurationProps(encryptionConfigurationPropsProps: EncryptionConfigurationProps): EncryptionConfigurationProps { return (encryptionConfigurationPropsProps) as unknown as EncryptionConfigurationProps }
+
+export interface EncryptionConfigurationProps {
+    replicaKmsKeyID: Value<string>;
+}
