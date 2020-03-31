@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function application(applicationProps: Application & { logicalName?: string }): Application { return ({ ...applicationProps, _logicalType: 'AWS::CodeDeploy::Application' }) as unknown as Application }
+export type ApplicationAttributes = {  }
+export function application(applicationProps: Application): Application & { attributes: ApplicationAttributes } { return ({ ...applicationProps, _logicalType: 'AWS::CodeDeploy::Application', attributes: {  } }) }
 
 export interface Application extends KloudResource {
     applicationName?: Value<string>;

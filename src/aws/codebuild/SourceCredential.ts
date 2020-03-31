@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function sourceCredential(sourceCredentialProps: SourceCredential & { logicalName?: string }): SourceCredential { return ({ ...sourceCredentialProps, _logicalType: 'AWS::CodeBuild::SourceCredential' }) as unknown as SourceCredential }
+export type SourceCredentialAttributes = {  }
+export function sourceCredential(sourceCredentialProps: SourceCredential): SourceCredential & { attributes: SourceCredentialAttributes } { return ({ ...sourceCredentialProps, _logicalType: 'AWS::CodeBuild::SourceCredential', attributes: {  } }) }
 
 export interface SourceCredential extends KloudResource {
     serverType: Value<string>;

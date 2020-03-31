@@ -6,7 +6,8 @@ import { DeliveryOptionsProps } from './configurationset/DeliveryOptionsProps';
 import { TagsProps } from './configurationset/TagsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function configurationSet(configurationSetProps: ConfigurationSet & { logicalName?: string }): ConfigurationSet { return ({ ...configurationSetProps, _logicalType: 'AWS::PinpointEmail::ConfigurationSet' }) as unknown as ConfigurationSet }
+export type ConfigurationSetAttributes = {  }
+export function configurationSet(configurationSetProps: ConfigurationSet): ConfigurationSet & { attributes: ConfigurationSetAttributes } { return ({ ...configurationSetProps, _logicalType: 'AWS::PinpointEmail::ConfigurationSet', attributes: {  } }) }
 
 export interface ConfigurationSet extends KloudResource {
     name: Value<string>;

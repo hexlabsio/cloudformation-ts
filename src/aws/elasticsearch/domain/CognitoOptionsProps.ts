@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function cognitoOptionsProps(cognitoOptionsPropsProps: CognitoOptionsProps): CognitoOptionsProps { return (cognitoOptionsPropsProps) as unknown as CognitoOptionsProps }
+export function cognitoOptionsProps(cognitoOptionsPropsProps: CognitoOptionsProps): CognitoOptionsProps { return (cognitoOptionsPropsProps) }
 
 export interface CognitoOptionsProps {
     enabled?: Value<boolean>;

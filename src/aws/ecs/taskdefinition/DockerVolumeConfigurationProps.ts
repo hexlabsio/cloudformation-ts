@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function dockerVolumeConfigurationProps(dockerVolumeConfigurationPropsProps: DockerVolumeConfigurationProps): DockerVolumeConfigurationProps { return (dockerVolumeConfigurationPropsProps) as unknown as DockerVolumeConfigurationProps }
+export function dockerVolumeConfigurationProps(dockerVolumeConfigurationPropsProps: DockerVolumeConfigurationProps): DockerVolumeConfigurationProps { return (dockerVolumeConfigurationPropsProps) }
 
 export interface DockerVolumeConfigurationProps {
     autoprovision?: Value<boolean>;

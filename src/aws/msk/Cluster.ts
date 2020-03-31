@@ -7,7 +7,8 @@ import { LoggingInfoProps } from './cluster/LoggingInfoProps';
 import { ConfigurationInfoProps } from './cluster/ConfigurationInfoProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function cluster(clusterProps: Cluster & { logicalName?: string }): Cluster { return ({ ...clusterProps, _logicalType: 'AWS::MSK::Cluster' }) as unknown as Cluster }
+export type ClusterAttributes = {  }
+export function cluster(clusterProps: Cluster): Cluster & { attributes: ClusterAttributes } { return ({ ...clusterProps, _logicalType: 'AWS::MSK::Cluster', attributes: {  } }) }
 
 export interface Cluster extends KloudResource {
     brokerNodeGroupInfo: BrokerNodeGroupInfoProps;

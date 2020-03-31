@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { CopyActionResourceTypeProps } from './CopyActionResourceTypeProps';
 import { LifecycleResourceTypeProps } from './LifecycleResourceTypeProps';
 
-export function backupRuleResourceTypeProps(backupRuleResourceTypePropsProps: BackupRuleResourceTypeProps): BackupRuleResourceTypeProps { return (backupRuleResourceTypePropsProps) as unknown as BackupRuleResourceTypeProps }
+export function backupRuleResourceTypeProps(backupRuleResourceTypePropsProps: BackupRuleResourceTypeProps): BackupRuleResourceTypeProps { return (backupRuleResourceTypePropsProps) }
 
 export interface BackupRuleResourceTypeProps {
     targetBackupVault: Value<string>;

@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function graphQLSchema(graphQLSchemaProps: GraphQLSchema & { logicalName?: string }): GraphQLSchema { return ({ ...graphQLSchemaProps, _logicalType: 'AWS::AppSync::GraphQLSchema' }) as unknown as GraphQLSchema }
+export type GraphQLSchemaAttributes = {  }
+export function graphQLSchema(graphQLSchemaProps: GraphQLSchema): GraphQLSchema & { attributes: GraphQLSchemaAttributes } { return ({ ...graphQLSchemaProps, _logicalType: 'AWS::AppSync::GraphQLSchema', attributes: {  } }) }
 
 export interface GraphQLSchema extends KloudResource {
     apiId: Value<string>;

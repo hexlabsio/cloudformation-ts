@@ -1,7 +1,9 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function vPCEndpoint(vPCEndpointProps: VPCEndpoint & { logicalName?: string }): VPCEndpoint { return ({ ...vPCEndpointProps, _logicalType: 'AWS::EC2::VPCEndpoint' }) as unknown as VPCEndpoint }
+export type VPCEndpointAttributes = { CreationTimestamp: Attribute<string>; DnsEntries: Attribute<Value<string>[]>; NetworkInterfaceIds: Attribute<Value<string>[]> }
+export function vPCEndpoint(vPCEndpointProps: VPCEndpoint): VPCEndpoint & { attributes: VPCEndpointAttributes } { return ({ ...vPCEndpointProps, _logicalType: 'AWS::EC2::VPCEndpoint', attributes: { CreationTimestamp: 'CreationTimestamp', DnsEntries: 'DnsEntries', NetworkInterfaceIds: 'NetworkInterfaceIds' } }) }
 
 export interface VPCEndpoint extends KloudResource {
     serviceName: Value<string>;

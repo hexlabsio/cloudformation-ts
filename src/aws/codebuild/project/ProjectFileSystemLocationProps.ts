@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function projectFileSystemLocationProps(projectFileSystemLocationPropsProps: ProjectFileSystemLocationProps): ProjectFileSystemLocationProps { return (projectFileSystemLocationPropsProps) as unknown as ProjectFileSystemLocationProps }
+export function projectFileSystemLocationProps(projectFileSystemLocationPropsProps: ProjectFileSystemLocationProps): ProjectFileSystemLocationProps { return (projectFileSystemLocationPropsProps) }
 
 export interface ProjectFileSystemLocationProps {
     mountPoint: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function notificationObjectTypeProps(notificationObjectTypePropsProps: NotificationObjectTypeProps): NotificationObjectTypeProps { return (notificationObjectTypePropsProps) as unknown as NotificationObjectTypeProps }
+export function notificationObjectTypeProps(notificationObjectTypePropsProps: NotificationObjectTypeProps): NotificationObjectTypeProps { return (notificationObjectTypePropsProps) }
 
 export interface NotificationObjectTypeProps {
     sNSTopicArn: Value<string>;

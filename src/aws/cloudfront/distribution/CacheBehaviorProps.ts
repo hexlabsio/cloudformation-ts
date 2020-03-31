@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { ForwardedValuesProps } from './ForwardedValuesProps';
 import { LambdaFunctionAssociationProps } from './LambdaFunctionAssociationProps';
 
-export function cacheBehaviorProps(cacheBehaviorPropsProps: CacheBehaviorProps): CacheBehaviorProps { return (cacheBehaviorPropsProps) as unknown as CacheBehaviorProps }
+export function cacheBehaviorProps(cacheBehaviorPropsProps: CacheBehaviorProps): CacheBehaviorProps { return (cacheBehaviorPropsProps) }
 
 export interface CacheBehaviorProps {
     targetOriginId: Value<string>;

@@ -7,7 +7,8 @@ import { RetentionPeriodProps } from './dataset/RetentionPeriodProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function dataset(datasetProps: Dataset & { logicalName?: string }): Dataset { return ({ ...datasetProps, _logicalType: 'AWS::IoTAnalytics::Dataset' }) as unknown as Dataset }
+export type DatasetAttributes = {  }
+export function dataset(datasetProps: Dataset): Dataset & { attributes: DatasetAttributes } { return ({ ...datasetProps, _logicalType: 'AWS::IoTAnalytics::Dataset', attributes: {  } }) }
 
 export interface Dataset extends KloudResource {
     actions: ActionProps[];

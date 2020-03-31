@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function androidPushNotificationTemplateProps(androidPushNotificationTemplatePropsProps: AndroidPushNotificationTemplateProps): AndroidPushNotificationTemplateProps { return (androidPushNotificationTemplatePropsProps) as unknown as AndroidPushNotificationTemplateProps }
+export function androidPushNotificationTemplateProps(androidPushNotificationTemplatePropsProps: AndroidPushNotificationTemplateProps): AndroidPushNotificationTemplateProps { return (androidPushNotificationTemplatePropsProps) }
 
 export interface AndroidPushNotificationTemplateProps {
     action?: Value<string>;

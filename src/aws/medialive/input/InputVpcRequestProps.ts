@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function inputVpcRequestProps(inputVpcRequestPropsProps: InputVpcRequestProps): InputVpcRequestProps { return (inputVpcRequestPropsProps) as unknown as InputVpcRequestProps }
+export function inputVpcRequestProps(inputVpcRequestPropsProps: InputVpcRequestProps): InputVpcRequestProps { return (inputVpcRequestPropsProps) }
 
 export interface InputVpcRequestProps {
     securityGroupIds?: Value<Value<string>[]>;

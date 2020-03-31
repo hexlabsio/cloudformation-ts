@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { MessageConfigurationProps } from './MessageConfigurationProps';
 import { ScheduleProps } from './ScheduleProps';
 
-export function writeTreatmentResourceProps(writeTreatmentResourcePropsProps: WriteTreatmentResourceProps): WriteTreatmentResourceProps { return (writeTreatmentResourcePropsProps) as unknown as WriteTreatmentResourceProps }
+export function writeTreatmentResourceProps(writeTreatmentResourcePropsProps: WriteTreatmentResourceProps): WriteTreatmentResourceProps { return (writeTreatmentResourcePropsProps) }
 
 export interface WriteTreatmentResourceProps {
     treatmentDescription?: Value<string>;

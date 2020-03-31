@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function rdsHttpEndpointConfigProps(rdsHttpEndpointConfigPropsProps: RdsHttpEndpointConfigProps): RdsHttpEndpointConfigProps { return (rdsHttpEndpointConfigPropsProps) as unknown as RdsHttpEndpointConfigProps }
+export function rdsHttpEndpointConfigProps(rdsHttpEndpointConfigPropsProps: RdsHttpEndpointConfigProps): RdsHttpEndpointConfigProps { return (rdsHttpEndpointConfigPropsProps) }
 
 export interface RdsHttpEndpointConfigProps {
     awsRegion: Value<string>;

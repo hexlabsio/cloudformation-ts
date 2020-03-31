@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function jsonClassifierProps(jsonClassifierPropsProps: JsonClassifierProps): JsonClassifierProps { return (jsonClassifierPropsProps) as unknown as JsonClassifierProps }
+export function jsonClassifierProps(jsonClassifierPropsProps: JsonClassifierProps): JsonClassifierProps { return (jsonClassifierPropsProps) }
 
 export interface JsonClassifierProps {
     jsonPath: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function addAttributesProps(addAttributesPropsProps: AddAttributesProps): AddAttributesProps { return (addAttributesPropsProps) as unknown as AddAttributesProps }
+export function addAttributesProps(addAttributesPropsProps: AddAttributesProps): AddAttributesProps { return (addAttributesPropsProps) }
 
 export interface AddAttributesProps {
     next?: Value<string>;

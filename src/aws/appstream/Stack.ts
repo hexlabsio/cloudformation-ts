@@ -6,7 +6,8 @@ import { Tag } from '../Tag';
 import { AccessEndpointProps } from './stack/AccessEndpointProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function stack(stackProps: Stack & { logicalName?: string }): Stack { return ({ ...stackProps, _logicalType: 'AWS::AppStream::Stack' }) as unknown as Stack }
+export type StackAttributes = {  }
+export function stack(stackProps: Stack): Stack & { attributes: StackAttributes } { return ({ ...stackProps, _logicalType: 'AWS::AppStream::Stack', attributes: {  } }) }
 
 export interface Stack extends KloudResource {
     description?: Value<string>;

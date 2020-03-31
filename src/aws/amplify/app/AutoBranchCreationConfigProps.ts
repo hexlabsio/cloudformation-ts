@@ -2,7 +2,7 @@ import { EnvironmentVariableProps } from './EnvironmentVariableProps';
 import { Value } from '../../../kloudformation/Value';
 import { BasicAuthConfigProps } from './BasicAuthConfigProps';
 
-export function autoBranchCreationConfigProps(autoBranchCreationConfigPropsProps: AutoBranchCreationConfigProps): AutoBranchCreationConfigProps { return (autoBranchCreationConfigPropsProps) as unknown as AutoBranchCreationConfigProps }
+export function autoBranchCreationConfigProps(autoBranchCreationConfigPropsProps: AutoBranchCreationConfigProps): AutoBranchCreationConfigProps { return (autoBranchCreationConfigPropsProps) }
 
 export interface AutoBranchCreationConfigProps {
     environmentVariables?: EnvironmentVariableProps[];

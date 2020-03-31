@@ -3,7 +3,8 @@ import { ElasticFileSystemTagProps } from './filesystem/ElasticFileSystemTagProp
 import { LifecyclePolicyProps } from './filesystem/LifecyclePolicyProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function fileSystem(fileSystemProps: FileSystem & { logicalName?: string }): FileSystem { return ({ ...fileSystemProps, _logicalType: 'AWS::EFS::FileSystem' }) as unknown as FileSystem }
+export type FileSystemAttributes = {  }
+export function fileSystem(fileSystemProps: FileSystem): FileSystem & { attributes: FileSystemAttributes } { return ({ ...fileSystemProps, _logicalType: 'AWS::EFS::FileSystem', attributes: {  } }) }
 
 export interface FileSystem extends KloudResource {
     encrypted?: Value<boolean>;

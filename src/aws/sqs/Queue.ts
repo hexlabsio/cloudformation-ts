@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function queue(queueProps: Queue & { logicalName?: string }): Queue { return ({ ...queueProps, _logicalType: 'AWS::SQS::Queue' }) as unknown as Queue }
+export type QueueAttributes = { Arn: Attribute<string>; QueueName: Attribute<string> }
+export function queue(queueProps: Queue): Queue & { attributes: QueueAttributes } { return ({ ...queueProps, _logicalType: 'AWS::SQS::Queue', attributes: { Arn: 'Arn', QueueName: 'QueueName' } }) }
 
 export interface Queue extends KloudResource {
     contentBasedDeduplication?: Value<boolean>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function limitsProps(limitsPropsProps: LimitsProps): LimitsProps { return (limitsPropsProps) as unknown as LimitsProps }
+export function limitsProps(limitsPropsProps: LimitsProps): LimitsProps { return (limitsPropsProps) }
 
 export interface LimitsProps {
     daily?: Value<number>;

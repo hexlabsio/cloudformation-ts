@@ -1,7 +1,9 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function mountTarget(mountTargetProps: MountTarget & { logicalName?: string }): MountTarget { return ({ ...mountTargetProps, _logicalType: 'AWS::EFS::MountTarget' }) as unknown as MountTarget }
+export type MountTargetAttributes = { IpAddress: Attribute<string> }
+export function mountTarget(mountTargetProps: MountTarget): MountTarget & { attributes: MountTargetAttributes } { return ({ ...mountTargetProps, _logicalType: 'AWS::EFS::MountTarget', attributes: { IpAddress: 'IpAddress' } }) }
 
 export interface MountTarget extends KloudResource {
     fileSystemId: Value<string>;

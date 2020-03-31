@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function maintenanceWindowAutomationParametersProps(maintenanceWindowAutomationParametersPropsProps: MaintenanceWindowAutomationParametersProps): MaintenanceWindowAutomationParametersProps { return (maintenanceWindowAutomationParametersPropsProps) as unknown as MaintenanceWindowAutomationParametersProps }
+export function maintenanceWindowAutomationParametersProps(maintenanceWindowAutomationParametersPropsProps: MaintenanceWindowAutomationParametersProps): MaintenanceWindowAutomationParametersProps { return (maintenanceWindowAutomationParametersPropsProps) }
 
 export interface MaintenanceWindowAutomationParametersProps {
     parameters?: Value<any>;

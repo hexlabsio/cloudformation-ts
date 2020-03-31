@@ -2,8 +2,10 @@ import { Value } from '../../kloudformation/Value';
 import { EngineAttributeProps } from './server/EngineAttributeProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function server(serverProps: Server & { logicalName?: string }): Server { return ({ ...serverProps, _logicalType: 'AWS::OpsWorksCM::Server' }) as unknown as Server }
+export type ServerAttributes = { Endpoint: Attribute<string>; Arn: Attribute<string> }
+export function server(serverProps: Server): Server & { attributes: ServerAttributes } { return ({ ...serverProps, _logicalType: 'AWS::OpsWorksCM::Server', attributes: { Endpoint: 'Endpoint', Arn: 'Arn' } }) }
 
 export interface Server extends KloudResource {
     serviceRoleArn: Value<string>;

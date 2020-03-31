@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function sourceAuthProps(sourceAuthPropsProps: SourceAuthProps): SourceAuthProps { return (sourceAuthPropsProps) as unknown as SourceAuthProps }
+export function sourceAuthProps(sourceAuthPropsProps: SourceAuthProps): SourceAuthProps { return (sourceAuthPropsProps) }
 
 export interface SourceAuthProps {
     type: Value<string>;

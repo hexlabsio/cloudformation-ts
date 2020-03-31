@@ -1,8 +1,10 @@
+import { PlacementProps } from './PlacementProps';
 import { Value } from '../../../kloudformation/Value';
 
-export function fleetLaunchTemplateOverridesRequestProps(fleetLaunchTemplateOverridesRequestPropsProps: FleetLaunchTemplateOverridesRequestProps): FleetLaunchTemplateOverridesRequestProps { return (fleetLaunchTemplateOverridesRequestPropsProps) as unknown as FleetLaunchTemplateOverridesRequestProps }
+export function fleetLaunchTemplateOverridesRequestProps(fleetLaunchTemplateOverridesRequestPropsProps: FleetLaunchTemplateOverridesRequestProps): FleetLaunchTemplateOverridesRequestProps { return (fleetLaunchTemplateOverridesRequestPropsProps) }
 
 export interface FleetLaunchTemplateOverridesRequestProps {
+    placement?: PlacementProps;
     weightedCapacity?: Value<number>;
     priority?: Value<number>;
     availabilityZone?: Value<string>;

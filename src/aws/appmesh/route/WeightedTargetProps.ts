@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function weightedTargetProps(weightedTargetPropsProps: WeightedTargetProps): WeightedTargetProps { return (weightedTargetPropsProps) as unknown as WeightedTargetProps }
+export function weightedTargetProps(weightedTargetPropsProps: WeightedTargetProps): WeightedTargetProps { return (weightedTargetPropsProps) }
 
 export interface WeightedTargetProps {
     virtualNode: Value<string>;

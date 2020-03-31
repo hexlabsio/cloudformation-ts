@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { SSESpecificationProps } from './cluster/SSESpecificationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function cluster(clusterProps: Cluster & { logicalName?: string }): Cluster { return ({ ...clusterProps, _logicalType: 'AWS::DAX::Cluster' }) as unknown as Cluster }
+export type ClusterAttributes = { ClusterDiscoveryEndpoint: Attribute<string>; Arn: Attribute<string> }
+export function cluster(clusterProps: Cluster): Cluster & { attributes: ClusterAttributes } { return ({ ...clusterProps, _logicalType: 'AWS::DAX::Cluster', attributes: { ClusterDiscoveryEndpoint: 'ClusterDiscoveryEndpoint', Arn: 'Arn' } }) }
 
 export interface Cluster extends KloudResource {
     replicationFactor: Value<number>;

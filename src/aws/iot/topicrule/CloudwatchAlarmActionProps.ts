@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function cloudwatchAlarmActionProps(cloudwatchAlarmActionPropsProps: CloudwatchAlarmActionProps): CloudwatchAlarmActionProps { return (cloudwatchAlarmActionPropsProps) as unknown as CloudwatchAlarmActionProps }
+export function cloudwatchAlarmActionProps(cloudwatchAlarmActionPropsProps: CloudwatchAlarmActionProps): CloudwatchAlarmActionProps { return (cloudwatchAlarmActionPropsProps) }
 
 export interface CloudwatchAlarmActionProps {
     alarmName: Value<string>;

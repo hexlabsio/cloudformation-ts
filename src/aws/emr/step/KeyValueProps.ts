@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function keyValueProps(keyValuePropsProps: KeyValueProps): KeyValueProps { return (keyValuePropsProps) as unknown as KeyValueProps }
+export function keyValueProps(keyValuePropsProps: KeyValueProps): KeyValueProps { return (keyValuePropsProps) }
 
 export interface KeyValueProps {
     key?: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function organizationAggregationSourceProps(organizationAggregationSourcePropsProps: OrganizationAggregationSourceProps): OrganizationAggregationSourceProps { return (organizationAggregationSourcePropsProps) as unknown as OrganizationAggregationSourceProps }
+export function organizationAggregationSourceProps(organizationAggregationSourcePropsProps: OrganizationAggregationSourceProps): OrganizationAggregationSourceProps { return (organizationAggregationSourcePropsProps) }
 
 export interface OrganizationAggregationSourceProps {
     roleArn: Value<string>;

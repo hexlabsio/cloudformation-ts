@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function subjectProps(subjectPropsProps: SubjectProps): SubjectProps { return (subjectPropsProps) as unknown as SubjectProps }
+export function subjectProps(subjectPropsProps: SubjectProps): SubjectProps { return (subjectPropsProps) }
 
 export interface SubjectProps {
     country?: Value<string>;

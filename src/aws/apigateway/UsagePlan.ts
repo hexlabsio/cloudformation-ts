@@ -5,7 +5,8 @@ import { Tag } from '../Tag';
 import { ThrottleSettingsProps } from './usageplan/ThrottleSettingsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function usagePlan(usagePlanProps: UsagePlan & { logicalName?: string }): UsagePlan { return ({ ...usagePlanProps, _logicalType: 'AWS::ApiGateway::UsagePlan' }) as unknown as UsagePlan }
+export type UsagePlanAttributes = {  }
+export function usagePlan(usagePlanProps: UsagePlan): UsagePlan & { attributes: UsagePlanAttributes } { return ({ ...usagePlanProps, _logicalType: 'AWS::ApiGateway::UsagePlan', attributes: {  } }) }
 
 export interface UsagePlan extends KloudResource {
     apiStages?: ApiStageProps[];

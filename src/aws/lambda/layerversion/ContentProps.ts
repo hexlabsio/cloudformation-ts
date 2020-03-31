@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function contentProps(contentPropsProps: ContentProps): ContentProps { return (contentPropsProps) as unknown as ContentProps }
+export function contentProps(contentPropsProps: ContentProps): ContentProps { return (contentPropsProps) }
 
 export interface ContentProps {
     s3Bucket: Value<string>;

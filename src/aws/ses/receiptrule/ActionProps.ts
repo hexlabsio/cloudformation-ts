@@ -6,7 +6,7 @@ import { WorkmailActionProps } from './WorkmailActionProps';
 import { AddHeaderActionProps } from './AddHeaderActionProps';
 import { LambdaActionProps } from './LambdaActionProps';
 
-export function actionProps(actionPropsProps: ActionProps): ActionProps { return (actionPropsProps) as unknown as ActionProps }
+export function actionProps(actionPropsProps: ActionProps): ActionProps { return (actionPropsProps) }
 
 export interface ActionProps {
     bounceAction?: BounceActionProps;

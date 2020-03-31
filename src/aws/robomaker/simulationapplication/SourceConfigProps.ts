@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function sourceConfigProps(sourceConfigPropsProps: SourceConfigProps): SourceConfigProps { return (sourceConfigPropsProps) as unknown as SourceConfigProps }
+export function sourceConfigProps(sourceConfigPropsProps: SourceConfigProps): SourceConfigProps { return (sourceConfigPropsProps) }
 
 export interface SourceConfigProps {
     s3Bucket: Value<string>;

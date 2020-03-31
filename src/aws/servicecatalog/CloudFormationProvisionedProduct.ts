@@ -3,8 +3,10 @@ import { ProvisioningParameterProps } from './cloudformationprovisionedproduct/P
 import { ProvisioningPreferencesProps } from './cloudformationprovisionedproduct/ProvisioningPreferencesProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function cloudFormationProvisionedProduct(cloudFormationProvisionedProductProps: CloudFormationProvisionedProduct & { logicalName?: string }): CloudFormationProvisionedProduct { return ({ ...cloudFormationProvisionedProductProps, _logicalType: 'AWS::ServiceCatalog::CloudFormationProvisionedProduct' }) as unknown as CloudFormationProvisionedProduct }
+export type CloudFormationProvisionedProductAttributes = { CloudformationStackArn: Attribute<string>; RecordId: Attribute<string> }
+export function cloudFormationProvisionedProduct(cloudFormationProvisionedProductProps: CloudFormationProvisionedProduct): CloudFormationProvisionedProduct & { attributes: CloudFormationProvisionedProductAttributes } { return ({ ...cloudFormationProvisionedProductProps, _logicalType: 'AWS::ServiceCatalog::CloudFormationProvisionedProduct', attributes: { CloudformationStackArn: 'CloudformationStackArn', RecordId: 'RecordId' } }) }
 
 export interface CloudFormationProvisionedProduct extends KloudResource {
     pathId?: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function visibilityConfigProps(visibilityConfigPropsProps: VisibilityConfigProps): VisibilityConfigProps { return (visibilityConfigPropsProps) as unknown as VisibilityConfigProps }
+export function visibilityConfigProps(visibilityConfigPropsProps: VisibilityConfigProps): VisibilityConfigProps { return (visibilityConfigPropsProps) }
 
 export interface VisibilityConfigProps {
     sampledRequestsEnabled: Value<boolean>;

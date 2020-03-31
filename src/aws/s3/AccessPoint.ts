@@ -3,7 +3,8 @@ import { VpcConfigurationProps } from './accesspoint/VpcConfigurationProps';
 import { PublicAccessBlockConfigurationProps } from './accesspoint/PublicAccessBlockConfigurationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function accessPoint(accessPointProps: AccessPoint & { logicalName?: string }): AccessPoint { return ({ ...accessPointProps, _logicalType: 'AWS::S3::AccessPoint' }) as unknown as AccessPoint }
+export type AccessPointAttributes = {  }
+export function accessPoint(accessPointProps: AccessPoint): AccessPoint & { attributes: AccessPointAttributes } { return ({ ...accessPointProps, _logicalType: 'AWS::S3::AccessPoint', attributes: {  } }) }
 
 export interface AccessPoint extends KloudResource {
     bucket: Value<string>;

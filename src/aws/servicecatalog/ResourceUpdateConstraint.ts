@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function resourceUpdateConstraint(resourceUpdateConstraintProps: ResourceUpdateConstraint & { logicalName?: string }): ResourceUpdateConstraint { return ({ ...resourceUpdateConstraintProps, _logicalType: 'AWS::ServiceCatalog::ResourceUpdateConstraint' }) as unknown as ResourceUpdateConstraint }
+export type ResourceUpdateConstraintAttributes = {  }
+export function resourceUpdateConstraint(resourceUpdateConstraintProps: ResourceUpdateConstraint): ResourceUpdateConstraint & { attributes: ResourceUpdateConstraintAttributes } { return ({ ...resourceUpdateConstraintProps, _logicalType: 'AWS::ServiceCatalog::ResourceUpdateConstraint', attributes: {  } }) }
 
 export interface ResourceUpdateConstraint extends KloudResource {
     tagUpdateOnProvisionedProduct: Value<string>;

@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function vPCPeeringConnection(vPCPeeringConnectionProps: VPCPeeringConnection & { logicalName?: string }): VPCPeeringConnection { return ({ ...vPCPeeringConnectionProps, _logicalType: 'AWS::EC2::VPCPeeringConnection' }) as unknown as VPCPeeringConnection }
+export type VPCPeeringConnectionAttributes = {  }
+export function vPCPeeringConnection(vPCPeeringConnectionProps: VPCPeeringConnection): VPCPeeringConnection & { attributes: VPCPeeringConnectionAttributes } { return ({ ...vPCPeeringConnectionProps, _logicalType: 'AWS::EC2::VPCPeeringConnection', attributes: {  } }) }
 
 export interface VPCPeeringConnection extends KloudResource {
     peerVpcId: Value<string>;

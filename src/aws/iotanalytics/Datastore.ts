@@ -4,7 +4,8 @@ import { RetentionPeriodProps } from './datastore/RetentionPeriodProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function datastore(datastoreProps: Datastore & { logicalName?: string }): Datastore { return ({ ...datastoreProps, _logicalType: 'AWS::IoTAnalytics::Datastore' }) as unknown as Datastore }
+export type DatastoreAttributes = {  }
+export function datastore(datastoreProps: Datastore): Datastore & { attributes: DatastoreAttributes } { return ({ ...datastoreProps, _logicalType: 'AWS::IoTAnalytics::Datastore', attributes: {  } }) }
 
 export interface Datastore extends KloudResource {
     datastoreStorage?: DatastoreStorageProps;

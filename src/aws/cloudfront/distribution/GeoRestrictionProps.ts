@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function geoRestrictionProps(geoRestrictionPropsProps: GeoRestrictionProps): GeoRestrictionProps { return (geoRestrictionPropsProps) as unknown as GeoRestrictionProps }
+export function geoRestrictionProps(geoRestrictionPropsProps: GeoRestrictionProps): GeoRestrictionProps { return (geoRestrictionPropsProps) }
 
 export interface GeoRestrictionProps {
     restrictionType: Value<string>;

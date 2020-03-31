@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function inputSourceRequestProps(inputSourceRequestPropsProps: InputSourceRequestProps): InputSourceRequestProps { return (inputSourceRequestPropsProps) as unknown as InputSourceRequestProps }
+export function inputSourceRequestProps(inputSourceRequestPropsProps: InputSourceRequestProps): InputSourceRequestProps { return (inputSourceRequestPropsProps) }
 
 export interface InputSourceRequestProps {
     username?: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function cloudWatchEncryptionProps(cloudWatchEncryptionPropsProps: CloudWatchEncryptionProps): CloudWatchEncryptionProps { return (cloudWatchEncryptionPropsProps) as unknown as CloudWatchEncryptionProps }
+export function cloudWatchEncryptionProps(cloudWatchEncryptionPropsProps: CloudWatchEncryptionProps): CloudWatchEncryptionProps { return (cloudWatchEncryptionPropsProps) }
 
 export interface CloudWatchEncryptionProps {
     kmsKeyArn?: Value<string>;

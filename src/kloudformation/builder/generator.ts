@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import {nameFor, TypeDefinition, typeDefinitionFor} from "./type-definition";
-export type MappedTypeDetail = TypeDetail & { interfaceName: TypeDefinition; required:  { [key: string]: TypeDefinition }; notRequired: { [key: string]: TypeDefinition }; awsType: string }
-export type TypeDetail = { type: string; name: string; resource: boolean; required: { [key: string]: string }; notRequired: { [key: string]: string } }
+export type MappedTypeDetail = TypeDetail & { interfaceName: TypeDefinition; required:  { [key: string]: TypeDefinition }; notRequired: { [key: string]: TypeDefinition }; awsType: string; attributes: { [key: string]: TypeDefinition }}
+export type TypeDetail = { type: string; name: string; resource: boolean; required: { [key: string]: string }; notRequired: { [key: string]: string }; attributes: { [key: string]: string } }
 export type TypeInfo = {
   [typeName: string]: TypeDetail;
 }
@@ -33,7 +33,8 @@ function importsFor(type: MappedTypeDetail): string[] {
   return [...[
     ...Object.keys(type.required).flatMap(key => importsFrom(type.required[key])),
     ...Object.keys(type.notRequired).flatMap(key => importsFrom(type.notRequired[key])),
-    ...(type.resource ? [{ typeName: 'KloudResource', location: 'kloudformation'}]: [])
+    ...(type.resource ? [{ typeName: 'KloudResource', location: 'kloudformation'}]: []),
+    ...((type.resource && Object.keys(type.attributes).length !== 0) ? [{ typeName: 'Attribute', location: 'kloudformation'}]: [])
   ].map(im => {
     if (type.interfaceName.location) {
       const location = type.interfaceName.location!.split('.');
@@ -50,9 +51,13 @@ function importsFor(type: MappedTypeDetail): string[] {
 function functionFor(type: MappedTypeDetail): string {
   let name = type.interfaceName.typeName.substring(0,1).toLowerCase() + type.interfaceName.typeName.substring(1);
   if(name === 'function') name = 'lambdaFunction';
-  const returnType = type.resource ? `{ ...${name}Props, _logicalType: '${type.awsType}' }` : `${name}Props`;
-  const argType = type.resource ? `${type.interfaceName.typeName} & { logicalName?: string }` : type.interfaceName.typeName;
-  return `\nexport function ${name}(${name}Props: ${argType}): ${type.interfaceName.typeName} { return (${returnType}) as unknown as ${type.interfaceName.typeName} }\n`
+  const attributeKeys = Object.keys(type.attributes);
+  const attributes = type.resource ? '{ ' + attributeKeys.map(key => key.replace(/\./g, '') + ': ' + 'Attribute<' + nameFor((type.attributes[key] as any).childType) + '>').join('; ') + ' }' : '';
+  const attributeValues = type.resource ? ', attributes: { ' + attributeKeys.map(key => key.replace(/\./g, '') + `: '${key}'`).join(', ') + ' }' : '';
+  const returnValue = type.resource ? `{ ...${name}Props, _logicalType: '${type.awsType}'${attributeValues} }` : `${name}Props`;
+  const attributeType = type.resource ? `export type ${type.interfaceName.typeName}Attributes = ${attributes}\n` : '';
+  const returnType = type.interfaceName.typeName + (type.resource ? ` & { attributes: ${type.interfaceName.typeName}Attributes }` : '');
+  return `\n${attributeType}export function ${name}(${name}Props: ${type.interfaceName.typeName}): ${returnType} { return (${returnValue}) }\n`
 }
 
 function interfaces(typeInformation: TypeInfo): MappedTypeDetail[] {
@@ -62,7 +67,8 @@ function interfaces(typeInformation: TypeInfo): MappedTypeDetail[] {
     ...it,
     interfaceName: typeDefinitionFor(it.type, it.resource),
     required: keyValues(it.required),
-    notRequired: keyValues(it.notRequired)
+    notRequired: keyValues(it.notRequired),
+    attributes: keyValues(it.attributes)
   }))
 }
 

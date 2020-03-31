@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function corsProps(corsPropsProps: CorsProps): CorsProps { return (corsPropsProps) as unknown as CorsProps }
+export function corsProps(corsPropsProps: CorsProps): CorsProps { return (corsPropsProps) }
 
 export interface CorsProps {
     allowOrigins?: Value<Value<string>[]>;

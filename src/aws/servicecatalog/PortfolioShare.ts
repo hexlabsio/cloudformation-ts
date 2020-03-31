@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function portfolioShare(portfolioShareProps: PortfolioShare & { logicalName?: string }): PortfolioShare { return ({ ...portfolioShareProps, _logicalType: 'AWS::ServiceCatalog::PortfolioShare' }) as unknown as PortfolioShare }
+export type PortfolioShareAttributes = {  }
+export function portfolioShare(portfolioShareProps: PortfolioShare): PortfolioShare & { attributes: PortfolioShareAttributes } { return ({ ...portfolioShareProps, _logicalType: 'AWS::ServiceCatalog::PortfolioShare', attributes: {  } }) }
 
 export interface PortfolioShare extends KloudResource {
     accountId: Value<string>;

@@ -2,7 +2,7 @@ import { RecordColumnProps } from '../../kinesisanalytics/application/RecordColu
 import { RecordFormatProps } from '../../kinesisanalytics/applicationreferencedatasource/RecordFormatProps';
 import { Value } from '../../../kloudformation/Value';
 
-export function inputSchemaProps(inputSchemaPropsProps: InputSchemaProps): InputSchemaProps { return (inputSchemaPropsProps) as unknown as InputSchemaProps }
+export function inputSchemaProps(inputSchemaPropsProps: InputSchemaProps): InputSchemaProps { return (inputSchemaPropsProps) }
 
 export interface InputSchemaProps {
     recordColumns: RecordColumnProps[];

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function cookiesProps(cookiesPropsProps: CookiesProps): CookiesProps { return (cookiesPropsProps) as unknown as CookiesProps }
+export function cookiesProps(cookiesPropsProps: CookiesProps): CookiesProps { return (cookiesPropsProps) }
 
 export interface CookiesProps {
     forward: Value<string>;

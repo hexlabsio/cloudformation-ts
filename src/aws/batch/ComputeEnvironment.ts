@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { ComputeResourcesProps } from './computeenvironment/ComputeResourcesProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function computeEnvironment(computeEnvironmentProps: ComputeEnvironment & { logicalName?: string }): ComputeEnvironment { return ({ ...computeEnvironmentProps, _logicalType: 'AWS::Batch::ComputeEnvironment' }) as unknown as ComputeEnvironment }
+export type ComputeEnvironmentAttributes = {  }
+export function computeEnvironment(computeEnvironmentProps: ComputeEnvironment): ComputeEnvironment & { attributes: ComputeEnvironmentAttributes } { return ({ ...computeEnvironmentProps, _logicalType: 'AWS::Batch::ComputeEnvironment', attributes: {  } }) }
 
 export interface ComputeEnvironment extends KloudResource {
     type: Value<string>;

@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { ConformancePackInputParameterProps } from './organizationconformancepack/ConformancePackInputParameterProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function organizationConformancePack(organizationConformancePackProps: OrganizationConformancePack & { logicalName?: string }): OrganizationConformancePack { return ({ ...organizationConformancePackProps, _logicalType: 'AWS::Config::OrganizationConformancePack' }) as unknown as OrganizationConformancePack }
+export type OrganizationConformancePackAttributes = {  }
+export function organizationConformancePack(organizationConformancePackProps: OrganizationConformancePack): OrganizationConformancePack & { attributes: OrganizationConformancePackAttributes } { return ({ ...organizationConformancePackProps, _logicalType: 'AWS::Config::OrganizationConformancePack', attributes: {  } }) }
 
 export interface OrganizationConformancePack extends KloudResource {
     organizationConformancePackName: Value<string>;

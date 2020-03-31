@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function transitionProps(transitionPropsProps: TransitionProps): TransitionProps { return (transitionPropsProps) as unknown as TransitionProps }
+export function transitionProps(transitionPropsProps: TransitionProps): TransitionProps { return (transitionPropsProps) }
 
 export interface TransitionProps {
     storageClass: Value<string>;

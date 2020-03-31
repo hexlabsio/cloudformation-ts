@@ -1,7 +1,7 @@
 import { DnsRecordProps } from './DnsRecordProps';
 import { Value } from '../../../kloudformation/Value';
 
-export function dnsConfigProps(dnsConfigPropsProps: DnsConfigProps): DnsConfigProps { return (dnsConfigPropsProps) as unknown as DnsConfigProps }
+export function dnsConfigProps(dnsConfigPropsProps: DnsConfigProps): DnsConfigProps { return (dnsConfigPropsProps) }
 
 export interface DnsConfigProps {
     dnsRecords: DnsRecordProps[];

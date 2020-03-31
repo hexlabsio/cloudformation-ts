@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { MetricDimensionProps } from './MetricDimensionProps';
 
-export function cloudWatchAlarmDefinitionProps(cloudWatchAlarmDefinitionPropsProps: CloudWatchAlarmDefinitionProps): CloudWatchAlarmDefinitionProps { return (cloudWatchAlarmDefinitionPropsProps) as unknown as CloudWatchAlarmDefinitionProps }
+export function cloudWatchAlarmDefinitionProps(cloudWatchAlarmDefinitionPropsProps: CloudWatchAlarmDefinitionProps): CloudWatchAlarmDefinitionProps { return (cloudWatchAlarmDefinitionPropsProps) }
 
 export interface CloudWatchAlarmDefinitionProps {
     comparisonOperator: Value<string>;

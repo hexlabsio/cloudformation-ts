@@ -4,7 +4,8 @@ import { SchemaChangePolicyProps } from './crawler/SchemaChangePolicyProps';
 import { ScheduleProps } from './crawler/ScheduleProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function crawler(crawlerProps: Crawler & { logicalName?: string }): Crawler { return ({ ...crawlerProps, _logicalType: 'AWS::Glue::Crawler' }) as unknown as Crawler }
+export type CrawlerAttributes = {  }
+export function crawler(crawlerProps: Crawler): Crawler & { attributes: CrawlerAttributes } { return ({ ...crawlerProps, _logicalType: 'AWS::Glue::Crawler', attributes: {  } }) }
 
 export interface Crawler extends KloudResource {
     role: Value<string>;

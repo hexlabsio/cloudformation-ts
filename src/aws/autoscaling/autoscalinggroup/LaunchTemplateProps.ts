@@ -1,7 +1,7 @@
 import { LaunchTemplateSpecificationProps } from './LaunchTemplateSpecificationProps';
 import { LaunchTemplateOverridesProps } from './LaunchTemplateOverridesProps';
 
-export function launchTemplateProps(launchTemplatePropsProps: LaunchTemplateProps): LaunchTemplateProps { return (launchTemplatePropsProps) as unknown as LaunchTemplateProps }
+export function launchTemplateProps(launchTemplatePropsProps: LaunchTemplateProps): LaunchTemplateProps { return (launchTemplatePropsProps) }
 
 export interface LaunchTemplateProps {
     launchTemplateSpecification: LaunchTemplateSpecificationProps;

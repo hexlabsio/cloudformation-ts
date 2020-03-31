@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function keyspace(keyspaceProps: Keyspace & { logicalName?: string }): Keyspace { return ({ ...keyspaceProps, _logicalType: 'AWS::Cassandra::Keyspace' }) as unknown as Keyspace }
+export type KeyspaceAttributes = {  }
+export function keyspace(keyspaceProps: Keyspace): Keyspace & { attributes: KeyspaceAttributes } { return ({ ...keyspaceProps, _logicalType: 'AWS::Cassandra::Keyspace', attributes: {  } }) }
 
 export interface Keyspace extends KloudResource {
     keyspaceName?: Value<string>;

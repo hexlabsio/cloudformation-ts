@@ -3,7 +3,7 @@ import { Value } from '../../../kloudformation/Value';
 import { BehaviorProps } from './BehaviorProps';
 import { LocationProps } from './LocationProps';
 
-export function segmentDimensionsProps(segmentDimensionsPropsProps: SegmentDimensionsProps): SegmentDimensionsProps { return (segmentDimensionsPropsProps) as unknown as SegmentDimensionsProps }
+export function segmentDimensionsProps(segmentDimensionsPropsProps: SegmentDimensionsProps): SegmentDimensionsProps { return (segmentDimensionsPropsProps) }
 
 export interface SegmentDimensionsProps {
     demographic?: DemographicProps;

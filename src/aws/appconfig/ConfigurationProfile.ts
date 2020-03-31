@@ -3,7 +3,8 @@ import { ValidatorsProps } from './configurationprofile/ValidatorsProps';
 import { TagsProps } from './configurationprofile/TagsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function configurationProfile(configurationProfileProps: ConfigurationProfile & { logicalName?: string }): ConfigurationProfile { return ({ ...configurationProfileProps, _logicalType: 'AWS::AppConfig::ConfigurationProfile' }) as unknown as ConfigurationProfile }
+export type ConfigurationProfileAttributes = {  }
+export function configurationProfile(configurationProfileProps: ConfigurationProfile): ConfigurationProfile & { attributes: ConfigurationProfileAttributes } { return ({ ...configurationProfileProps, _logicalType: 'AWS::AppConfig::ConfigurationProfile', attributes: {  } }) }
 
 export interface ConfigurationProfile extends KloudResource {
     locationUri: Value<string>;

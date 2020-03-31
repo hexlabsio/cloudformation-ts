@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function bounceActionProps(bounceActionPropsProps: BounceActionProps): BounceActionProps { return (bounceActionPropsProps) as unknown as BounceActionProps }
+export function bounceActionProps(bounceActionPropsProps: BounceActionProps): BounceActionProps { return (bounceActionPropsProps) }
 
 export interface BounceActionProps {
     sender: Value<string>;

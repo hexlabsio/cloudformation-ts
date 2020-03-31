@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function trafficMirrorTarget(trafficMirrorTargetProps: TrafficMirrorTarget & { logicalName?: string }): TrafficMirrorTarget { return ({ ...trafficMirrorTargetProps, _logicalType: 'AWS::EC2::TrafficMirrorTarget' }) as unknown as TrafficMirrorTarget }
+export type TrafficMirrorTargetAttributes = {  }
+export function trafficMirrorTarget(trafficMirrorTargetProps: TrafficMirrorTarget): TrafficMirrorTarget & { attributes: TrafficMirrorTargetAttributes } { return ({ ...trafficMirrorTargetProps, _logicalType: 'AWS::EC2::TrafficMirrorTarget', attributes: {  } }) }
 
 export interface TrafficMirrorTarget extends KloudResource {
     networkLoadBalancerArn?: Value<string>;

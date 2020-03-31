@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function subscription(subscriptionProps: Subscription & { logicalName?: string }): Subscription { return ({ ...subscriptionProps, _logicalType: 'AWS::SNS::Subscription' }) as unknown as Subscription }
+export type SubscriptionAttributes = {  }
+export function subscription(subscriptionProps: Subscription): Subscription & { attributes: SubscriptionAttributes } { return ({ ...subscriptionProps, _logicalType: 'AWS::SNS::Subscription', attributes: {  } }) }
 
 export interface Subscription extends KloudResource {
     protocol: Value<string>;

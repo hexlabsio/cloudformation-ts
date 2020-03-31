@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function encryptionAtRestOptionsProps(encryptionAtRestOptionsPropsProps: EncryptionAtRestOptionsProps): EncryptionAtRestOptionsProps { return (encryptionAtRestOptionsPropsProps) as unknown as EncryptionAtRestOptionsProps }
+export function encryptionAtRestOptionsProps(encryptionAtRestOptionsPropsProps: EncryptionAtRestOptionsProps): EncryptionAtRestOptionsProps { return (encryptionAtRestOptionsPropsProps) }
 
 export interface EncryptionAtRestOptionsProps {
     enabled?: Value<boolean>;

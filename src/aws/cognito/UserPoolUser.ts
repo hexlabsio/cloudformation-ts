@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { AttributeTypeProps } from './userpooluser/AttributeTypeProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function userPoolUser(userPoolUserProps: UserPoolUser & { logicalName?: string }): UserPoolUser { return ({ ...userPoolUserProps, _logicalType: 'AWS::Cognito::UserPoolUser' }) as unknown as UserPoolUser }
+export type UserPoolUserAttributes = {  }
+export function userPoolUser(userPoolUserProps: UserPoolUser): UserPoolUser & { attributes: UserPoolUserAttributes } { return ({ ...userPoolUserProps, _logicalType: 'AWS::Cognito::UserPoolUser', attributes: {  } }) }
 
 export interface UserPoolUser extends KloudResource {
     userPoolId: Value<string>;

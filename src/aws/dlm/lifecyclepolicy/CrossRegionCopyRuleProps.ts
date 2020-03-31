@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { CrossRegionCopyRetainRuleProps } from './CrossRegionCopyRetainRuleProps';
 
-export function crossRegionCopyRuleProps(crossRegionCopyRulePropsProps: CrossRegionCopyRuleProps): CrossRegionCopyRuleProps { return (crossRegionCopyRulePropsProps) as unknown as CrossRegionCopyRuleProps }
+export function crossRegionCopyRuleProps(crossRegionCopyRulePropsProps: CrossRegionCopyRuleProps): CrossRegionCopyRuleProps { return (crossRegionCopyRulePropsProps) }
 
 export interface CrossRegionCopyRuleProps {
     targetRegion?: Value<string>;

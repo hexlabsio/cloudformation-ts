@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function identityPoolRoleAttachment(identityPoolRoleAttachmentProps: IdentityPoolRoleAttachment & { logicalName?: string }): IdentityPoolRoleAttachment { return ({ ...identityPoolRoleAttachmentProps, _logicalType: 'AWS::Cognito::IdentityPoolRoleAttachment' }) as unknown as IdentityPoolRoleAttachment }
+export type IdentityPoolRoleAttachmentAttributes = {  }
+export function identityPoolRoleAttachment(identityPoolRoleAttachmentProps: IdentityPoolRoleAttachment): IdentityPoolRoleAttachment & { attributes: IdentityPoolRoleAttachmentAttributes } { return ({ ...identityPoolRoleAttachmentProps, _logicalType: 'AWS::Cognito::IdentityPoolRoleAttachment', attributes: {  } }) }
 
 export interface IdentityPoolRoleAttachment extends KloudResource {
     identityPoolId: Value<string>;

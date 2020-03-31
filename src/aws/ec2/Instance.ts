@@ -13,8 +13,10 @@ import { SsmAssociationProps } from './instance/SsmAssociationProps';
 import { Tag } from '../Tag';
 import { VolumeProps } from './instance/VolumeProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function instance(instanceProps: Instance & { logicalName?: string }): Instance { return ({ ...instanceProps, _logicalType: 'AWS::EC2::Instance' }) as unknown as Instance }
+export type InstanceAttributes = { AvailabilityZone: Attribute<string>; PrivateDnsName: Attribute<string>; PrivateIp: Attribute<string>; PublicDnsName: Attribute<string>; PublicIp: Attribute<string> }
+export function instance(instanceProps: Instance): Instance & { attributes: InstanceAttributes } { return ({ ...instanceProps, _logicalType: 'AWS::EC2::Instance', attributes: { AvailabilityZone: 'AvailabilityZone', PrivateDnsName: 'PrivateDnsName', PrivateIp: 'PrivateIp', PublicDnsName: 'PublicDnsName', PublicIp: 'PublicIp' } }) }
 
 export interface Instance extends KloudResource {
     additionalInfo?: Value<string>;

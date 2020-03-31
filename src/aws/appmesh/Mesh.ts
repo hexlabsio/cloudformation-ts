@@ -2,8 +2,10 @@ import { Value } from '../../kloudformation/Value';
 import { MeshSpecProps } from './mesh/MeshSpecProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function mesh(meshProps: Mesh & { logicalName?: string }): Mesh { return ({ ...meshProps, _logicalType: 'AWS::AppMesh::Mesh' }) as unknown as Mesh }
+export type MeshAttributes = { Uid: Attribute<string>; MeshName: Attribute<string>; MeshOwner: Attribute<string>; ResourceOwner: Attribute<string>; Arn: Attribute<string> }
+export function mesh(meshProps: Mesh): Mesh & { attributes: MeshAttributes } { return ({ ...meshProps, _logicalType: 'AWS::AppMesh::Mesh', attributes: { Uid: 'Uid', MeshName: 'MeshName', MeshOwner: 'MeshOwner', ResourceOwner: 'ResourceOwner', Arn: 'Arn' } }) }
 
 export interface Mesh extends KloudResource {
     meshName: Value<string>;

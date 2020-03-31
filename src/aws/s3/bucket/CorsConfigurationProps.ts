@@ -1,6 +1,6 @@
 import { CorsRuleProps } from './CorsRuleProps';
 
-export function corsConfigurationProps(corsConfigurationPropsProps: CorsConfigurationProps): CorsConfigurationProps { return (corsConfigurationPropsProps) as unknown as CorsConfigurationProps }
+export function corsConfigurationProps(corsConfigurationPropsProps: CorsConfigurationProps): CorsConfigurationProps { return (corsConfigurationPropsProps) }
 
 export interface CorsConfigurationProps {
     corsRules: CorsRuleProps[];

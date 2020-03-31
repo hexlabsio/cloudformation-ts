@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function schemaConfigurationProps(schemaConfigurationPropsProps: SchemaConfigurationProps): SchemaConfigurationProps { return (schemaConfigurationPropsProps) as unknown as SchemaConfigurationProps }
+export function schemaConfigurationProps(schemaConfigurationPropsProps: SchemaConfigurationProps): SchemaConfigurationProps { return (schemaConfigurationPropsProps) }
 
 export interface SchemaConfigurationProps {
     catalogId: Value<string>;

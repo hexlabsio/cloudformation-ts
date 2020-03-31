@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { ConfigurationProps } from './ConfigurationProps';
 import { EbsConfigurationProps } from './EbsConfigurationProps';
 
-export function instanceTypeConfigProps(instanceTypeConfigPropsProps: InstanceTypeConfigProps): InstanceTypeConfigProps { return (instanceTypeConfigPropsProps) as unknown as InstanceTypeConfigProps }
+export function instanceTypeConfigProps(instanceTypeConfigPropsProps: InstanceTypeConfigProps): InstanceTypeConfigProps { return (instanceTypeConfigPropsProps) }
 
 export interface InstanceTypeConfigProps {
     instanceType: Value<string>;

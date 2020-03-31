@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function dashboard(dashboardProps: Dashboard & { logicalName?: string }): Dashboard { return ({ ...dashboardProps, _logicalType: 'AWS::CloudWatch::Dashboard' }) as unknown as Dashboard }
+export type DashboardAttributes = {  }
+export function dashboard(dashboardProps: Dashboard): Dashboard & { attributes: DashboardAttributes } { return ({ ...dashboardProps, _logicalType: 'AWS::CloudWatch::Dashboard', attributes: {  } }) }
 
 export interface Dashboard extends KloudResource {
     dashboardBody: Value<string>;

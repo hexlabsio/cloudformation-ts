@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function trustedSignersProps(trustedSignersPropsProps: TrustedSignersProps): TrustedSignersProps { return (trustedSignersPropsProps) as unknown as TrustedSignersProps }
+export function trustedSignersProps(trustedSignersPropsProps: TrustedSignersProps): TrustedSignersProps { return (trustedSignersPropsProps) }
 
 export interface TrustedSignersProps {
     enabled: Value<boolean>;

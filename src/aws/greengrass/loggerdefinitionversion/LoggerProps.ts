@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function loggerProps(loggerPropsProps: LoggerProps): LoggerProps { return (loggerPropsProps) as unknown as LoggerProps }
+export function loggerProps(loggerPropsProps: LoggerProps): LoggerProps { return (loggerPropsProps) }
 
 export interface LoggerProps {
     type: Value<string>;

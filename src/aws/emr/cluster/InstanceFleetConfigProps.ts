@@ -2,7 +2,7 @@ import { InstanceTypeConfigProps } from './InstanceTypeConfigProps';
 import { InstanceFleetProvisioningSpecificationsProps } from './InstanceFleetProvisioningSpecificationsProps';
 import { Value } from '../../../kloudformation/Value';
 
-export function instanceFleetConfigProps(instanceFleetConfigPropsProps: InstanceFleetConfigProps): InstanceFleetConfigProps { return (instanceFleetConfigPropsProps) as unknown as InstanceFleetConfigProps }
+export function instanceFleetConfigProps(instanceFleetConfigPropsProps: InstanceFleetConfigProps): InstanceFleetConfigProps { return (instanceFleetConfigPropsProps) }
 
 export interface InstanceFleetConfigProps {
     instanceTypeConfigs?: InstanceTypeConfigProps[];

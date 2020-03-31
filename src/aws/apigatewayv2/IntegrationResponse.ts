@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function integrationResponse(integrationResponseProps: IntegrationResponse & { logicalName?: string }): IntegrationResponse { return ({ ...integrationResponseProps, _logicalType: 'AWS::ApiGatewayV2::IntegrationResponse' }) as unknown as IntegrationResponse }
+export type IntegrationResponseAttributes = {  }
+export function integrationResponse(integrationResponseProps: IntegrationResponse): IntegrationResponse & { attributes: IntegrationResponseAttributes } { return ({ ...integrationResponseProps, _logicalType: 'AWS::ApiGatewayV2::IntegrationResponse', attributes: {  } }) }
 
 export interface IntegrationResponse extends KloudResource {
     integrationId: Value<string>;

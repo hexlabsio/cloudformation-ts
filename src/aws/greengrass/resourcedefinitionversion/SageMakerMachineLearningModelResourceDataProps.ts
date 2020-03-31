@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { ResourceDownloadOwnerSettingProps } from './ResourceDownloadOwnerSettingProps';
 
-export function sageMakerMachineLearningModelResourceDataProps(sageMakerMachineLearningModelResourceDataPropsProps: SageMakerMachineLearningModelResourceDataProps): SageMakerMachineLearningModelResourceDataProps { return (sageMakerMachineLearningModelResourceDataPropsProps) as unknown as SageMakerMachineLearningModelResourceDataProps }
+export function sageMakerMachineLearningModelResourceDataProps(sageMakerMachineLearningModelResourceDataPropsProps: SageMakerMachineLearningModelResourceDataProps): SageMakerMachineLearningModelResourceDataProps { return (sageMakerMachineLearningModelResourceDataPropsProps) }
 
 export interface SageMakerMachineLearningModelResourceDataProps {
     destinationPath: Value<string>;

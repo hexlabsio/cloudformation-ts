@@ -4,7 +4,7 @@ import { CanarySettingProps } from './CanarySettingProps';
 import { MethodSettingProps } from './MethodSettingProps';
 import { Tag } from '../../Tag';
 
-export function stageDescriptionProps(stageDescriptionPropsProps: StageDescriptionProps): StageDescriptionProps { return (stageDescriptionPropsProps) as unknown as StageDescriptionProps }
+export function stageDescriptionProps(stageDescriptionPropsProps: StageDescriptionProps): StageDescriptionProps { return (stageDescriptionPropsProps) }
 
 export interface StageDescriptionProps {
     accessLogSetting?: AccessLogSettingProps;

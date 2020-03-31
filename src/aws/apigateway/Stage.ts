@@ -5,7 +5,8 @@ import { MethodSettingProps } from './stage/MethodSettingProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function stage(stageProps: Stage & { logicalName?: string }): Stage { return ({ ...stageProps, _logicalType: 'AWS::ApiGateway::Stage' }) as unknown as Stage }
+export type StageAttributes = {  }
+export function stage(stageProps: Stage): Stage & { attributes: StageAttributes } { return ({ ...stageProps, _logicalType: 'AWS::ApiGateway::Stage', attributes: {  } }) }
 
 export interface Stage extends KloudResource {
     restApiId: Value<string>;

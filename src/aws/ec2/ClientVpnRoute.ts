@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function clientVpnRoute(clientVpnRouteProps: ClientVpnRoute & { logicalName?: string }): ClientVpnRoute { return ({ ...clientVpnRouteProps, _logicalType: 'AWS::EC2::ClientVpnRoute' }) as unknown as ClientVpnRoute }
+export type ClientVpnRouteAttributes = {  }
+export function clientVpnRoute(clientVpnRouteProps: ClientVpnRoute): ClientVpnRoute & { attributes: ClientVpnRouteAttributes } { return ({ ...clientVpnRouteProps, _logicalType: 'AWS::EC2::ClientVpnRoute', attributes: {  } }) }
 
 export interface ClientVpnRoute extends KloudResource {
     clientVpnEndpointId: Value<string>;

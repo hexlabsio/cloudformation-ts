@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function groupVersion(groupVersionProps: GroupVersion & { logicalName?: string }): GroupVersion { return ({ ...groupVersionProps, _logicalType: 'AWS::Greengrass::GroupVersion' }) as unknown as GroupVersion }
+export type GroupVersionAttributes = {  }
+export function groupVersion(groupVersionProps: GroupVersion): GroupVersion & { attributes: GroupVersionAttributes } { return ({ ...groupVersionProps, _logicalType: 'AWS::Greengrass::GroupVersion', attributes: {  } }) }
 
 export interface GroupVersion extends KloudResource {
     groupId: Value<string>;

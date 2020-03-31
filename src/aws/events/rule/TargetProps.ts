@@ -6,7 +6,7 @@ import { KinesisParametersProps } from './KinesisParametersProps';
 import { RunCommandParametersProps } from './RunCommandParametersProps';
 import { SqsParametersProps } from './SqsParametersProps';
 
-export function targetProps(targetPropsProps: TargetProps): TargetProps { return (targetPropsProps) as unknown as TargetProps }
+export function targetProps(targetPropsProps: TargetProps): TargetProps { return (targetPropsProps) }
 
 export interface TargetProps {
     arn: Value<string>;

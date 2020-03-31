@@ -3,7 +3,8 @@ import { DeploymentCanarySettingsProps } from './deployment/DeploymentCanarySett
 import { StageDescriptionProps } from './deployment/StageDescriptionProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function deployment(deploymentProps: Deployment & { logicalName?: string }): Deployment { return ({ ...deploymentProps, _logicalType: 'AWS::ApiGateway::Deployment' }) as unknown as Deployment }
+export type DeploymentAttributes = {  }
+export function deployment(deploymentProps: Deployment): Deployment & { attributes: DeploymentAttributes } { return ({ ...deploymentProps, _logicalType: 'AWS::ApiGateway::Deployment', attributes: {  } }) }
 
 export interface Deployment extends KloudResource {
     restApiId: Value<string>;

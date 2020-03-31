@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function timePeriodProps(timePeriodPropsProps: TimePeriodProps): TimePeriodProps { return (timePeriodPropsProps) as unknown as TimePeriodProps }
+export function timePeriodProps(timePeriodPropsProps: TimePeriodProps): TimePeriodProps { return (timePeriodPropsProps) }
 
 export interface TimePeriodProps {
     start?: Value<string>;

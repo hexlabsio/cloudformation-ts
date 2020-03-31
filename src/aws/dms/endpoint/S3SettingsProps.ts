@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function s3SettingsProps(s3SettingsPropsProps: S3SettingsProps): S3SettingsProps { return (s3SettingsPropsProps) as unknown as S3SettingsProps }
+export function s3SettingsProps(s3SettingsPropsProps: S3SettingsProps): S3SettingsProps { return (s3SettingsPropsProps) }
 
 export interface S3SettingsProps {
     externalTableDefinition?: Value<string>;

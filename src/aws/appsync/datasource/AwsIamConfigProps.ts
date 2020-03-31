@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function awsIamConfigProps(awsIamConfigPropsProps: AwsIamConfigProps): AwsIamConfigProps { return (awsIamConfigPropsProps) as unknown as AwsIamConfigProps }
+export function awsIamConfigProps(awsIamConfigPropsProps: AwsIamConfigProps): AwsIamConfigProps { return (awsIamConfigPropsProps) }
 
 export interface AwsIamConfigProps {
     signingRegion?: Value<string>;

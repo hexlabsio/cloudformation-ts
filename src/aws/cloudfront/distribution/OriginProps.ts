@@ -3,7 +3,7 @@ import { OriginCustomHeaderProps } from './OriginCustomHeaderProps';
 import { S3OriginConfigProps } from './S3OriginConfigProps';
 import { CustomOriginConfigProps } from './CustomOriginConfigProps';
 
-export function originProps(originPropsProps: OriginProps): OriginProps { return (originPropsProps) as unknown as OriginProps }
+export function originProps(originPropsProps: OriginProps): OriginProps { return (originPropsProps) }
 
 export interface OriginProps {
     domainName: Value<string>;

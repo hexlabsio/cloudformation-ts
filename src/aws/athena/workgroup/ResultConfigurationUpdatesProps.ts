@@ -1,7 +1,7 @@
 import { EncryptionConfigurationProps } from './EncryptionConfigurationProps';
 import { Value } from '../../../kloudformation/Value';
 
-export function resultConfigurationUpdatesProps(resultConfigurationUpdatesPropsProps: ResultConfigurationUpdatesProps): ResultConfigurationUpdatesProps { return (resultConfigurationUpdatesPropsProps) as unknown as ResultConfigurationUpdatesProps }
+export function resultConfigurationUpdatesProps(resultConfigurationUpdatesPropsProps: ResultConfigurationUpdatesProps): ResultConfigurationUpdatesProps { return (resultConfigurationUpdatesPropsProps) }
 
 export interface ResultConfigurationUpdatesProps {
     encryptionConfiguration?: EncryptionConfigurationProps;

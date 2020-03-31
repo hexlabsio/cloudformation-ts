@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function authenticateOidcConfigProps(authenticateOidcConfigPropsProps: AuthenticateOidcConfigProps): AuthenticateOidcConfigProps { return (authenticateOidcConfigPropsProps) as unknown as AuthenticateOidcConfigProps }
+export function authenticateOidcConfigProps(authenticateOidcConfigPropsProps: AuthenticateOidcConfigProps): AuthenticateOidcConfigProps { return (authenticateOidcConfigPropsProps) }
 
 export interface AuthenticateOidcConfigProps {
     authorizationEndpoint: Value<string>;

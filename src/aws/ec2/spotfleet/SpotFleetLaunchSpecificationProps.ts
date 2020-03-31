@@ -7,7 +7,7 @@ import { SpotPlacementProps } from './SpotPlacementProps';
 import { GroupIdentifierProps } from './GroupIdentifierProps';
 import { SpotFleetTagSpecificationProps } from './SpotFleetTagSpecificationProps';
 
-export function spotFleetLaunchSpecificationProps(spotFleetLaunchSpecificationPropsProps: SpotFleetLaunchSpecificationProps): SpotFleetLaunchSpecificationProps { return (spotFleetLaunchSpecificationPropsProps) as unknown as SpotFleetLaunchSpecificationProps }
+export function spotFleetLaunchSpecificationProps(spotFleetLaunchSpecificationPropsProps: SpotFleetLaunchSpecificationProps): SpotFleetLaunchSpecificationProps { return (spotFleetLaunchSpecificationPropsProps) }
 
 export interface SpotFleetLaunchSpecificationProps {
     imageId: Value<string>;

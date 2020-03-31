@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function coordinatesProps(coordinatesPropsProps: CoordinatesProps): CoordinatesProps { return (coordinatesPropsProps) as unknown as CoordinatesProps }
+export function coordinatesProps(coordinatesPropsProps: CoordinatesProps): CoordinatesProps { return (coordinatesPropsProps) }
 
 export interface CoordinatesProps {
     latitude: Value<number>;

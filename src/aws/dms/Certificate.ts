@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function certificate(certificateProps: Certificate & { logicalName?: string }): Certificate { return ({ ...certificateProps, _logicalType: 'AWS::DMS::Certificate' }) as unknown as Certificate }
+export type CertificateAttributes = {  }
+export function certificate(certificateProps: Certificate): Certificate & { attributes: CertificateAttributes } { return ({ ...certificateProps, _logicalType: 'AWS::DMS::Certificate', attributes: {  } }) }
 
 export interface Certificate extends KloudResource {
     certificateIdentifier?: Value<string>;

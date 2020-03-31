@@ -7,7 +7,8 @@ import { NotificationConfigurationProps } from './autoscalinggroup/NotificationC
 import { TagPropertyProps } from './autoscalinggroup/TagPropertyProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function autoScalingGroup(autoScalingGroupProps: AutoScalingGroup & { logicalName?: string }): AutoScalingGroup { return ({ ...autoScalingGroupProps, _logicalType: 'AWS::AutoScaling::AutoScalingGroup' }) as unknown as AutoScalingGroup }
+export type AutoScalingGroupAttributes = {  }
+export function autoScalingGroup(autoScalingGroupProps: AutoScalingGroup): AutoScalingGroup & { attributes: AutoScalingGroupAttributes } { return ({ ...autoScalingGroupProps, _logicalType: 'AWS::AutoScaling::AutoScalingGroup', attributes: {  } }) }
 
 export interface AutoScalingGroup extends KloudResource {
     maxSize: Value<string>;
@@ -23,6 +24,7 @@ export interface AutoScalingGroup extends KloudResource {
     launchTemplate?: LaunchTemplateSpecificationProps;
     lifecycleHookSpecificationList?: LifecycleHookSpecificationProps[];
     loadBalancerNames?: Value<Value<string>[]>;
+    maxInstanceLifetime?: Value<number>;
     metricsCollection?: MetricsCollectionProps[];
     mixedInstancesPolicy?: MixedInstancesPolicyProps;
     notificationConfigurations?: NotificationConfigurationProps[];

@@ -2,7 +2,7 @@ import { RecordColumnProps } from '../../kinesisanalytics/applicationreferenceda
 import { RecordFormatProps } from '../../kinesisanalytics/applicationreferencedatasource/RecordFormatProps';
 import { Value } from '../../../kloudformation/Value';
 
-export function referenceSchemaProps(referenceSchemaPropsProps: ReferenceSchemaProps): ReferenceSchemaProps { return (referenceSchemaPropsProps) as unknown as ReferenceSchemaProps }
+export function referenceSchemaProps(referenceSchemaPropsProps: ReferenceSchemaProps): ReferenceSchemaProps { return (referenceSchemaPropsProps) }
 
 export interface ReferenceSchemaProps {
     recordColumns: RecordColumnProps[];

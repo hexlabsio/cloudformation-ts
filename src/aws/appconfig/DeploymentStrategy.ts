@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { TagsProps } from './deploymentstrategy/TagsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function deploymentStrategy(deploymentStrategyProps: DeploymentStrategy & { logicalName?: string }): DeploymentStrategy { return ({ ...deploymentStrategyProps, _logicalType: 'AWS::AppConfig::DeploymentStrategy' }) as unknown as DeploymentStrategy }
+export type DeploymentStrategyAttributes = {  }
+export function deploymentStrategy(deploymentStrategyProps: DeploymentStrategy): DeploymentStrategy & { attributes: DeploymentStrategyAttributes } { return ({ ...deploymentStrategyProps, _logicalType: 'AWS::AppConfig::DeploymentStrategy', attributes: {  } }) }
 
 export interface DeploymentStrategy extends KloudResource {
     replicateTo: Value<string>;

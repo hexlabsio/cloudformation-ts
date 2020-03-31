@@ -15,7 +15,7 @@ import { InstanceMarketOptionsProps } from './InstanceMarketOptionsProps';
 import { CapacityReservationSpecificationProps } from './CapacityReservationSpecificationProps';
 import { CreditSpecificationProps } from './CreditSpecificationProps';
 
-export function launchTemplateDataProps(launchTemplateDataPropsProps: LaunchTemplateDataProps): LaunchTemplateDataProps { return (launchTemplateDataPropsProps) as unknown as LaunchTemplateDataProps }
+export function launchTemplateDataProps(launchTemplateDataPropsProps: LaunchTemplateDataProps): LaunchTemplateDataProps { return (launchTemplateDataPropsProps) }
 
 export interface LaunchTemplateDataProps {
     securityGroups?: Value<Value<string>[]>;

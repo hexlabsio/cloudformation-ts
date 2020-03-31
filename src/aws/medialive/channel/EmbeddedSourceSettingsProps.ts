@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function embeddedSourceSettingsProps(embeddedSourceSettingsPropsProps: EmbeddedSourceSettingsProps): EmbeddedSourceSettingsProps { return (embeddedSourceSettingsPropsProps) as unknown as EmbeddedSourceSettingsProps }
+export function embeddedSourceSettingsProps(embeddedSourceSettingsPropsProps: EmbeddedSourceSettingsProps): EmbeddedSourceSettingsProps { return (embeddedSourceSettingsPropsProps) }
 
 export interface EmbeddedSourceSettingsProps {
     source608ChannelNumber?: Value<number>;

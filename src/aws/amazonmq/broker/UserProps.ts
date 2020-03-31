@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function userProps(userPropsProps: UserProps): UserProps { return (userPropsProps) as unknown as UserProps }
+export function userProps(userPropsProps: UserProps): UserProps { return (userPropsProps) }
 
 export interface UserProps {
     username: Value<string>;

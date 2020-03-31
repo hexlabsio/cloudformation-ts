@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function predefinedScalingMetricSpecificationProps(predefinedScalingMetricSpecificationPropsProps: PredefinedScalingMetricSpecificationProps): PredefinedScalingMetricSpecificationProps { return (predefinedScalingMetricSpecificationPropsProps) as unknown as PredefinedScalingMetricSpecificationProps }
+export function predefinedScalingMetricSpecificationProps(predefinedScalingMetricSpecificationPropsProps: PredefinedScalingMetricSpecificationProps): PredefinedScalingMetricSpecificationProps { return (predefinedScalingMetricSpecificationPropsProps) }
 
 export interface PredefinedScalingMetricSpecificationProps {
     predefinedScalingMetricType: Value<string>;

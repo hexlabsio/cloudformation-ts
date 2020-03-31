@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { SecretProps } from './SecretProps';
 
-export function logConfigurationProps(logConfigurationPropsProps: LogConfigurationProps): LogConfigurationProps { return (logConfigurationPropsProps) as unknown as LogConfigurationProps }
+export function logConfigurationProps(logConfigurationPropsProps: LogConfigurationProps): LogConfigurationProps { return (logConfigurationPropsProps) }
 
 export interface LogConfigurationProps {
     logDriver: Value<string>;

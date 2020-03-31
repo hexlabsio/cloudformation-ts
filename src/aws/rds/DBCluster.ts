@@ -3,8 +3,10 @@ import { DBClusterRoleProps } from './dbcluster/DBClusterRoleProps';
 import { ScalingConfigurationProps } from './dbcluster/ScalingConfigurationProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function dBCluster(dBClusterProps: DBCluster & { logicalName?: string }): DBCluster { return ({ ...dBClusterProps, _logicalType: 'AWS::RDS::DBCluster' }) as unknown as DBCluster }
+export type DBClusterAttributes = { EndpointAddress: Attribute<string>; EndpointPort: Attribute<string>; ReadEndpointAddress: Attribute<string> }
+export function dBCluster(dBClusterProps: DBCluster): DBCluster & { attributes: DBClusterAttributes } { return ({ ...dBClusterProps, _logicalType: 'AWS::RDS::DBCluster', attributes: { EndpointAddress: 'Endpoint.Address', EndpointPort: 'Endpoint.Port', ReadEndpointAddress: 'ReadEndpoint.Address' } }) }
 
 export interface DBCluster extends KloudResource {
     engine: Value<string>;

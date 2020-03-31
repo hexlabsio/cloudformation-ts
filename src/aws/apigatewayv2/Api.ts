@@ -3,7 +3,8 @@ import { BodyS3LocationProps } from './api/BodyS3LocationProps';
 import { CorsProps } from './api/CorsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function api(apiProps: Api & { logicalName?: string }): Api { return ({ ...apiProps, _logicalType: 'AWS::ApiGatewayV2::Api' }) as unknown as Api }
+export type ApiAttributes = {  }
+export function api(apiProps: Api): Api & { attributes: ApiAttributes } { return ({ ...apiProps, _logicalType: 'AWS::ApiGatewayV2::Api', attributes: {  } }) }
 
 export interface Api extends KloudResource {
     routeSelectionExpression?: Value<string>;

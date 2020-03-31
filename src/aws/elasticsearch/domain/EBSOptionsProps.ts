@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function eBSOptionsProps(eBSOptionsPropsProps: EBSOptionsProps): EBSOptionsProps { return (eBSOptionsPropsProps) as unknown as EBSOptionsProps }
+export function eBSOptionsProps(eBSOptionsPropsProps: EBSOptionsProps): EBSOptionsProps { return (eBSOptionsPropsProps) }
 
 export interface EBSOptionsProps {
     eBSEnabled?: Value<boolean>;

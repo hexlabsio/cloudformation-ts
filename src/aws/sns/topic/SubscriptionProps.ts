@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function subscriptionProps(subscriptionPropsProps: SubscriptionProps): SubscriptionProps { return (subscriptionPropsProps) as unknown as SubscriptionProps }
+export function subscriptionProps(subscriptionPropsProps: SubscriptionProps): SubscriptionProps { return (subscriptionPropsProps) }
 
 export interface SubscriptionProps {
     endpoint: Value<string>;

@@ -1,7 +1,9 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function functionConfiguration(functionConfigurationProps: FunctionConfiguration & { logicalName?: string }): FunctionConfiguration { return ({ ...functionConfigurationProps, _logicalType: 'AWS::AppSync::FunctionConfiguration' }) as unknown as FunctionConfiguration }
+export type FunctionConfigurationAttributes = { FunctionId: Attribute<string>; FunctionArn: Attribute<string>; DataSourceName: Attribute<string>; Name: Attribute<string> }
+export function functionConfiguration(functionConfigurationProps: FunctionConfiguration): FunctionConfiguration & { attributes: FunctionConfigurationAttributes } { return ({ ...functionConfigurationProps, _logicalType: 'AWS::AppSync::FunctionConfiguration', attributes: { FunctionId: 'FunctionId', FunctionArn: 'FunctionArn', DataSourceName: 'DataSourceName', Name: 'Name' } }) }
 
 export interface FunctionConfiguration extends KloudResource {
     dataSourceName: Value<string>;

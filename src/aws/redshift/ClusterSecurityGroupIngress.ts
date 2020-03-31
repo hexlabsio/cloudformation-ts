@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function clusterSecurityGroupIngress(clusterSecurityGroupIngressProps: ClusterSecurityGroupIngress & { logicalName?: string }): ClusterSecurityGroupIngress { return ({ ...clusterSecurityGroupIngressProps, _logicalType: 'AWS::Redshift::ClusterSecurityGroupIngress' }) as unknown as ClusterSecurityGroupIngress }
+export type ClusterSecurityGroupIngressAttributes = {  }
+export function clusterSecurityGroupIngress(clusterSecurityGroupIngressProps: ClusterSecurityGroupIngress): ClusterSecurityGroupIngress & { attributes: ClusterSecurityGroupIngressAttributes } { return ({ ...clusterSecurityGroupIngressProps, _logicalType: 'AWS::Redshift::ClusterSecurityGroupIngress', attributes: {  } }) }
 
 export interface ClusterSecurityGroupIngress extends KloudResource {
     clusterSecurityGroupName: Value<string>;

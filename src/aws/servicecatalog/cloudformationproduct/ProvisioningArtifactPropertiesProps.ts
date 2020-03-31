@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function provisioningArtifactPropertiesProps(provisioningArtifactPropertiesPropsProps: ProvisioningArtifactPropertiesProps): ProvisioningArtifactPropertiesProps { return (provisioningArtifactPropertiesPropsProps) as unknown as ProvisioningArtifactPropertiesProps }
+export function provisioningArtifactPropertiesProps(provisioningArtifactPropertiesPropsProps: ProvisioningArtifactPropertiesProps): ProvisioningArtifactPropertiesProps { return (provisioningArtifactPropertiesPropsProps) }
 
 export interface ProvisioningArtifactPropertiesProps {
     info: Value<any>;

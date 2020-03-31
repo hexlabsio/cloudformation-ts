@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function ingressProps(ingressPropsProps: IngressProps): IngressProps { return (ingressPropsProps) as unknown as IngressProps }
+export function ingressProps(ingressPropsProps: IngressProps): IngressProps { return (ingressPropsProps) }
 
 export interface IngressProps {
     cIDRIP?: Value<string>;

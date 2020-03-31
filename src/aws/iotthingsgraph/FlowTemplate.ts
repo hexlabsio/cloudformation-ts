@@ -2,7 +2,8 @@ import { DefinitionDocumentProps } from './flowtemplate/DefinitionDocumentProps'
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function flowTemplate(flowTemplateProps: FlowTemplate & { logicalName?: string }): FlowTemplate { return ({ ...flowTemplateProps, _logicalType: 'AWS::IoTThingsGraph::FlowTemplate' }) as unknown as FlowTemplate }
+export type FlowTemplateAttributes = {  }
+export function flowTemplate(flowTemplateProps: FlowTemplate): FlowTemplate & { attributes: FlowTemplateAttributes } { return ({ ...flowTemplateProps, _logicalType: 'AWS::IoTThingsGraph::FlowTemplate', attributes: {  } }) }
 
 export interface FlowTemplate extends KloudResource {
     definition: DefinitionDocumentProps;

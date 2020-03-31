@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function tierProps(tierPropsProps: TierProps): TierProps { return (tierPropsProps) as unknown as TierProps }
+export function tierProps(tierPropsProps: TierProps): TierProps { return (tierPropsProps) }
 
 export interface TierProps {
     name?: Value<string>;

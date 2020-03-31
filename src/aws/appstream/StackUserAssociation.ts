@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function stackUserAssociation(stackUserAssociationProps: StackUserAssociation & { logicalName?: string }): StackUserAssociation { return ({ ...stackUserAssociationProps, _logicalType: 'AWS::AppStream::StackUserAssociation' }) as unknown as StackUserAssociation }
+export type StackUserAssociationAttributes = {  }
+export function stackUserAssociation(stackUserAssociationProps: StackUserAssociation): StackUserAssociation & { attributes: StackUserAssociationAttributes } { return ({ ...stackUserAssociationProps, _logicalType: 'AWS::AppStream::StackUserAssociation', attributes: {  } }) }
 
 export interface StackUserAssociation extends KloudResource {
     userName: Value<string>;

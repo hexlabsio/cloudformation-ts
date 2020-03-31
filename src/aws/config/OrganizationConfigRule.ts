@@ -3,7 +3,8 @@ import { OrganizationManagedRuleMetadataProps } from './organizationconfigrule/O
 import { OrganizationCustomRuleMetadataProps } from './organizationconfigrule/OrganizationCustomRuleMetadataProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function organizationConfigRule(organizationConfigRuleProps: OrganizationConfigRule & { logicalName?: string }): OrganizationConfigRule { return ({ ...organizationConfigRuleProps, _logicalType: 'AWS::Config::OrganizationConfigRule' }) as unknown as OrganizationConfigRule }
+export type OrganizationConfigRuleAttributes = {  }
+export function organizationConfigRule(organizationConfigRuleProps: OrganizationConfigRule): OrganizationConfigRule & { attributes: OrganizationConfigRuleAttributes } { return ({ ...organizationConfigRuleProps, _logicalType: 'AWS::Config::OrganizationConfigRule', attributes: {  } }) }
 
 export interface OrganizationConfigRule extends KloudResource {
     organizationConfigRuleName: Value<string>;

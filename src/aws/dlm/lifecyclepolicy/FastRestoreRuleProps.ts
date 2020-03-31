@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function fastRestoreRuleProps(fastRestoreRulePropsProps: FastRestoreRuleProps): FastRestoreRuleProps { return (fastRestoreRulePropsProps) as unknown as FastRestoreRuleProps }
+export function fastRestoreRuleProps(fastRestoreRulePropsProps: FastRestoreRuleProps): FastRestoreRuleProps { return (fastRestoreRulePropsProps) }
 
 export interface FastRestoreRuleProps {
     intervalUnit?: Value<string>;

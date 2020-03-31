@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function awsVpcConfigurationProps(awsVpcConfigurationPropsProps: AwsVpcConfigurationProps): AwsVpcConfigurationProps { return (awsVpcConfigurationPropsProps) as unknown as AwsVpcConfigurationProps }
+export function awsVpcConfigurationProps(awsVpcConfigurationPropsProps: AwsVpcConfigurationProps): AwsVpcConfigurationProps { return (awsVpcConfigurationPropsProps) }
 
 export interface AwsVpcConfigurationProps {
     subnets: Value<Value<string>[]>;

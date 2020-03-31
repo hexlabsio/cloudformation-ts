@@ -1,7 +1,7 @@
 import { SelfManagedActiveDirectoryConfigurationProps } from './SelfManagedActiveDirectoryConfigurationProps';
 import { Value } from '../../../kloudformation/Value';
 
-export function windowsConfigurationProps(windowsConfigurationPropsProps: WindowsConfigurationProps): WindowsConfigurationProps { return (windowsConfigurationPropsProps) as unknown as WindowsConfigurationProps }
+export function windowsConfigurationProps(windowsConfigurationPropsProps: WindowsConfigurationProps): WindowsConfigurationProps { return (windowsConfigurationPropsProps) }
 
 export interface WindowsConfigurationProps {
     selfManagedActiveDirectoryConfiguration?: SelfManagedActiveDirectoryConfigurationProps;

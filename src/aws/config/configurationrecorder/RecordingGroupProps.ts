@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function recordingGroupProps(recordingGroupPropsProps: RecordingGroupProps): RecordingGroupProps { return (recordingGroupPropsProps) as unknown as RecordingGroupProps }
+export function recordingGroupProps(recordingGroupPropsProps: RecordingGroupProps): RecordingGroupProps { return (recordingGroupPropsProps) }
 
 export interface RecordingGroupProps {
     allSupported?: Value<boolean>;

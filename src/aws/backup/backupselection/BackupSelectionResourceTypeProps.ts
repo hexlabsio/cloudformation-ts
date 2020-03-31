@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { ConditionResourceTypeProps } from './ConditionResourceTypeProps';
 
-export function backupSelectionResourceTypeProps(backupSelectionResourceTypePropsProps: BackupSelectionResourceTypeProps): BackupSelectionResourceTypeProps { return (backupSelectionResourceTypePropsProps) as unknown as BackupSelectionResourceTypeProps }
+export function backupSelectionResourceTypeProps(backupSelectionResourceTypePropsProps: BackupSelectionResourceTypeProps): BackupSelectionResourceTypeProps { return (backupSelectionResourceTypePropsProps) }
 
 export interface BackupSelectionResourceTypeProps {
     selectionName: Value<string>;

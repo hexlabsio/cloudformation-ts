@@ -3,7 +3,7 @@ import { Value } from '../../../kloudformation/Value';
 import { OutputDestinationSettingsProps } from './OutputDestinationSettingsProps';
 import { MediaPackageOutputDestinationSettingsProps } from './MediaPackageOutputDestinationSettingsProps';
 
-export function outputDestinationProps(outputDestinationPropsProps: OutputDestinationProps): OutputDestinationProps { return (outputDestinationPropsProps) as unknown as OutputDestinationProps }
+export function outputDestinationProps(outputDestinationPropsProps: OutputDestinationProps): OutputDestinationProps { return (outputDestinationPropsProps) }
 
 export interface OutputDestinationProps {
     multiplexSettings?: MultiplexProgramChannelDestinationSettingsProps;

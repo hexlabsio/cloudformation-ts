@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function taskDefinitionPlacementConstraintProps(taskDefinitionPlacementConstraintPropsProps: TaskDefinitionPlacementConstraintProps): TaskDefinitionPlacementConstraintProps { return (taskDefinitionPlacementConstraintPropsProps) as unknown as TaskDefinitionPlacementConstraintProps }
+export function taskDefinitionPlacementConstraintProps(taskDefinitionPlacementConstraintPropsProps: TaskDefinitionPlacementConstraintProps): TaskDefinitionPlacementConstraintProps { return (taskDefinitionPlacementConstraintPropsProps) }
 
 export interface TaskDefinitionPlacementConstraintProps {
     type: Value<string>;

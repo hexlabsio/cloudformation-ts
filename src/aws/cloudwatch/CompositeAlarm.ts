@@ -1,7 +1,9 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function compositeAlarm(compositeAlarmProps: CompositeAlarm & { logicalName?: string }): CompositeAlarm { return ({ ...compositeAlarmProps, _logicalType: 'AWS::CloudWatch::CompositeAlarm' }) as unknown as CompositeAlarm }
+export type CompositeAlarmAttributes = { Arn: Attribute<string> }
+export function compositeAlarm(compositeAlarmProps: CompositeAlarm): CompositeAlarm & { attributes: CompositeAlarmAttributes } { return ({ ...compositeAlarmProps, _logicalType: 'AWS::CloudWatch::CompositeAlarm', attributes: { Arn: 'Arn' } }) }
 
 export interface CompositeAlarm extends KloudResource {
     alarmName: Value<string>;

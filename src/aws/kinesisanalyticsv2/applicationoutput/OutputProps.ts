@@ -4,7 +4,7 @@ import { KinesisFirehoseOutputProps } from '../../kinesisanalytics/applicationou
 import { KinesisStreamsOutputProps } from '../../kinesisanalytics/applicationoutput/KinesisStreamsOutputProps';
 import { Value } from '../../../kloudformation/Value';
 
-export function outputProps(outputPropsProps: OutputProps): OutputProps { return (outputPropsProps) as unknown as OutputProps }
+export function outputProps(outputPropsProps: OutputProps): OutputProps { return (outputPropsProps) }
 
 export interface OutputProps {
     destinationSchema: DestinationSchemaProps;

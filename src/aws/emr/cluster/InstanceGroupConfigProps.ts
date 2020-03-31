@@ -3,7 +3,7 @@ import { AutoScalingPolicyProps } from './AutoScalingPolicyProps';
 import { ConfigurationProps } from './ConfigurationProps';
 import { EbsConfigurationProps } from './EbsConfigurationProps';
 
-export function instanceGroupConfigProps(instanceGroupConfigPropsProps: InstanceGroupConfigProps): InstanceGroupConfigProps { return (instanceGroupConfigPropsProps) as unknown as InstanceGroupConfigProps }
+export function instanceGroupConfigProps(instanceGroupConfigPropsProps: InstanceGroupConfigProps): InstanceGroupConfigProps { return (instanceGroupConfigPropsProps) }
 
 export interface InstanceGroupConfigProps {
     instanceCount: Value<number>;

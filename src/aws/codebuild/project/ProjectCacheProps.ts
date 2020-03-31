@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function projectCacheProps(projectCachePropsProps: ProjectCacheProps): ProjectCacheProps { return (projectCachePropsProps) as unknown as ProjectCacheProps }
+export function projectCacheProps(projectCachePropsProps: ProjectCacheProps): ProjectCacheProps { return (projectCachePropsProps) }
 
 export interface ProjectCacheProps {
     type: Value<string>;

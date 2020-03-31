@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function blockDeviceProps(blockDevicePropsProps: BlockDeviceProps): BlockDeviceProps { return (blockDevicePropsProps) as unknown as BlockDeviceProps }
+export function blockDeviceProps(blockDevicePropsProps: BlockDeviceProps): BlockDeviceProps { return (blockDevicePropsProps) }
 
 export interface BlockDeviceProps {
     deleteOnTermination?: Value<boolean>;

@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { ResourceServerScopeTypeProps } from './userpoolresourceserver/ResourceServerScopeTypeProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function userPoolResourceServer(userPoolResourceServerProps: UserPoolResourceServer & { logicalName?: string }): UserPoolResourceServer { return ({ ...userPoolResourceServerProps, _logicalType: 'AWS::Cognito::UserPoolResourceServer' }) as unknown as UserPoolResourceServer }
+export type UserPoolResourceServerAttributes = {  }
+export function userPoolResourceServer(userPoolResourceServerProps: UserPoolResourceServer): UserPoolResourceServer & { attributes: UserPoolResourceServerAttributes } { return ({ ...userPoolResourceServerProps, _logicalType: 'AWS::Cognito::UserPoolResourceServer', attributes: {  } }) }
 
 export interface UserPoolResourceServer extends KloudResource {
     userPoolId: Value<string>;

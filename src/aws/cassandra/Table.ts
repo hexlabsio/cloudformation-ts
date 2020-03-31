@@ -1,10 +1,11 @@
 import { Value } from '../../kloudformation/Value';
-import { ColumnProps } from './table/ColumnProps';
+import { ColumnProps } from '../glue/table/ColumnProps';
 import { ClusteringKeyColumnProps } from './table/ClusteringKeyColumnProps';
 import { BillingModeProps } from './table/BillingModeProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function table(tableProps: Table & { logicalName?: string }): Table { return ({ ...tableProps, _logicalType: 'AWS::Cassandra::Table' }) as unknown as Table }
+export type TableAttributes = {  }
+export function table(tableProps: Table): Table & { attributes: TableAttributes } { return ({ ...tableProps, _logicalType: 'AWS::Cassandra::Table', attributes: {  } }) }
 
 export interface Table extends KloudResource {
     keyspaceName: Value<string>;

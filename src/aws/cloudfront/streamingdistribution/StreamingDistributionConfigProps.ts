@@ -3,7 +3,7 @@ import { S3OriginProps } from './S3OriginProps';
 import { TrustedSignersProps } from './TrustedSignersProps';
 import { LoggingProps } from './LoggingProps';
 
-export function streamingDistributionConfigProps(streamingDistributionConfigPropsProps: StreamingDistributionConfigProps): StreamingDistributionConfigProps { return (streamingDistributionConfigPropsProps) as unknown as StreamingDistributionConfigProps }
+export function streamingDistributionConfigProps(streamingDistributionConfigPropsProps: StreamingDistributionConfigProps): StreamingDistributionConfigProps { return (streamingDistributionConfigPropsProps) }
 
 export interface StreamingDistributionConfigProps {
     comment: Value<string>;

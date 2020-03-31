@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function configurationInfoProps(configurationInfoPropsProps: ConfigurationInfoProps): ConfigurationInfoProps { return (configurationInfoPropsProps) as unknown as ConfigurationInfoProps }
+export function configurationInfoProps(configurationInfoPropsProps: ConfigurationInfoProps): ConfigurationInfoProps { return (configurationInfoPropsProps) }
 
 export interface ConfigurationInfoProps {
     revision: Value<number>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function deltaSyncConfigProps(deltaSyncConfigPropsProps: DeltaSyncConfigProps): DeltaSyncConfigProps { return (deltaSyncConfigPropsProps) as unknown as DeltaSyncConfigProps }
+export function deltaSyncConfigProps(deltaSyncConfigPropsProps: DeltaSyncConfigProps): DeltaSyncConfigProps { return (deltaSyncConfigPropsProps) }
 
 export interface DeltaSyncConfigProps {
     baseTableTTL: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function conformancePackInputParameterProps(conformancePackInputParameterPropsProps: ConformancePackInputParameterProps): ConformancePackInputParameterProps { return (conformancePackInputParameterPropsProps) as unknown as ConformancePackInputParameterProps }
+export function conformancePackInputParameterProps(conformancePackInputParameterPropsProps: ConformancePackInputParameterProps): ConformancePackInputParameterProps { return (conformancePackInputParameterPropsProps) }
 
 export interface ConformancePackInputParameterProps {
     parameterName: Value<string>;

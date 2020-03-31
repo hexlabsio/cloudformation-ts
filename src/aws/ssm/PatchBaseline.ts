@@ -5,7 +5,8 @@ import { PatchFilterGroupProps } from './patchbaseline/PatchFilterGroupProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function patchBaseline(patchBaselineProps: PatchBaseline & { logicalName?: string }): PatchBaseline { return ({ ...patchBaselineProps, _logicalType: 'AWS::SSM::PatchBaseline' }) as unknown as PatchBaseline }
+export type PatchBaselineAttributes = {  }
+export function patchBaseline(patchBaselineProps: PatchBaseline): PatchBaseline & { attributes: PatchBaselineAttributes } { return ({ ...patchBaselineProps, _logicalType: 'AWS::SSM::PatchBaseline', attributes: {  } }) }
 
 export interface PatchBaseline extends KloudResource {
     name: Value<string>;

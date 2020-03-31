@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function approvalThresholdPolicyProps(approvalThresholdPolicyPropsProps: ApprovalThresholdPolicyProps): ApprovalThresholdPolicyProps { return (approvalThresholdPolicyPropsProps) as unknown as ApprovalThresholdPolicyProps }
+export function approvalThresholdPolicyProps(approvalThresholdPolicyPropsProps: ApprovalThresholdPolicyProps): ApprovalThresholdPolicyProps { return (approvalThresholdPolicyPropsProps) }
 
 export interface ApprovalThresholdPolicyProps {
     thresholdComparator?: Value<string>;

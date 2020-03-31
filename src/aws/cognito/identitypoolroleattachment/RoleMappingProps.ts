@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { RulesConfigurationTypeProps } from './RulesConfigurationTypeProps';
 
-export function roleMappingProps(roleMappingPropsProps: RoleMappingProps): RoleMappingProps { return (roleMappingPropsProps) as unknown as RoleMappingProps }
+export function roleMappingProps(roleMappingPropsProps: RoleMappingProps): RoleMappingProps { return (roleMappingPropsProps) }
 
 export interface RoleMappingProps {
     type: Value<string>;

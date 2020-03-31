@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function recencyProps(recencyPropsProps: RecencyProps): RecencyProps { return (recencyPropsProps) as unknown as RecencyProps }
+export function recencyProps(recencyPropsProps: RecencyProps): RecencyProps { return (recencyPropsProps) }
 
 export interface RecencyProps {
     duration: Value<string>;

@@ -6,7 +6,7 @@ import { VolumesProps } from './VolumesProps';
 import { EnvironmentProps } from './EnvironmentProps';
 import { UlimitProps } from './UlimitProps';
 
-export function containerPropertiesProps(containerPropertiesPropsProps: ContainerPropertiesProps): ContainerPropertiesProps { return (containerPropertiesPropsProps) as unknown as ContainerPropertiesProps }
+export function containerPropertiesProps(containerPropertiesPropsProps: ContainerPropertiesProps): ContainerPropertiesProps { return (containerPropertiesPropsProps) }
 
 export interface ContainerPropertiesProps {
     memory: Value<number>;

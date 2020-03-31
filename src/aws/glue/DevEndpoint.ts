@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function devEndpoint(devEndpointProps: DevEndpoint & { logicalName?: string }): DevEndpoint { return ({ ...devEndpointProps, _logicalType: 'AWS::Glue::DevEndpoint' }) as unknown as DevEndpoint }
+export type DevEndpointAttributes = {  }
+export function devEndpoint(devEndpointProps: DevEndpoint): DevEndpoint & { attributes: DevEndpointAttributes } { return ({ ...devEndpointProps, _logicalType: 'AWS::Glue::DevEndpoint', attributes: {  } }) }
 
 export interface DevEndpoint extends KloudResource {
     roleArn: Value<string>;

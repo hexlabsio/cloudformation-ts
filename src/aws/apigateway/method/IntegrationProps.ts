@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { IntegrationResponseProps } from './IntegrationResponseProps';
 
-export function integrationProps(integrationPropsProps: IntegrationProps): IntegrationProps { return (integrationPropsProps) as unknown as IntegrationProps }
+export function integrationProps(integrationPropsProps: IntegrationProps): IntegrationProps { return (integrationPropsProps) }
 
 export interface IntegrationProps {
     cacheKeyParameters?: Value<Value<string>[]>;

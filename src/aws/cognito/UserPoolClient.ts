@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { AnalyticsConfigurationProps } from './userpoolclient/AnalyticsConfigurationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function userPoolClient(userPoolClientProps: UserPoolClient & { logicalName?: string }): UserPoolClient { return ({ ...userPoolClientProps, _logicalType: 'AWS::Cognito::UserPoolClient' }) as unknown as UserPoolClient }
+export type UserPoolClientAttributes = { ClientSecret: Attribute<string>; Name: Attribute<string> }
+export function userPoolClient(userPoolClientProps: UserPoolClient): UserPoolClient & { attributes: UserPoolClientAttributes } { return ({ ...userPoolClientProps, _logicalType: 'AWS::Cognito::UserPoolClient', attributes: { ClientSecret: 'ClientSecret', Name: 'Name' } }) }
 
 export interface UserPoolClient extends KloudResource {
     userPoolId: Value<string>;

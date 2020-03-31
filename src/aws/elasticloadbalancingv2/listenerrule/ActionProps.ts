@@ -5,7 +5,7 @@ import { FixedResponseConfigProps } from './FixedResponseConfigProps';
 import { ForwardConfigProps } from './ForwardConfigProps';
 import { RedirectConfigProps } from './RedirectConfigProps';
 
-export function actionProps(actionPropsProps: ActionProps): ActionProps { return (actionPropsProps) as unknown as ActionProps }
+export function actionProps(actionPropsProps: ActionProps): ActionProps { return (actionPropsProps) }
 
 export interface ActionProps {
     type: Value<string>;

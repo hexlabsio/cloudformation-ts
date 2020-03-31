@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function systemControlProps(systemControlPropsProps: SystemControlProps): SystemControlProps { return (systemControlPropsProps) as unknown as SystemControlProps }
+export function systemControlProps(systemControlPropsProps: SystemControlProps): SystemControlProps { return (systemControlPropsProps) }
 
 export interface SystemControlProps {
     namespace: Value<string>;

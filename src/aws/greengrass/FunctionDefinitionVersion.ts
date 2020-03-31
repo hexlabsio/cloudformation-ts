@@ -3,7 +3,8 @@ import { Value } from '../../kloudformation/Value';
 import { DefaultConfigProps } from './functiondefinitionversion/DefaultConfigProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function functionDefinitionVersion(functionDefinitionVersionProps: FunctionDefinitionVersion & { logicalName?: string }): FunctionDefinitionVersion { return ({ ...functionDefinitionVersionProps, _logicalType: 'AWS::Greengrass::FunctionDefinitionVersion' }) as unknown as FunctionDefinitionVersion }
+export type FunctionDefinitionVersionAttributes = {  }
+export function functionDefinitionVersion(functionDefinitionVersionProps: FunctionDefinitionVersion): FunctionDefinitionVersion & { attributes: FunctionDefinitionVersionAttributes } { return ({ ...functionDefinitionVersionProps, _logicalType: 'AWS::Greengrass::FunctionDefinitionVersion', attributes: {  } }) }
 
 export interface FunctionDefinitionVersion extends KloudResource {
     functions: FunctionProps[];

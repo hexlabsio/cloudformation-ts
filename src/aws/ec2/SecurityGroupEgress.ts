@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function securityGroupEgress(securityGroupEgressProps: SecurityGroupEgress & { logicalName?: string }): SecurityGroupEgress { return ({ ...securityGroupEgressProps, _logicalType: 'AWS::EC2::SecurityGroupEgress' }) as unknown as SecurityGroupEgress }
+export type SecurityGroupEgressAttributes = {  }
+export function securityGroupEgress(securityGroupEgressProps: SecurityGroupEgress): SecurityGroupEgress & { attributes: SecurityGroupEgressAttributes } { return ({ ...securityGroupEgressProps, _logicalType: 'AWS::EC2::SecurityGroupEgress', attributes: {  } }) }
 
 export interface SecurityGroupEgress extends KloudResource {
     groupId: Value<string>;

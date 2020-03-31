@@ -3,7 +3,7 @@ import { MaintenanceWindowAutomationParametersProps } from './MaintenanceWindowA
 import { MaintenanceWindowStepFunctionsParametersProps } from './MaintenanceWindowStepFunctionsParametersProps';
 import { MaintenanceWindowLambdaParametersProps } from './MaintenanceWindowLambdaParametersProps';
 
-export function taskInvocationParametersProps(taskInvocationParametersPropsProps: TaskInvocationParametersProps): TaskInvocationParametersProps { return (taskInvocationParametersPropsProps) as unknown as TaskInvocationParametersProps }
+export function taskInvocationParametersProps(taskInvocationParametersPropsProps: TaskInvocationParametersProps): TaskInvocationParametersProps { return (taskInvocationParametersPropsProps) }
 
 export interface TaskInvocationParametersProps {
     maintenanceWindowRunCommandParameters?: MaintenanceWindowRunCommandParametersProps;

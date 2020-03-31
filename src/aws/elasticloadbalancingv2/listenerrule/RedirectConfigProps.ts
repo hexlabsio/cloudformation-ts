@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function redirectConfigProps(redirectConfigPropsProps: RedirectConfigProps): RedirectConfigProps { return (redirectConfigPropsProps) as unknown as RedirectConfigProps }
+export function redirectConfigProps(redirectConfigPropsProps: RedirectConfigProps): RedirectConfigProps { return (redirectConfigPropsProps) }
 
 export interface RedirectConfigProps {
     statusCode: Value<string>;

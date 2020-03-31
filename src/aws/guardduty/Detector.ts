@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function detector(detectorProps: Detector & { logicalName?: string }): Detector { return ({ ...detectorProps, _logicalType: 'AWS::GuardDuty::Detector' }) as unknown as Detector }
+export type DetectorAttributes = {  }
+export function detector(detectorProps: Detector): Detector & { attributes: DetectorAttributes } { return ({ ...detectorProps, _logicalType: 'AWS::GuardDuty::Detector', attributes: {  } }) }
 
 export interface Detector extends KloudResource {
     enable: Value<boolean>;

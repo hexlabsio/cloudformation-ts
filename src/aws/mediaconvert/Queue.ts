@@ -1,7 +1,9 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function queue(queueProps: Queue & { logicalName?: string }): Queue { return ({ ...queueProps, _logicalType: 'AWS::MediaConvert::Queue' }) as unknown as Queue }
+export type QueueAttributes = { Arn: Attribute<string>; Name: Attribute<string> }
+export function queue(queueProps: Queue): Queue & { attributes: QueueAttributes } { return ({ ...queueProps, _logicalType: 'AWS::MediaConvert::Queue', attributes: { Arn: 'Arn', Name: 'Name' } }) }
 
 export interface Queue extends KloudResource {
     status?: Value<string>;

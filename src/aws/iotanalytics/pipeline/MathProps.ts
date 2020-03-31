@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function mathProps(mathPropsProps: MathProps): MathProps { return (mathPropsProps) as unknown as MathProps }
+export function mathProps(mathPropsProps: MathProps): MathProps { return (mathPropsProps) }
 
 export interface MathProps {
     attribute?: Value<string>;

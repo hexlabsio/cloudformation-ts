@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { GamePropertyProps } from './matchmakingconfiguration/GamePropertyProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function matchmakingConfiguration(matchmakingConfigurationProps: MatchmakingConfiguration & { logicalName?: string }): MatchmakingConfiguration { return ({ ...matchmakingConfigurationProps, _logicalType: 'AWS::GameLift::MatchmakingConfiguration' }) as unknown as MatchmakingConfiguration }
+export type MatchmakingConfigurationAttributes = { Arn: Attribute<string>; Name: Attribute<string> }
+export function matchmakingConfiguration(matchmakingConfigurationProps: MatchmakingConfiguration): MatchmakingConfiguration & { attributes: MatchmakingConfigurationAttributes } { return ({ ...matchmakingConfigurationProps, _logicalType: 'AWS::GameLift::MatchmakingConfiguration', attributes: { Arn: 'Arn', Name: 'Name' } }) }
 
 export interface MatchmakingConfiguration extends KloudResource {
     name: Value<string>;

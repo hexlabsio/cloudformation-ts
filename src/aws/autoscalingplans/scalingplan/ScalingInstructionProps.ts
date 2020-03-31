@@ -3,7 +3,7 @@ import { TargetTrackingConfigurationProps } from './TargetTrackingConfigurationP
 import { CustomizedLoadMetricSpecificationProps } from './CustomizedLoadMetricSpecificationProps';
 import { PredefinedLoadMetricSpecificationProps } from './PredefinedLoadMetricSpecificationProps';
 
-export function scalingInstructionProps(scalingInstructionPropsProps: ScalingInstructionProps): ScalingInstructionProps { return (scalingInstructionPropsProps) as unknown as ScalingInstructionProps }
+export function scalingInstructionProps(scalingInstructionPropsProps: ScalingInstructionProps): ScalingInstructionProps { return (scalingInstructionPropsProps) }
 
 export interface ScalingInstructionProps {
     serviceNamespace: Value<string>;

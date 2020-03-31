@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function healthCheckProps(healthCheckPropsProps: HealthCheckProps): HealthCheckProps { return (healthCheckPropsProps) as unknown as HealthCheckProps }
+export function healthCheckProps(healthCheckPropsProps: HealthCheckProps): HealthCheckProps { return (healthCheckPropsProps) }
 
 export interface HealthCheckProps {
     healthyThreshold: Value<string>;

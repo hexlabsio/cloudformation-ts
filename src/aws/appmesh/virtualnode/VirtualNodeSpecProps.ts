@@ -4,7 +4,7 @@ import { ListenerProps } from './ListenerProps';
 import { BackendDefaultsProps } from './BackendDefaultsProps';
 import { ServiceDiscoveryProps } from './ServiceDiscoveryProps';
 
-export function virtualNodeSpecProps(virtualNodeSpecPropsProps: VirtualNodeSpecProps): VirtualNodeSpecProps { return (virtualNodeSpecPropsProps) as unknown as VirtualNodeSpecProps }
+export function virtualNodeSpecProps(virtualNodeSpecPropsProps: VirtualNodeSpecProps): VirtualNodeSpecProps { return (virtualNodeSpecPropsProps) }
 
 export interface VirtualNodeSpecProps {
     logging?: LoggingProps;

@@ -3,8 +3,10 @@ import { LoginProfileProps } from './user/LoginProfileProps';
 import { PolicyProps } from './user/PolicyProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function user(userProps: User & { logicalName?: string }): User { return ({ ...userProps, _logicalType: 'AWS::IAM::User' }) as unknown as User }
+export type UserAttributes = { Arn: Attribute<string> }
+export function user(userProps: User): User & { attributes: UserAttributes } { return ({ ...userProps, _logicalType: 'AWS::IAM::User', attributes: { Arn: 'Arn' } }) }
 
 export interface User extends KloudResource {
     groups?: Value<Value<string>[]>;

@@ -6,8 +6,10 @@ import { RedshiftDestinationConfigurationProps } from './deliverystream/Redshift
 import { S3DestinationConfigurationProps } from './deliverystream/S3DestinationConfigurationProps';
 import { SplunkDestinationConfigurationProps } from './deliverystream/SplunkDestinationConfigurationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function deliveryStream(deliveryStreamProps: DeliveryStream & { logicalName?: string }): DeliveryStream { return ({ ...deliveryStreamProps, _logicalType: 'AWS::KinesisFirehose::DeliveryStream' }) as unknown as DeliveryStream }
+export type DeliveryStreamAttributes = { Arn: Attribute<string> }
+export function deliveryStream(deliveryStreamProps: DeliveryStream): DeliveryStream & { attributes: DeliveryStreamAttributes } { return ({ ...deliveryStreamProps, _logicalType: 'AWS::KinesisFirehose::DeliveryStream', attributes: { Arn: 'Arn' } }) }
 
 export interface DeliveryStream extends KloudResource {
     deliveryStreamName?: Value<string>;

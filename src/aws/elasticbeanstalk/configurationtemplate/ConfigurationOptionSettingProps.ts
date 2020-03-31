@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function configurationOptionSettingProps(configurationOptionSettingPropsProps: ConfigurationOptionSettingProps): ConfigurationOptionSettingProps { return (configurationOptionSettingPropsProps) as unknown as ConfigurationOptionSettingProps }
+export function configurationOptionSettingProps(configurationOptionSettingPropsProps: ConfigurationOptionSettingProps): ConfigurationOptionSettingProps { return (configurationOptionSettingPropsProps) }
 
 export interface ConfigurationOptionSettingProps {
     namespace: Value<string>;

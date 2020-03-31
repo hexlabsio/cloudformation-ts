@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function loggingInfoProps(loggingInfoPropsProps: LoggingInfoProps): LoggingInfoProps { return (loggingInfoPropsProps) as unknown as LoggingInfoProps }
+export function loggingInfoProps(loggingInfoPropsProps: LoggingInfoProps): LoggingInfoProps { return (loggingInfoPropsProps) }
 
 export interface LoggingInfoProps {
     s3Bucket: Value<string>;

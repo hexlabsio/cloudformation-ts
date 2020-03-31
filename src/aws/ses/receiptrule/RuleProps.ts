@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { ActionProps } from './ActionProps';
 
-export function ruleProps(rulePropsProps: RuleProps): RuleProps { return (rulePropsProps) as unknown as RuleProps }
+export function ruleProps(rulePropsProps: RuleProps): RuleProps { return (rulePropsProps) }
 
 export interface RuleProps {
     scanEnabled?: Value<boolean>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function gamePropertyProps(gamePropertyPropsProps: GamePropertyProps): GamePropertyProps { return (gamePropertyPropsProps) as unknown as GamePropertyProps }
+export function gamePropertyProps(gamePropertyPropsProps: GamePropertyProps): GamePropertyProps { return (gamePropertyPropsProps) }
 
 export interface GamePropertyProps {
     value: Value<string>;

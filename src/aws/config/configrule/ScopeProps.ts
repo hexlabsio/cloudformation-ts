@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function scopeProps(scopePropsProps: ScopeProps): ScopeProps { return (scopePropsProps) as unknown as ScopeProps }
+export function scopeProps(scopePropsProps: ScopeProps): ScopeProps { return (scopePropsProps) }
 
 export interface ScopeProps {
     complianceResourceId?: Value<string>;

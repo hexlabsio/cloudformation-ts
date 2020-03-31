@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { AwsOrganizationsSourceProps } from './AwsOrganizationsSourceProps';
 
-export function syncSourceProps(syncSourcePropsProps: SyncSourceProps): SyncSourceProps { return (syncSourcePropsProps) as unknown as SyncSourceProps }
+export function syncSourceProps(syncSourcePropsProps: SyncSourceProps): SyncSourceProps { return (syncSourcePropsProps) }
 
 export interface SyncSourceProps {
     sourceType: Value<string>;

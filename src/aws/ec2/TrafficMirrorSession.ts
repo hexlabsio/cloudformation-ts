@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function trafficMirrorSession(trafficMirrorSessionProps: TrafficMirrorSession & { logicalName?: string }): TrafficMirrorSession { return ({ ...trafficMirrorSessionProps, _logicalType: 'AWS::EC2::TrafficMirrorSession' }) as unknown as TrafficMirrorSession }
+export type TrafficMirrorSessionAttributes = {  }
+export function trafficMirrorSession(trafficMirrorSessionProps: TrafficMirrorSession): TrafficMirrorSession & { attributes: TrafficMirrorSessionAttributes } { return ({ ...trafficMirrorSessionProps, _logicalType: 'AWS::EC2::TrafficMirrorSession', attributes: {  } }) }
 
 export interface TrafficMirrorSession extends KloudResource {
     trafficMirrorTargetId: Value<string>;

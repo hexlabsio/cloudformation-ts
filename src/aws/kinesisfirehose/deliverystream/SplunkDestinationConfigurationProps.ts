@@ -4,7 +4,7 @@ import { CloudWatchLoggingOptionsProps } from './CloudWatchLoggingOptionsProps';
 import { ProcessingConfigurationProps } from './ProcessingConfigurationProps';
 import { SplunkRetryOptionsProps } from './SplunkRetryOptionsProps';
 
-export function splunkDestinationConfigurationProps(splunkDestinationConfigurationPropsProps: SplunkDestinationConfigurationProps): SplunkDestinationConfigurationProps { return (splunkDestinationConfigurationPropsProps) as unknown as SplunkDestinationConfigurationProps }
+export function splunkDestinationConfigurationProps(splunkDestinationConfigurationPropsProps: SplunkDestinationConfigurationProps): SplunkDestinationConfigurationProps { return (splunkDestinationConfigurationPropsProps) }
 
 export interface SplunkDestinationConfigurationProps {
     hECEndpoint: Value<string>;

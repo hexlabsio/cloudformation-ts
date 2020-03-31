@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function routeSettingsProps(routeSettingsPropsProps: RouteSettingsProps): RouteSettingsProps { return (routeSettingsPropsProps) as unknown as RouteSettingsProps }
+export function routeSettingsProps(routeSettingsPropsProps: RouteSettingsProps): RouteSettingsProps { return (routeSettingsPropsProps) }
 
 export interface RouteSettingsProps {
     loggingLevel?: Value<string>;

@@ -2,7 +2,8 @@ import { ComputeEnvironmentOrderProps } from './jobqueue/ComputeEnvironmentOrder
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function jobQueue(jobQueueProps: JobQueue & { logicalName?: string }): JobQueue { return ({ ...jobQueueProps, _logicalType: 'AWS::Batch::JobQueue' }) as unknown as JobQueue }
+export type JobQueueAttributes = {  }
+export function jobQueue(jobQueueProps: JobQueue): JobQueue & { attributes: JobQueueAttributes } { return ({ ...jobQueueProps, _logicalType: 'AWS::Batch::JobQueue', attributes: {  } }) }
 
 export interface JobQueue extends KloudResource {
     computeEnvironmentOrder: ComputeEnvironmentOrderProps[];

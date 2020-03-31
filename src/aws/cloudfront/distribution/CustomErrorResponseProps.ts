@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function customErrorResponseProps(customErrorResponsePropsProps: CustomErrorResponseProps): CustomErrorResponseProps { return (customErrorResponsePropsProps) as unknown as CustomErrorResponseProps }
+export function customErrorResponseProps(customErrorResponsePropsProps: CustomErrorResponseProps): CustomErrorResponseProps { return (customErrorResponsePropsProps) }
 
 export interface CustomErrorResponseProps {
     errorCode: Value<number>;

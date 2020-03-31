@@ -3,7 +3,8 @@ import { TransformParametersProps } from './mltransform/TransformParametersProps
 import { InputRecordTablesProps } from './mltransform/InputRecordTablesProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function mLTransform(mLTransformProps: MLTransform & { logicalName?: string }): MLTransform { return ({ ...mLTransformProps, _logicalType: 'AWS::Glue::MLTransform' }) as unknown as MLTransform }
+export type MLTransformAttributes = {  }
+export function mLTransform(mLTransformProps: MLTransform): MLTransform & { attributes: MLTransformAttributes } { return ({ ...mLTransformProps, _logicalType: 'AWS::Glue::MLTransform', attributes: {  } }) }
 
 export interface MLTransform extends KloudResource {
     role: Value<string>;

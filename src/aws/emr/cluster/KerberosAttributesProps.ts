@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function kerberosAttributesProps(kerberosAttributesPropsProps: KerberosAttributesProps): KerberosAttributesProps { return (kerberosAttributesPropsProps) as unknown as KerberosAttributesProps }
+export function kerberosAttributesProps(kerberosAttributesPropsProps: KerberosAttributesProps): KerberosAttributesProps { return (kerberosAttributesPropsProps) }
 
 export interface KerberosAttributesProps {
     kdcAdminPassword: Value<string>;

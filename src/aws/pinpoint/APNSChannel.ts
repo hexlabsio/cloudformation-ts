@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function aPNSChannel(aPNSChannelProps: APNSChannel & { logicalName?: string }): APNSChannel { return ({ ...aPNSChannelProps, _logicalType: 'AWS::Pinpoint::APNSChannel' }) as unknown as APNSChannel }
+export type APNSChannelAttributes = {  }
+export function aPNSChannel(aPNSChannelProps: APNSChannel): APNSChannel & { attributes: APNSChannelAttributes } { return ({ ...aPNSChannelProps, _logicalType: 'AWS::Pinpoint::APNSChannel', attributes: {  } }) }
 
 export interface APNSChannel extends KloudResource {
     applicationId: Value<string>;

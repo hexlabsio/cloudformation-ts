@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function replicationInstance(replicationInstanceProps: ReplicationInstance & { logicalName?: string }): ReplicationInstance { return ({ ...replicationInstanceProps, _logicalType: 'AWS::DMS::ReplicationInstance' }) as unknown as ReplicationInstance }
+export type ReplicationInstanceAttributes = { ReplicationInstancePublicIpAddresses: Attribute<Value<string>[]>; ReplicationInstancePrivateIpAddresses: Attribute<Value<string>[]> }
+export function replicationInstance(replicationInstanceProps: ReplicationInstance): ReplicationInstance & { attributes: ReplicationInstanceAttributes } { return ({ ...replicationInstanceProps, _logicalType: 'AWS::DMS::ReplicationInstance', attributes: { ReplicationInstancePublicIpAddresses: 'ReplicationInstancePublicIpAddresses', ReplicationInstancePrivateIpAddresses: 'ReplicationInstancePrivateIpAddresses' } }) }
 
 export interface ReplicationInstance extends KloudResource {
     replicationInstanceClass: Value<string>;

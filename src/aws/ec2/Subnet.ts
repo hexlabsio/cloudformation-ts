@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function subnet(subnetProps: Subnet & { logicalName?: string }): Subnet { return ({ ...subnetProps, _logicalType: 'AWS::EC2::Subnet' }) as unknown as Subnet }
+export type SubnetAttributes = { AvailabilityZone: Attribute<string>; Ipv6CidrBlocks: Attribute<Value<string>[]>; NetworkAclAssociationId: Attribute<string>; VpcId: Attribute<string> }
+export function subnet(subnetProps: Subnet): Subnet & { attributes: SubnetAttributes } { return ({ ...subnetProps, _logicalType: 'AWS::EC2::Subnet', attributes: { AvailabilityZone: 'AvailabilityZone', Ipv6CidrBlocks: 'Ipv6CidrBlocks', NetworkAclAssociationId: 'NetworkAclAssociationId', VpcId: 'VpcId' } }) }
 
 export interface Subnet extends KloudResource {
     cidrBlock: Value<string>;

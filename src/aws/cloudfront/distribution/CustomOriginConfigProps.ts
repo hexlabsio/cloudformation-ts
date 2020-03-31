@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function customOriginConfigProps(customOriginConfigPropsProps: CustomOriginConfigProps): CustomOriginConfigProps { return (customOriginConfigPropsProps) as unknown as CustomOriginConfigProps }
+export function customOriginConfigProps(customOriginConfigPropsProps: CustomOriginConfigProps): CustomOriginConfigProps { return (customOriginConfigPropsProps) }
 
 export interface CustomOriginConfigProps {
     originProtocolPolicy: Value<string>;

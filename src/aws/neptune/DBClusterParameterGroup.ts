@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function dBClusterParameterGroup(dBClusterParameterGroupProps: DBClusterParameterGroup & { logicalName?: string }): DBClusterParameterGroup { return ({ ...dBClusterParameterGroupProps, _logicalType: 'AWS::Neptune::DBClusterParameterGroup' }) as unknown as DBClusterParameterGroup }
+export type DBClusterParameterGroupAttributes = {  }
+export function dBClusterParameterGroup(dBClusterParameterGroupProps: DBClusterParameterGroup): DBClusterParameterGroup & { attributes: DBClusterParameterGroupAttributes } { return ({ ...dBClusterParameterGroupProps, _logicalType: 'AWS::Neptune::DBClusterParameterGroup', attributes: {  } }) }
 
 export interface DBClusterParameterGroup extends KloudResource {
     description: Value<string>;

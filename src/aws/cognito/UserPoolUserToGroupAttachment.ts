@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function userPoolUserToGroupAttachment(userPoolUserToGroupAttachmentProps: UserPoolUserToGroupAttachment & { logicalName?: string }): UserPoolUserToGroupAttachment { return ({ ...userPoolUserToGroupAttachmentProps, _logicalType: 'AWS::Cognito::UserPoolUserToGroupAttachment' }) as unknown as UserPoolUserToGroupAttachment }
+export type UserPoolUserToGroupAttachmentAttributes = {  }
+export function userPoolUserToGroupAttachment(userPoolUserToGroupAttachmentProps: UserPoolUserToGroupAttachment): UserPoolUserToGroupAttachment & { attributes: UserPoolUserToGroupAttachmentAttributes } { return ({ ...userPoolUserToGroupAttachmentProps, _logicalType: 'AWS::Cognito::UserPoolUserToGroupAttachment', attributes: {  } }) }
 
 export interface UserPoolUserToGroupAttachment extends KloudResource {
     groupName: Value<string>;

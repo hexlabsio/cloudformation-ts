@@ -2,8 +2,10 @@ import { Value } from '../../kloudformation/Value';
 import { PolicyProps } from './role/PolicyProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function role(roleProps: Role & { logicalName?: string }): Role { return ({ ...roleProps, _logicalType: 'AWS::IAM::Role' }) as unknown as Role }
+export type RoleAttributes = { Arn: Attribute<string>; RoleId: Attribute<string> }
+export function role(roleProps: Role): Role & { attributes: RoleAttributes } { return ({ ...roleProps, _logicalType: 'AWS::IAM::Role', attributes: { Arn: 'Arn', RoleId: 'RoleId' } }) }
 
 export interface Role extends KloudResource {
     assumeRolePolicyDocument: Value<any>;

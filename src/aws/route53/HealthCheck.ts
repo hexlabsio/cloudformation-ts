@@ -2,7 +2,8 @@ import { HealthCheckConfigProps } from '../servicediscovery/service/HealthCheckC
 import { HealthCheckTagProps } from './healthcheck/HealthCheckTagProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function healthCheck(healthCheckProps: HealthCheck & { logicalName?: string }): HealthCheck { return ({ ...healthCheckProps, _logicalType: 'AWS::Route53::HealthCheck' }) as unknown as HealthCheck }
+export type HealthCheckAttributes = {  }
+export function healthCheck(healthCheckProps: HealthCheck): HealthCheck & { attributes: HealthCheckAttributes } { return ({ ...healthCheckProps, _logicalType: 'AWS::Route53::HealthCheck', attributes: {  } }) }
 
 export interface HealthCheck extends KloudResource {
     healthCheckConfig: HealthCheckConfigProps;

@@ -4,7 +4,8 @@ import { LimitsProps } from './applicationsettings/LimitsProps';
 import { CampaignHookProps } from './applicationsettings/CampaignHookProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function applicationSettings(applicationSettingsProps: ApplicationSettings & { logicalName?: string }): ApplicationSettings { return ({ ...applicationSettingsProps, _logicalType: 'AWS::Pinpoint::ApplicationSettings' }) as unknown as ApplicationSettings }
+export type ApplicationSettingsAttributes = {  }
+export function applicationSettings(applicationSettingsProps: ApplicationSettings): ApplicationSettings & { attributes: ApplicationSettingsAttributes } { return ({ ...applicationSettingsProps, _logicalType: 'AWS::Pinpoint::ApplicationSettings', attributes: {  } }) }
 
 export interface ApplicationSettings extends KloudResource {
     applicationId: Value<string>;

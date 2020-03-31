@@ -4,7 +4,7 @@ import { S3DestinationConfigurationProps } from './S3DestinationConfigurationPro
 import { CloudWatchLoggingOptionsProps } from './CloudWatchLoggingOptionsProps';
 import { ProcessingConfigurationProps } from './ProcessingConfigurationProps';
 
-export function redshiftDestinationConfigurationProps(redshiftDestinationConfigurationPropsProps: RedshiftDestinationConfigurationProps): RedshiftDestinationConfigurationProps { return (redshiftDestinationConfigurationPropsProps) as unknown as RedshiftDestinationConfigurationProps }
+export function redshiftDestinationConfigurationProps(redshiftDestinationConfigurationPropsProps: RedshiftDestinationConfigurationProps): RedshiftDestinationConfigurationProps { return (redshiftDestinationConfigurationPropsProps) }
 
 export interface RedshiftDestinationConfigurationProps {
     clusterJDBCURL: Value<string>;

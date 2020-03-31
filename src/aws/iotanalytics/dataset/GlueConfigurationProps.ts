@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function glueConfigurationProps(glueConfigurationPropsProps: GlueConfigurationProps): GlueConfigurationProps { return (glueConfigurationPropsProps) as unknown as GlueConfigurationProps }
+export function glueConfigurationProps(glueConfigurationPropsProps: GlueConfigurationProps): GlueConfigurationProps { return (glueConfigurationPropsProps) }
 
 export interface GlueConfigurationProps {
     tableName: Value<string>;

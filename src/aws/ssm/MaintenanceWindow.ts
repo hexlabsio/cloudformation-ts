@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function maintenanceWindow(maintenanceWindowProps: MaintenanceWindow & { logicalName?: string }): MaintenanceWindow { return ({ ...maintenanceWindowProps, _logicalType: 'AWS::SSM::MaintenanceWindow' }) as unknown as MaintenanceWindow }
+export type MaintenanceWindowAttributes = {  }
+export function maintenanceWindow(maintenanceWindowProps: MaintenanceWindow): MaintenanceWindow & { attributes: MaintenanceWindowAttributes } { return ({ ...maintenanceWindowProps, _logicalType: 'AWS::SSM::MaintenanceWindow', attributes: {  } }) }
 
 export interface MaintenanceWindow extends KloudResource {
     allowUnassociatedTargets: Value<boolean>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function targetDescriptionProps(targetDescriptionPropsProps: TargetDescriptionProps): TargetDescriptionProps { return (targetDescriptionPropsProps) as unknown as TargetDescriptionProps }
+export function targetDescriptionProps(targetDescriptionPropsProps: TargetDescriptionProps): TargetDescriptionProps { return (targetDescriptionPropsProps) }
 
 export interface TargetDescriptionProps {
     id: Value<string>;

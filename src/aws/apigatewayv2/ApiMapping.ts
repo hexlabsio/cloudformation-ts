@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function apiMapping(apiMappingProps: ApiMapping & { logicalName?: string }): ApiMapping { return ({ ...apiMappingProps, _logicalType: 'AWS::ApiGatewayV2::ApiMapping' }) as unknown as ApiMapping }
+export type ApiMappingAttributes = {  }
+export function apiMapping(apiMappingProps: ApiMapping): ApiMapping & { attributes: ApiMappingAttributes } { return ({ ...apiMappingProps, _logicalType: 'AWS::ApiGatewayV2::ApiMapping', attributes: {  } }) }
 
 export interface ApiMapping extends KloudResource {
     domainName: Value<string>;

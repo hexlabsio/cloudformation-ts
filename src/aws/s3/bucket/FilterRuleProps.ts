@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function filterRuleProps(filterRulePropsProps: FilterRuleProps): FilterRuleProps { return (filterRulePropsProps) as unknown as FilterRuleProps }
+export function filterRuleProps(filterRulePropsProps: FilterRuleProps): FilterRuleProps { return (filterRulePropsProps) }
 
 export interface FilterRuleProps {
     name: Value<string>;

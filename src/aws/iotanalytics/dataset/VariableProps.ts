@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { DatasetContentVersionValueProps } from './DatasetContentVersionValueProps';
 import { OutputFileUriValueProps } from './OutputFileUriValueProps';
 
-export function variableProps(variablePropsProps: VariableProps): VariableProps { return (variablePropsProps) as unknown as VariableProps }
+export function variableProps(variablePropsProps: VariableProps): VariableProps { return (variablePropsProps) }
 
 export interface VariableProps {
     variableName: Value<string>;

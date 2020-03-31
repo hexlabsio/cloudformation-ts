@@ -6,7 +6,7 @@ import { GeoMatchStatementProps } from './GeoMatchStatementProps';
 import { IPSetReferenceStatementProps } from './IPSetReferenceStatementProps';
 import { RegexPatternSetReferenceStatementProps } from './RegexPatternSetReferenceStatementProps';
 
-export function statementThreeProps(statementThreePropsProps: StatementThreeProps): StatementThreeProps { return (statementThreePropsProps) as unknown as StatementThreeProps }
+export function statementThreeProps(statementThreePropsProps: StatementThreeProps): StatementThreeProps { return (statementThreePropsProps) }
 
 export interface StatementThreeProps {
     byteMatchStatement?: ByteMatchStatementProps;

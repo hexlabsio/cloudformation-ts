@@ -4,7 +4,7 @@ import { NoncurrentVersionTransitionProps } from './NoncurrentVersionTransitionP
 import { TagFilterProps } from './TagFilterProps';
 import { TransitionProps } from './TransitionProps';
 
-export function ruleProps(rulePropsProps: RuleProps): RuleProps { return (rulePropsProps) as unknown as RuleProps }
+export function ruleProps(rulePropsProps: RuleProps): RuleProps { return (rulePropsProps) }
 
 export interface RuleProps {
     status: Value<string>;

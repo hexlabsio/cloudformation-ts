@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { DurationProps } from './DurationProps';
 
-export function grpcRetryPolicyProps(grpcRetryPolicyPropsProps: GrpcRetryPolicyProps): GrpcRetryPolicyProps { return (grpcRetryPolicyPropsProps) as unknown as GrpcRetryPolicyProps }
+export function grpcRetryPolicyProps(grpcRetryPolicyPropsProps: GrpcRetryPolicyProps): GrpcRetryPolicyProps { return (grpcRetryPolicyPropsProps) }
 
 export interface GrpcRetryPolicyProps {
     maxRetries: Value<number>;

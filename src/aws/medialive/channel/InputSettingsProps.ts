@@ -4,7 +4,7 @@ import { AudioSelectorProps } from './AudioSelectorProps';
 import { CaptionSelectorProps } from './CaptionSelectorProps';
 import { NetworkInputSettingsProps } from './NetworkInputSettingsProps';
 
-export function inputSettingsProps(inputSettingsPropsProps: InputSettingsProps): InputSettingsProps { return (inputSettingsPropsProps) as unknown as InputSettingsProps }
+export function inputSettingsProps(inputSettingsPropsProps: InputSettingsProps): InputSettingsProps { return (inputSettingsPropsProps) }
 
 export interface InputSettingsProps {
     deblockFilter?: Value<string>;

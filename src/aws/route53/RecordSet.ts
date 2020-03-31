@@ -3,7 +3,8 @@ import { AliasTargetProps } from './recordset/AliasTargetProps';
 import { GeoLocationProps } from './recordset/GeoLocationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function recordSet(recordSetProps: RecordSet & { logicalName?: string }): RecordSet { return ({ ...recordSetProps, _logicalType: 'AWS::Route53::RecordSet' }) as unknown as RecordSet }
+export type RecordSetAttributes = {  }
+export function recordSet(recordSetProps: RecordSet): RecordSet & { attributes: RecordSetAttributes } { return ({ ...recordSetProps, _logicalType: 'AWS::Route53::RecordSet', attributes: {  } }) }
 
 export interface RecordSet extends KloudResource {
     name: Value<string>;

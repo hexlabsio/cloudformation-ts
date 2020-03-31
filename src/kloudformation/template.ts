@@ -1,8 +1,8 @@
+import { memberInvitation as detectiveMemberInvitation } from '../aws/detective/MemberInvitation';
+import { graph as detectiveGraph } from '../aws/detective/Graph';
 import { member as managedblockchainMember } from '../aws/managedblockchain/Member';
 import { node as managedblockchainNode } from '../aws/managedblockchain/Node';
 import { vPCEndpointConnectionNotification as ec2VPCEndpointConnectionNotification } from '../aws/ec2/VPCEndpointConnectionNotification';
-import { table as cassandraTable } from '../aws/cassandra/Table';
-import { keyspace as cassandraKeyspace } from '../aws/cassandra/Keyspace';
 import { receiptFilter as sesReceiptFilter } from '../aws/ses/ReceiptFilter';
 import { configurationSetEventDestination as sesConfigurationSetEventDestination } from '../aws/ses/ConfigurationSetEventDestination';
 import { template as sesTemplate } from '../aws/ses/Template';
@@ -139,14 +139,14 @@ import { deviceDefinitionVersion as greengrassDeviceDefinitionVersion } from '..
 import { subscriptionDefinition as greengrassSubscriptionDefinition } from '../aws/greengrass/SubscriptionDefinition';
 import { resourceDefinitionVersion as greengrassResourceDefinitionVersion } from '../aws/greengrass/ResourceDefinitionVersion';
 import { groupVersion as greengrassGroupVersion } from '../aws/greengrass/GroupVersion';
-import { resolverRule as route53resolverResolverRule } from '../aws/route53resolver/ResolverRule';
-import { resolverEndpoint as route53resolverResolverEndpoint } from '../aws/route53resolver/ResolverEndpoint';
-import { resolverRuleAssociation as route53resolverResolverRuleAssociation } from '../aws/route53resolver/ResolverRuleAssociation';
 import { dBParameterGroup as neptuneDBParameterGroup } from '../aws/neptune/DBParameterGroup';
 import { dBClusterParameterGroup as neptuneDBClusterParameterGroup } from '../aws/neptune/DBClusterParameterGroup';
 import { dBSubnetGroup as neptuneDBSubnetGroup } from '../aws/neptune/DBSubnetGroup';
 import { dBInstance as neptuneDBInstance } from '../aws/neptune/DBInstance';
 import { dBCluster as neptuneDBCluster } from '../aws/neptune/DBCluster';
+import { resolverRule as route53resolverResolverRule } from '../aws/route53resolver/ResolverRule';
+import { resolverEndpoint as route53resolverResolverEndpoint } from '../aws/route53resolver/ResolverEndpoint';
+import { resolverRuleAssociation as route53resolverResolverRuleAssociation } from '../aws/route53resolver/ResolverRuleAssociation';
 import { parameterGroup as daxParameterGroup } from '../aws/dax/ParameterGroup';
 import { cluster as daxCluster } from '../aws/dax/Cluster';
 import { subnetGroup as daxSubnetGroup } from '../aws/dax/SubnetGroup';
@@ -219,7 +219,6 @@ import { script as gameliftScript } from '../aws/gamelift/Script';
 import { skill as askSkill } from '../alexa/ask/Skill';
 import { portfolioShare as servicecatalogPortfolioShare } from '../aws/servicecatalog/PortfolioShare';
 import { link as networkmanagerLink } from '../aws/networkmanager/Link';
-import { connection as codestarconnectionsConnection } from '../aws/codestarconnections/Connection';
 import { streamingDistribution as cloudfrontStreamingDistribution } from '../aws/cloudfront/StreamingDistribution';
 import { jobDefinition as batchJobDefinition } from '../aws/batch/JobDefinition';
 import { customerGatewayAssociation as networkmanagerCustomerGatewayAssociation } from '../aws/networkmanager/CustomerGatewayAssociation';
@@ -242,6 +241,7 @@ import { certificate as dmsCertificate } from '../aws/dms/Certificate';
 import { endpoint as dmsEndpoint } from '../aws/dms/Endpoint';
 import { replicationTask as dmsReplicationTask } from '../aws/dms/ReplicationTask';
 import { replicationInstance as dmsReplicationInstance } from '../aws/dms/ReplicationInstance';
+import { connection as codestarconnectionsConnection } from '../aws/codestarconnections/Connection';
 import { tagOption as servicecatalogTagOption } from '../aws/servicecatalog/TagOption';
 import { queue as mediaconvertQueue } from '../aws/mediaconvert/Queue';
 import { distribution as cloudfrontDistribution } from '../aws/cloudfront/Distribution';
@@ -274,11 +274,7 @@ import { layerVersion as lambdaLayerVersion } from '../aws/lambda/LayerVersion';
 import { maintenanceWindow as ssmMaintenanceWindow } from '../aws/ssm/MaintenanceWindow';
 import { resourceDataSync as ssmResourceDataSync } from '../aws/ssm/ResourceDataSync';
 import { vpcLink as apigatewayVpcLink } from '../aws/apigateway/VpcLink';
-import { regexPatternSet as wafv2RegexPatternSet } from '../aws/wafv2/RegexPatternSet';
-import { iPSet as wafv2IPSet } from '../aws/wafv2/IPSet';
 import { webACLAssociation as wafv2WebACLAssociation } from '../aws/wafv2/WebACLAssociation';
-import { ruleGroup as wafv2RuleGroup } from '../aws/wafv2/RuleGroup';
-import { webACL as wafv2WebACL } from '../aws/wafv2/WebACL';
 import { transitGateway as ec2TransitGateway } from '../aws/ec2/TransitGateway';
 import { transitGatewayRouteTableAssociation as ec2TransitGatewayRouteTableAssociation } from '../aws/ec2/TransitGatewayRouteTableAssociation';
 import { transitGatewayAttachment as ec2TransitGatewayAttachment } from '../aws/ec2/TransitGatewayAttachment';
@@ -308,6 +304,8 @@ import { streamConsumer as kinesisStreamConsumer } from '../aws/kinesis/StreamCo
 import { hub as securityhubHub } from '../aws/securityhub/Hub';
 import { notificationRule as codestarnotificationsNotificationRule } from '../aws/codestarnotifications/NotificationRule';
 import { cluster as mskCluster } from '../aws/msk/Cluster';
+import { table as cassandraTable } from '../aws/cassandra/Table';
+import { keyspace as cassandraKeyspace } from '../aws/cassandra/Keyspace';
 import { nodegroup as eksNodegroup } from '../aws/eks/Nodegroup';
 import { computeEnvironment as batchComputeEnvironment } from '../aws/batch/ComputeEnvironment';
 import { sourceCredential as codebuildSourceCredential } from '../aws/codebuild/SourceCredential';
@@ -315,6 +313,10 @@ import { cluster as eksCluster } from '../aws/eks/Cluster';
 import { compositeAlarm as cloudwatchCompositeAlarm } from '../aws/cloudwatch/CompositeAlarm';
 import { reportGroup as codebuildReportGroup } from '../aws/codebuild/ReportGroup';
 import { accessPoint as s3AccessPoint } from '../aws/s3/AccessPoint';
+import { regexPatternSet as wafv2RegexPatternSet } from '../aws/wafv2/RegexPatternSet';
+import { ruleGroup as wafv2RuleGroup } from '../aws/wafv2/RuleGroup';
+import { webACL as wafv2WebACL } from '../aws/wafv2/WebACL';
+import { iPSet as wafv2IPSet } from '../aws/wafv2/IPSet';
 import { certificateAuthority as acmpcaCertificateAuthority } from '../aws/acmpca/CertificateAuthority';
 import { analyzer as accessanalyzerAnalyzer } from '../aws/accessanalyzer/Analyzer';
 import { certificate as acmpcaCertificate } from '../aws/acmpca/Certificate';
@@ -332,13 +334,13 @@ import { rule as eventsRule } from '../aws/events/Rule';
 import { iPSet as wafIPSet } from '../aws/waf/IPSet';
 import { group as iamGroup } from '../aws/iam/Group';
 import { customActionType as codepipelineCustomActionType } from '../aws/codepipeline/CustomActionType';
-import { vPCPeeringConnection as ec2VPCPeeringConnection } from '../aws/ec2/VPCPeeringConnection';
 import { placementGroup as ec2PlacementGroup } from '../aws/ec2/PlacementGroup';
+import { vPCPeeringConnection as ec2VPCPeeringConnection } from '../aws/ec2/VPCPeeringConnection';
 import { domain as elasticsearchDomain } from '../aws/elasticsearch/Domain';
 import { requestValidator as apigatewayRequestValidator } from '../aws/apigateway/RequestValidator';
 import { instanceFleetConfig as emrInstanceFleetConfig } from '../aws/emr/InstanceFleetConfig';
-import { dBSecurityGroupIngress as rdsDBSecurityGroupIngress } from '../aws/rds/DBSecurityGroupIngress';
 import { workspace as workspacesWorkspace } from '../aws/workspaces/Workspace';
+import { dBSecurityGroupIngress as rdsDBSecurityGroupIngress } from '../aws/rds/DBSecurityGroupIngress';
 import { gatewayRouteTableAssociation as ec2GatewayRouteTableAssociation } from '../aws/ec2/GatewayRouteTableAssociation';
 import { logGroup as logsLogGroup } from '../aws/logs/LogGroup';
 import { stream as kinesisStream } from '../aws/kinesis/Stream';
@@ -348,9 +350,9 @@ import { recordSet as route53RecordSet } from '../aws/route53/RecordSet';
 import { sizeConstraintSet as wafSizeConstraintSet } from '../aws/waf/SizeConstraintSet';
 import { dashboard as cloudwatchDashboard } from '../aws/cloudwatch/Dashboard';
 import { networkAclEntry as ec2NetworkAclEntry } from '../aws/ec2/NetworkAclEntry';
+import { internetGateway as ec2InternetGateway } from '../aws/ec2/InternetGateway';
 import { policy as iamPolicy } from '../aws/iam/Policy';
 import { cluster as ecsCluster } from '../aws/ecs/Cluster';
-import { internetGateway as ec2InternetGateway } from '../aws/ec2/InternetGateway';
 import { listenerCertificate as elasticloadbalancingv2ListenerCertificate } from '../aws/elasticloadbalancingv2/ListenerCertificate';
 import { role as iamRole } from '../aws/iam/Role';
 import { launchTemplate as ec2LaunchTemplate } from '../aws/ec2/LaunchTemplate';
@@ -360,8 +362,8 @@ import { cluster as emrCluster } from '../aws/emr/Cluster';
 import { spotFleet as ec2SpotFleet } from '../aws/ec2/SpotFleet';
 import { alias as gameliftAlias } from '../aws/gamelift/Alias';
 import { vPNConnectionRoute as ec2VPNConnectionRoute } from '../aws/ec2/VPNConnectionRoute';
-import { rule as wafRule } from '../aws/waf/Rule';
 import { microsoftAD as directoryserviceMicrosoftAD } from '../aws/directoryservice/MicrosoftAD';
+import { rule as wafRule } from '../aws/waf/Rule';
 import { subscription as snsSubscription } from '../aws/sns/Subscription';
 import { mountTarget as efsMountTarget } from '../aws/efs/MountTarget';
 import { document as ssmDocument } from '../aws/ssm/Document';
@@ -371,8 +373,8 @@ import { topic as snsTopic } from '../aws/sns/Topic';
 import { build as gameliftBuild } from '../aws/gamelift/Build';
 import { deployment as apigatewayDeployment } from '../aws/apigateway/Deployment';
 import { key as kmsKey } from '../aws/kms/Key';
-import { cluster as redshiftCluster } from '../aws/redshift/Cluster';
 import { alarm as cloudwatchAlarm } from '../aws/cloudwatch/Alarm';
+import { cluster as redshiftCluster } from '../aws/redshift/Cluster';
 import { app as opsworksApp } from '../aws/opsworks/App';
 import { eventSourceMapping as lambdaEventSourceMapping } from '../aws/lambda/EventSourceMapping';
 import { certificate as certificatemanagerCertificate } from '../aws/certificatemanager/Certificate';
@@ -386,28 +388,28 @@ import { dBCluster as rdsDBCluster } from '../aws/rds/DBCluster';
 import { service as ecsService } from '../aws/ecs/Service';
 import { userToGroupAddition as iamUserToGroupAddition } from '../aws/iam/UserToGroupAddition';
 import { dBSubnetGroup as rdsDBSubnetGroup } from '../aws/rds/DBSubnetGroup';
-import { loadBalancer as elasticloadbalancingLoadBalancer } from '../aws/elasticloadbalancing/LoadBalancer';
 import { thing as iotThing } from '../aws/iot/Thing';
+import { loadBalancer as elasticloadbalancingLoadBalancer } from '../aws/elasticloadbalancing/LoadBalancer';
 import { layer as opsworksLayer } from '../aws/opsworks/Layer';
 import { apiKey as apigatewayApiKey } from '../aws/apigateway/ApiKey';
 import { subnetRouteTableAssociation as ec2SubnetRouteTableAssociation } from '../aws/ec2/SubnetRouteTableAssociation';
-import { instanceProfile as iamInstanceProfile } from '../aws/iam/InstanceProfile';
-import { securityGroup as elasticacheSecurityGroup } from '../aws/elasticache/SecurityGroup';
 import { policy as iotPolicy } from '../aws/iot/Policy';
+import { securityGroup as elasticacheSecurityGroup } from '../aws/elasticache/SecurityGroup';
+import { instanceProfile as iamInstanceProfile } from '../aws/iam/InstanceProfile';
 import { deploymentGroup as codedeployDeploymentGroup } from '../aws/codedeploy/DeploymentGroup';
 import { model as apigatewayModel } from '../aws/apigateway/Model';
 import { route as ec2Route } from '../aws/ec2/Route';
 import { metricFilter as logsMetricFilter } from '../aws/logs/MetricFilter';
 import { resource as apigatewayResource } from '../aws/apigateway/Resource';
 import { flowLog as ec2FlowLog } from '../aws/ec2/FlowLog';
-import { application as elasticbeanstalkApplication } from '../aws/elasticbeanstalk/Application';
-import { accessKey as iamAccessKey } from '../aws/iam/AccessKey';
 import { loadBalancer as elasticloadbalancingv2LoadBalancer } from '../aws/elasticloadbalancingv2/LoadBalancer';
+import { accessKey as iamAccessKey } from '../aws/iam/AccessKey';
+import { application as elasticbeanstalkApplication } from '../aws/elasticbeanstalk/Application';
 import { subnetGroup as elasticacheSubnetGroup } from '../aws/elasticache/SubnetGroup';
 import { topicPolicy as snsTopicPolicy } from '../aws/sns/TopicPolicy';
 import { alias as lambdaAlias } from '../aws/lambda/Alias';
-import { listener as elasticloadbalancingv2Listener } from '../aws/elasticloadbalancingv2/Listener';
 import { securityGroupEgress as ec2SecurityGroupEgress } from '../aws/ec2/SecurityGroupEgress';
+import { listener as elasticloadbalancingv2Listener } from '../aws/elasticloadbalancingv2/Listener';
 import { networkInterface as ec2NetworkInterface } from '../aws/ec2/NetworkInterface';
 import { stack as opsworksStack } from '../aws/opsworks/Stack';
 import { pipeline as datapipelinePipeline } from '../aws/datapipeline/Pipeline';
@@ -418,16 +420,16 @@ import { clusterParameterGroup as redshiftClusterParameterGroup } from '../aws/r
 import { trail as cloudtrailTrail } from '../aws/cloudtrail/Trail';
 import { subnetCidrBlock as ec2SubnetCidrBlock } from '../aws/ec2/SubnetCidrBlock';
 import { instanceGroupConfig as emrInstanceGroupConfig } from '../aws/emr/InstanceGroupConfig';
-import { listenerRule as elasticloadbalancingv2ListenerRule } from '../aws/elasticloadbalancingv2/ListenerRule';
 import { lifecycleHook as autoscalingLifecycleHook } from '../aws/autoscaling/LifecycleHook';
+import { listenerRule as elasticloadbalancingv2ListenerRule } from '../aws/elasticloadbalancingv2/ListenerRule';
 import { pipeline as codepipelinePipeline } from '../aws/codepipeline/Pipeline';
 import { clusterSecurityGroupIngress as redshiftClusterSecurityGroupIngress } from '../aws/redshift/ClusterSecurityGroupIngress';
-import { natGateway as ec2NatGateway } from '../aws/ec2/NatGateway';
 import { optionGroup as rdsOptionGroup } from '../aws/rds/OptionGroup';
+import { natGateway as ec2NatGateway } from '../aws/ec2/NatGateway';
 import { securityGroupIngress as elasticacheSecurityGroupIngress } from '../aws/elasticache/SecurityGroupIngress';
 import { topicRule as iotTopicRule } from '../aws/iot/TopicRule';
-import { replicationGroup as elasticacheReplicationGroup } from '../aws/elasticache/ReplicationGroup';
 import { elasticLoadBalancerAttachment as opsworksElasticLoadBalancerAttachment } from '../aws/opsworks/ElasticLoadBalancerAttachment';
+import { replicationGroup as elasticacheReplicationGroup } from '../aws/elasticache/ReplicationGroup';
 import { waitCondition as cloudformationWaitCondition } from '../aws/cloudformation/WaitCondition';
 import { securityGroup as ec2SecurityGroup } from '../aws/ec2/SecurityGroup';
 import { anomalyDetector as cloudwatchAnomalyDetector } from '../aws/cloudwatch/AnomalyDetector';
@@ -439,12 +441,12 @@ import { eventInvokeConfig as lambdaEventInvokeConfig } from '../aws/lambda/Even
 import { vPC as ec2VPC } from '../aws/ec2/VPC';
 import { instance as ec2Instance } from '../aws/ec2/Instance';
 import { stack as cloudformationStack } from '../aws/cloudformation/Stack';
-import { byteMatchSet as wafByteMatchSet } from '../aws/waf/ByteMatchSet';
 import { parameterGroup as elasticacheParameterGroup } from '../aws/elasticache/ParameterGroup';
+import { byteMatchSet as wafByteMatchSet } from '../aws/waf/ByteMatchSet';
 import { queuePolicy as sqsQueuePolicy } from '../aws/sqs/QueuePolicy';
+import { sqlInjectionMatchSet as wafSqlInjectionMatchSet } from '../aws/waf/SqlInjectionMatchSet';
 import { scalingPolicy as applicationautoscalingScalingPolicy } from '../aws/applicationautoscaling/ScalingPolicy';
 import { fileSystem as efsFileSystem } from '../aws/efs/FileSystem';
-import { sqlInjectionMatchSet as wafSqlInjectionMatchSet } from '../aws/waf/SqlInjectionMatchSet';
 import { dBParameterGroup as rdsDBParameterGroup } from '../aws/rds/DBParameterGroup';
 import { logStream as logsLogStream } from '../aws/logs/LogStream';
 import { scalingPolicy as autoscalingScalingPolicy } from '../aws/autoscaling/ScalingPolicy';
@@ -457,32 +459,32 @@ import { dHCPOptions as ec2DHCPOptions } from '../aws/ec2/DHCPOptions';
 import { usagePlan as apigatewayUsagePlan } from '../aws/apigateway/UsagePlan';
 import { user as iamUser } from '../aws/iam/User';
 import { networkAcl as ec2NetworkAcl } from '../aws/ec2/NetworkAcl';
-import { configRule as configConfigRule } from '../aws/config/ConfigRule';
 import { instance as opsworksInstance } from '../aws/opsworks/Instance';
+import { configRule as configConfigRule } from '../aws/config/ConfigRule';
 import { vPNGatewayRoutePropagation as ec2VPNGatewayRoutePropagation } from '../aws/ec2/VPNGatewayRoutePropagation';
 import { webACL as wafWebACL } from '../aws/waf/WebACL';
 import { bucket as s3Bucket } from '../aws/s3/Bucket';
 import { waitConditionHandle as cloudformationWaitConditionHandle } from '../aws/cloudformation/WaitConditionHandle';
 import { version as lambdaVersion } from '../aws/lambda/Version';
 import { basePathMapping as apigatewayBasePathMapping } from '../aws/apigateway/BasePathMapping';
-import { egressOnlyInternetGateway as ec2EgressOnlyInternetGateway } from '../aws/ec2/EgressOnlyInternetGateway';
 import { macro as cloudformationMacro } from '../aws/cloudformation/Macro';
+import { egressOnlyInternetGateway as ec2EgressOnlyInternetGateway } from '../aws/ec2/EgressOnlyInternetGateway';
 import { recordSetGroup as route53RecordSetGroup } from '../aws/route53/RecordSetGroup';
 import { deliveryStream as kinesisfirehoseDeliveryStream } from '../aws/kinesisfirehose/DeliveryStream';
-import { dBInstance as rdsDBInstance } from '../aws/rds/DBInstance';
 import { managedPolicy as iamManagedPolicy } from '../aws/iam/ManagedPolicy';
+import { dBInstance as rdsDBInstance } from '../aws/rds/DBInstance';
 import { networkInterfaceAttachment as ec2NetworkInterfaceAttachment } from '../aws/ec2/NetworkInterfaceAttachment';
 import { policyPrincipalAttachment as iotPolicyPrincipalAttachment } from '../aws/iot/PolicyPrincipalAttachment';
-import { scalableTarget as applicationautoscalingScalableTarget } from '../aws/applicationautoscaling/ScalableTarget';
 import { customerGateway as ec2CustomerGateway } from '../aws/ec2/CustomerGateway';
+import { scalableTarget as applicationautoscalingScalableTarget } from '../aws/applicationautoscaling/ScalableTarget';
 import { stage as apigatewayStage } from '../aws/apigateway/Stage';
 import { domain as sdbDomain } from '../aws/sdb/Domain';
 import { repository as ecrRepository } from '../aws/ecr/Repository';
 import { gatewayResponse as apigatewayGatewayResponse } from '../aws/apigateway/GatewayResponse';
-import { method as apigatewayMethod } from '../aws/apigateway/Method';
 import { clientCertificate as apigatewayClientCertificate } from '../aws/apigateway/ClientCertificate';
-import { volumeAttachment as ec2VolumeAttachment } from '../aws/ec2/VolumeAttachment';
+import { method as apigatewayMethod } from '../aws/apigateway/Method';
 import { simpleAD as directoryserviceSimpleAD } from '../aws/directoryservice/SimpleAD';
+import { volumeAttachment as ec2VolumeAttachment } from '../aws/ec2/VolumeAttachment';
 import { host as ec2Host } from '../aws/ec2/Host';
 import { dBSecurityGroup as rdsDBSecurityGroup } from '../aws/rds/DBSecurityGroup';
 import { taskDefinition as ecsTaskDefinition } from '../aws/ecs/TaskDefinition';
@@ -490,8 +492,8 @@ import { alias as kmsAlias } from '../aws/kms/Alias';
 import { clusterSubnetGroup as redshiftClusterSubnetGroup } from '../aws/redshift/ClusterSubnetGroup';
 import { eIPAssociation as ec2EIPAssociation } from '../aws/ec2/EIPAssociation';
 import { vPNGateway as ec2VPNGateway } from '../aws/ec2/VPNGateway';
-import { cacheCluster as elasticacheCacheCluster } from '../aws/elasticache/CacheCluster';
 import { thingPrincipalAttachment as iotThingPrincipalAttachment } from '../aws/iot/ThingPrincipalAttachment';
+import { cacheCluster as elasticacheCacheCluster } from '../aws/elasticache/CacheCluster';
 import { applicationVersion as elasticbeanstalkApplicationVersion } from '../aws/elasticbeanstalk/ApplicationVersion';
 import { vPCEndpoint as ec2VPCEndpoint } from '../aws/ec2/VPCEndpoint';
 import { userProfile as opsworksUserProfile } from '../aws/opsworks/UserProfile';
@@ -500,9 +502,9 @@ import { vPCGatewayAttachment as ec2VPCGatewayAttachment } from '../aws/ec2/VPCG
 import { vPNConnection as ec2VPNConnection } from '../aws/ec2/VPNConnection';
 import { vPCCidrBlock as ec2VPCCidrBlock } from '../aws/ec2/VPCCidrBlock';
 import { subscriptionFilter as logsSubscriptionFilter } from '../aws/logs/SubscriptionFilter';
-import { table as dynamodbTable } from '../aws/dynamodb/Table';
-import { clusterSecurityGroup as redshiftClusterSecurityGroup } from '../aws/redshift/ClusterSecurityGroup';
 import { destination as logsDestination } from '../aws/logs/Destination';
+import { clusterSecurityGroup as redshiftClusterSecurityGroup } from '../aws/redshift/ClusterSecurityGroup';
+import { table as dynamodbTable } from '../aws/dynamodb/Table';
 import { eC2Fleet as ec2EC2Fleet } from '../aws/ec2/EC2Fleet';
 import { xssMatchSet as wafXssMatchSet } from '../aws/waf/XssMatchSet';
 import { healthCheck as route53HealthCheck } from '../aws/route53/HealthCheck';
@@ -521,11 +523,11 @@ import { securityConfiguration as emrSecurityConfiguration } from '../aws/emr/Se
 import { scheduledAction as autoscalingScheduledAction } from '../aws/autoscaling/ScheduledAction';
 
 export const aws = {
+    detectiveMemberInvitation,
+    detectiveGraph,
     managedblockchainMember,
     managedblockchainNode,
     ec2VPCEndpointConnectionNotification,
-    cassandraTable,
-    cassandraKeyspace,
     sesReceiptFilter,
     sesConfigurationSetEventDestination,
     sesTemplate,
@@ -662,14 +664,14 @@ export const aws = {
     greengrassSubscriptionDefinition,
     greengrassResourceDefinitionVersion,
     greengrassGroupVersion,
-    route53resolverResolverRule,
-    route53resolverResolverEndpoint,
-    route53resolverResolverRuleAssociation,
     neptuneDBParameterGroup,
     neptuneDBClusterParameterGroup,
     neptuneDBSubnetGroup,
     neptuneDBInstance,
     neptuneDBCluster,
+    route53resolverResolverRule,
+    route53resolverResolverEndpoint,
+    route53resolverResolverRuleAssociation,
     daxParameterGroup,
     daxCluster,
     daxSubnetGroup,
@@ -742,7 +744,6 @@ export const aws = {
     askSkill,
     servicecatalogPortfolioShare,
     networkmanagerLink,
-    codestarconnectionsConnection,
     cloudfrontStreamingDistribution,
     batchJobDefinition,
     networkmanagerCustomerGatewayAssociation,
@@ -765,6 +766,7 @@ export const aws = {
     dmsEndpoint,
     dmsReplicationTask,
     dmsReplicationInstance,
+    codestarconnectionsConnection,
     servicecatalogTagOption,
     mediaconvertQueue,
     cloudfrontDistribution,
@@ -797,11 +799,7 @@ export const aws = {
     ssmMaintenanceWindow,
     ssmResourceDataSync,
     apigatewayVpcLink,
-    wafv2RegexPatternSet,
-    wafv2IPSet,
     wafv2WebACLAssociation,
-    wafv2RuleGroup,
-    wafv2WebACL,
     ec2TransitGateway,
     ec2TransitGatewayRouteTableAssociation,
     ec2TransitGatewayAttachment,
@@ -831,6 +829,8 @@ export const aws = {
     securityhubHub,
     codestarnotificationsNotificationRule,
     mskCluster,
+    cassandraTable,
+    cassandraKeyspace,
     eksNodegroup,
     batchComputeEnvironment,
     codebuildSourceCredential,
@@ -838,6 +838,10 @@ export const aws = {
     cloudwatchCompositeAlarm,
     codebuildReportGroup,
     s3AccessPoint,
+    wafv2RegexPatternSet,
+    wafv2RuleGroup,
+    wafv2WebACL,
+    wafv2IPSet,
     acmpcaCertificateAuthority,
     accessanalyzerAnalyzer,
     acmpcaCertificate,
@@ -855,13 +859,13 @@ export const aws = {
     wafIPSet,
     iamGroup,
     codepipelineCustomActionType,
-    ec2VPCPeeringConnection,
     ec2PlacementGroup,
+    ec2VPCPeeringConnection,
     elasticsearchDomain,
     apigatewayRequestValidator,
     emrInstanceFleetConfig,
-    rdsDBSecurityGroupIngress,
     workspacesWorkspace,
+    rdsDBSecurityGroupIngress,
     ec2GatewayRouteTableAssociation,
     logsLogGroup,
     kinesisStream,
@@ -871,9 +875,9 @@ export const aws = {
     wafSizeConstraintSet,
     cloudwatchDashboard,
     ec2NetworkAclEntry,
+    ec2InternetGateway,
     iamPolicy,
     ecsCluster,
-    ec2InternetGateway,
     elasticloadbalancingv2ListenerCertificate,
     iamRole,
     ec2LaunchTemplate,
@@ -883,8 +887,8 @@ export const aws = {
     ec2SpotFleet,
     gameliftAlias,
     ec2VPNConnectionRoute,
-    wafRule,
     directoryserviceMicrosoftAD,
+    wafRule,
     snsSubscription,
     efsMountTarget,
     ssmDocument,
@@ -894,8 +898,8 @@ export const aws = {
     gameliftBuild,
     apigatewayDeployment,
     kmsKey,
-    redshiftCluster,
     cloudwatchAlarm,
+    redshiftCluster,
     opsworksApp,
     lambdaEventSourceMapping,
     certificatemanagerCertificate,
@@ -909,28 +913,28 @@ export const aws = {
     ecsService,
     iamUserToGroupAddition,
     rdsDBSubnetGroup,
-    elasticloadbalancingLoadBalancer,
     iotThing,
+    elasticloadbalancingLoadBalancer,
     opsworksLayer,
     apigatewayApiKey,
     ec2SubnetRouteTableAssociation,
-    iamInstanceProfile,
-    elasticacheSecurityGroup,
     iotPolicy,
+    elasticacheSecurityGroup,
+    iamInstanceProfile,
     codedeployDeploymentGroup,
     apigatewayModel,
     ec2Route,
     logsMetricFilter,
     apigatewayResource,
     ec2FlowLog,
-    elasticbeanstalkApplication,
-    iamAccessKey,
     elasticloadbalancingv2LoadBalancer,
+    iamAccessKey,
+    elasticbeanstalkApplication,
     elasticacheSubnetGroup,
     snsTopicPolicy,
     lambdaAlias,
-    elasticloadbalancingv2Listener,
     ec2SecurityGroupEgress,
+    elasticloadbalancingv2Listener,
     ec2NetworkInterface,
     opsworksStack,
     datapipelinePipeline,
@@ -941,16 +945,16 @@ export const aws = {
     cloudtrailTrail,
     ec2SubnetCidrBlock,
     emrInstanceGroupConfig,
-    elasticloadbalancingv2ListenerRule,
     autoscalingLifecycleHook,
+    elasticloadbalancingv2ListenerRule,
     codepipelinePipeline,
     redshiftClusterSecurityGroupIngress,
-    ec2NatGateway,
     rdsOptionGroup,
+    ec2NatGateway,
     elasticacheSecurityGroupIngress,
     iotTopicRule,
-    elasticacheReplicationGroup,
     opsworksElasticLoadBalancerAttachment,
+    elasticacheReplicationGroup,
     cloudformationWaitCondition,
     ec2SecurityGroup,
     cloudwatchAnomalyDetector,
@@ -962,12 +966,12 @@ export const aws = {
     ec2VPC,
     ec2Instance,
     cloudformationStack,
-    wafByteMatchSet,
     elasticacheParameterGroup,
+    wafByteMatchSet,
     sqsQueuePolicy,
+    wafSqlInjectionMatchSet,
     applicationautoscalingScalingPolicy,
     efsFileSystem,
-    wafSqlInjectionMatchSet,
     rdsDBParameterGroup,
     logsLogStream,
     autoscalingScalingPolicy,
@@ -980,32 +984,32 @@ export const aws = {
     apigatewayUsagePlan,
     iamUser,
     ec2NetworkAcl,
-    configConfigRule,
     opsworksInstance,
+    configConfigRule,
     ec2VPNGatewayRoutePropagation,
     wafWebACL,
     s3Bucket,
     cloudformationWaitConditionHandle,
     lambdaVersion,
     apigatewayBasePathMapping,
-    ec2EgressOnlyInternetGateway,
     cloudformationMacro,
+    ec2EgressOnlyInternetGateway,
     route53RecordSetGroup,
     kinesisfirehoseDeliveryStream,
-    rdsDBInstance,
     iamManagedPolicy,
+    rdsDBInstance,
     ec2NetworkInterfaceAttachment,
     iotPolicyPrincipalAttachment,
-    applicationautoscalingScalableTarget,
     ec2CustomerGateway,
+    applicationautoscalingScalableTarget,
     apigatewayStage,
     sdbDomain,
     ecrRepository,
     apigatewayGatewayResponse,
-    apigatewayMethod,
     apigatewayClientCertificate,
-    ec2VolumeAttachment,
+    apigatewayMethod,
     directoryserviceSimpleAD,
+    ec2VolumeAttachment,
     ec2Host,
     rdsDBSecurityGroup,
     ecsTaskDefinition,
@@ -1013,8 +1017,8 @@ export const aws = {
     redshiftClusterSubnetGroup,
     ec2EIPAssociation,
     ec2VPNGateway,
-    elasticacheCacheCluster,
     iotThingPrincipalAttachment,
+    elasticacheCacheCluster,
     elasticbeanstalkApplicationVersion,
     ec2VPCEndpoint,
     opsworksUserProfile,
@@ -1023,9 +1027,9 @@ export const aws = {
     ec2VPNConnection,
     ec2VPCCidrBlock,
     logsSubscriptionFilter,
-    dynamodbTable,
-    redshiftClusterSecurityGroup,
     logsDestination,
+    redshiftClusterSecurityGroup,
+    dynamodbTable,
     ec2EC2Fleet,
     wafXssMatchSet,
     route53HealthCheck,

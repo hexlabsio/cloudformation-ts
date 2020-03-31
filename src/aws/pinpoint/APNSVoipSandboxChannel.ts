@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function aPNSVoipSandboxChannel(aPNSVoipSandboxChannelProps: APNSVoipSandboxChannel & { logicalName?: string }): APNSVoipSandboxChannel { return ({ ...aPNSVoipSandboxChannelProps, _logicalType: 'AWS::Pinpoint::APNSVoipSandboxChannel' }) as unknown as APNSVoipSandboxChannel }
+export type APNSVoipSandboxChannelAttributes = {  }
+export function aPNSVoipSandboxChannel(aPNSVoipSandboxChannelProps: APNSVoipSandboxChannel): APNSVoipSandboxChannel & { attributes: APNSVoipSandboxChannelAttributes } { return ({ ...aPNSVoipSandboxChannelProps, _logicalType: 'AWS::Pinpoint::APNSVoipSandboxChannel', attributes: {  } }) }
 
 export interface APNSVoipSandboxChannel extends KloudResource {
     applicationId: Value<string>;

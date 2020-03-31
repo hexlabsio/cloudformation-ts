@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function managedPolicy(managedPolicyProps: ManagedPolicy & { logicalName?: string }): ManagedPolicy { return ({ ...managedPolicyProps, _logicalType: 'AWS::IAM::ManagedPolicy' }) as unknown as ManagedPolicy }
+export type ManagedPolicyAttributes = {  }
+export function managedPolicy(managedPolicyProps: ManagedPolicy): ManagedPolicy & { attributes: ManagedPolicyAttributes } { return ({ ...managedPolicyProps, _logicalType: 'AWS::IAM::ManagedPolicy', attributes: {  } }) }
 
 export interface ManagedPolicy extends KloudResource {
     policyDocument: Value<any>;

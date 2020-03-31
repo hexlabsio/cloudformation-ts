@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { TagsProps } from './localgatewayroutetablevpcassociation/TagsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function localGatewayRouteTableVPCAssociation(localGatewayRouteTableVPCAssociationProps: LocalGatewayRouteTableVPCAssociation & { logicalName?: string }): LocalGatewayRouteTableVPCAssociation { return ({ ...localGatewayRouteTableVPCAssociationProps, _logicalType: 'AWS::EC2::LocalGatewayRouteTableVPCAssociation' }) as unknown as LocalGatewayRouteTableVPCAssociation }
+export type LocalGatewayRouteTableVPCAssociationAttributes = { LocalGatewayId: Attribute<string>; LocalGatewayRouteTableVpcAssociationId: Attribute<string>; State: Attribute<string> }
+export function localGatewayRouteTableVPCAssociation(localGatewayRouteTableVPCAssociationProps: LocalGatewayRouteTableVPCAssociation): LocalGatewayRouteTableVPCAssociation & { attributes: LocalGatewayRouteTableVPCAssociationAttributes } { return ({ ...localGatewayRouteTableVPCAssociationProps, _logicalType: 'AWS::EC2::LocalGatewayRouteTableVPCAssociation', attributes: { LocalGatewayId: 'LocalGatewayId', LocalGatewayRouteTableVpcAssociationId: 'LocalGatewayRouteTableVpcAssociationId', State: 'State' } }) }
 
 export interface LocalGatewayRouteTableVPCAssociation extends KloudResource {
     localGatewayRouteTableId: Value<string>;

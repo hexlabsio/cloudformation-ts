@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { ScalableTargetActionProps } from './ScalableTargetActionProps';
 
-export function scheduledActionProps(scheduledActionPropsProps: ScheduledActionProps): ScheduledActionProps { return (scheduledActionPropsProps) as unknown as ScheduledActionProps }
+export function scheduledActionProps(scheduledActionPropsProps: ScheduledActionProps): ScheduledActionProps { return (scheduledActionPropsProps) }
 
 export interface ScheduledActionProps {
     schedule: Value<string>;

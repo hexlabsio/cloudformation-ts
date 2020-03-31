@@ -2,8 +2,10 @@ import { Value } from '../../kloudformation/Value';
 import { HomeDirectoryMapEntryProps } from './user/HomeDirectoryMapEntryProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function user(userProps: User & { logicalName?: string }): User { return ({ ...userProps, _logicalType: 'AWS::Transfer::User' }) as unknown as User }
+export type UserAttributes = { ServerId: Attribute<string>; UserName: Attribute<string>; Arn: Attribute<string> }
+export function user(userProps: User): User & { attributes: UserAttributes } { return ({ ...userProps, _logicalType: 'AWS::Transfer::User', attributes: { ServerId: 'ServerId', UserName: 'UserName', Arn: 'Arn' } }) }
 
 export interface User extends KloudResource {
     role: Value<string>;

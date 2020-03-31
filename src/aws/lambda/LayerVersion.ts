@@ -2,7 +2,8 @@ import { ContentProps } from './layerversion/ContentProps';
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function layerVersion(layerVersionProps: LayerVersion & { logicalName?: string }): LayerVersion { return ({ ...layerVersionProps, _logicalType: 'AWS::Lambda::LayerVersion' }) as unknown as LayerVersion }
+export type LayerVersionAttributes = {  }
+export function layerVersion(layerVersionProps: LayerVersion): LayerVersion & { attributes: LayerVersionAttributes } { return ({ ...layerVersionProps, _logicalType: 'AWS::Lambda::LayerVersion', attributes: {  } }) }
 
 export interface LayerVersion extends KloudResource {
     content: ContentProps;

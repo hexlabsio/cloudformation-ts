@@ -6,7 +6,7 @@ import { EncryptionConfigurationProps } from './EncryptionConfigurationProps';
 import { ProcessingConfigurationProps } from './ProcessingConfigurationProps';
 import { S3DestinationConfigurationProps } from './S3DestinationConfigurationProps';
 
-export function extendedS3DestinationConfigurationProps(extendedS3DestinationConfigurationPropsProps: ExtendedS3DestinationConfigurationProps): ExtendedS3DestinationConfigurationProps { return (extendedS3DestinationConfigurationPropsProps) as unknown as ExtendedS3DestinationConfigurationProps }
+export function extendedS3DestinationConfigurationProps(extendedS3DestinationConfigurationPropsProps: ExtendedS3DestinationConfigurationProps): ExtendedS3DestinationConfigurationProps { return (extendedS3DestinationConfigurationPropsProps) }
 
 export interface ExtendedS3DestinationConfigurationProps {
     bucketARN: Value<string>;

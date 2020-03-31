@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function volumeFromProps(volumeFromPropsProps: VolumeFromProps): VolumeFromProps { return (volumeFromPropsProps) as unknown as VolumeFromProps }
+export function volumeFromProps(volumeFromPropsProps: VolumeFromProps): VolumeFromProps { return (volumeFromPropsProps) }
 
 export interface VolumeFromProps {
     readOnly?: Value<boolean>;

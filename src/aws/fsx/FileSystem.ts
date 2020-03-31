@@ -4,7 +4,8 @@ import { Tag } from '../Tag';
 import { WindowsConfigurationProps } from './filesystem/WindowsConfigurationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function fileSystem(fileSystemProps: FileSystem & { logicalName?: string }): FileSystem { return ({ ...fileSystemProps, _logicalType: 'AWS::FSx::FileSystem' }) as unknown as FileSystem }
+export type FileSystemAttributes = {  }
+export function fileSystem(fileSystemProps: FileSystem): FileSystem & { attributes: FileSystemAttributes } { return ({ ...fileSystemProps, _logicalType: 'AWS::FSx::FileSystem', attributes: {  } }) }
 
 export interface FileSystem extends KloudResource {
     fileSystemType: Value<string>;

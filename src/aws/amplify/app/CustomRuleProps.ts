@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function customRuleProps(customRulePropsProps: CustomRuleProps): CustomRuleProps { return (customRulePropsProps) as unknown as CustomRuleProps }
+export function customRuleProps(customRulePropsProps: CustomRuleProps): CustomRuleProps { return (customRulePropsProps) }
 
 export interface CustomRuleProps {
     target: Value<string>;

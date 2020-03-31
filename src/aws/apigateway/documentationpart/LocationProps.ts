@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function locationProps(locationPropsProps: LocationProps): LocationProps { return (locationPropsProps) as unknown as LocationProps }
+export function locationProps(locationPropsProps: LocationProps): LocationProps { return (locationPropsProps) }
 
 export interface LocationProps {
     method?: Value<string>;

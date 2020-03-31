@@ -2,7 +2,8 @@ import { DataCatalogEncryptionSettingsProps } from './datacatalogencryptionsetti
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function dataCatalogEncryptionSettings(dataCatalogEncryptionSettingsProps: DataCatalogEncryptionSettings & { logicalName?: string }): DataCatalogEncryptionSettings { return ({ ...dataCatalogEncryptionSettingsProps, _logicalType: 'AWS::Glue::DataCatalogEncryptionSettings' }) as unknown as DataCatalogEncryptionSettings }
+export type DataCatalogEncryptionSettingsAttributes = {  }
+export function dataCatalogEncryptionSettings(dataCatalogEncryptionSettingsProps: DataCatalogEncryptionSettings): DataCatalogEncryptionSettings & { attributes: DataCatalogEncryptionSettingsAttributes } { return ({ ...dataCatalogEncryptionSettingsProps, _logicalType: 'AWS::Glue::DataCatalogEncryptionSettings', attributes: {  } }) }
 
 export interface DataCatalogEncryptionSettings extends KloudResource {
     dataCatalogEncryptionSettings: DataCatalogEncryptionSettingsProps;

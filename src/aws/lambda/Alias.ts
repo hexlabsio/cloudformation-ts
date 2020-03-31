@@ -3,7 +3,8 @@ import { ProvisionedConcurrencyConfigurationProps } from './alias/ProvisionedCon
 import { AliasRoutingConfigurationProps } from './alias/AliasRoutingConfigurationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function alias(aliasProps: Alias & { logicalName?: string }): Alias { return ({ ...aliasProps, _logicalType: 'AWS::Lambda::Alias' }) as unknown as Alias }
+export type AliasAttributes = {  }
+export function alias(aliasProps: Alias): Alias & { attributes: AliasAttributes } { return ({ ...aliasProps, _logicalType: 'AWS::Lambda::Alias', attributes: {  } }) }
 
 export interface Alias extends KloudResource {
     functionName: Value<string>;

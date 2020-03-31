@@ -4,7 +4,7 @@ import { LocalVolumeResourceDataProps } from './LocalVolumeResourceDataProps';
 import { LocalDeviceResourceDataProps } from './LocalDeviceResourceDataProps';
 import { S3MachineLearningModelResourceDataProps } from './S3MachineLearningModelResourceDataProps';
 
-export function resourceDataContainerProps(resourceDataContainerPropsProps: ResourceDataContainerProps): ResourceDataContainerProps { return (resourceDataContainerPropsProps) as unknown as ResourceDataContainerProps }
+export function resourceDataContainerProps(resourceDataContainerPropsProps: ResourceDataContainerProps): ResourceDataContainerProps { return (resourceDataContainerPropsProps) }
 
 export interface ResourceDataContainerProps {
     secretsManagerSecretResourceData?: SecretsManagerSecretResourceDataProps;

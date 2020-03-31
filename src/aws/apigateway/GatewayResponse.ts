@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function gatewayResponse(gatewayResponseProps: GatewayResponse & { logicalName?: string }): GatewayResponse { return ({ ...gatewayResponseProps, _logicalType: 'AWS::ApiGateway::GatewayResponse' }) as unknown as GatewayResponse }
+export type GatewayResponseAttributes = {  }
+export function gatewayResponse(gatewayResponseProps: GatewayResponse): GatewayResponse & { attributes: GatewayResponseAttributes } { return ({ ...gatewayResponseProps, _logicalType: 'AWS::ApiGateway::GatewayResponse', attributes: {  } }) }
 
 export interface GatewayResponse extends KloudResource {
     responseType: Value<string>;

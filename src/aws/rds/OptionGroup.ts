@@ -3,7 +3,8 @@ import { OptionConfigurationProps } from './optiongroup/OptionConfigurationProps
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function optionGroup(optionGroupProps: OptionGroup & { logicalName?: string }): OptionGroup { return ({ ...optionGroupProps, _logicalType: 'AWS::RDS::OptionGroup' }) as unknown as OptionGroup }
+export type OptionGroupAttributes = {  }
+export function optionGroup(optionGroupProps: OptionGroup): OptionGroup & { attributes: OptionGroupAttributes } { return ({ ...optionGroupProps, _logicalType: 'AWS::RDS::OptionGroup', attributes: {  } }) }
 
 export interface OptionGroup extends KloudResource {
     engineName: Value<string>;

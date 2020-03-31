@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function minimumHealthyHostsProps(minimumHealthyHostsPropsProps: MinimumHealthyHostsProps): MinimumHealthyHostsProps { return (minimumHealthyHostsPropsProps) as unknown as MinimumHealthyHostsProps }
+export function minimumHealthyHostsProps(minimumHealthyHostsPropsProps: MinimumHealthyHostsProps): MinimumHealthyHostsProps { return (minimumHealthyHostsPropsProps) }
 
 export interface MinimumHealthyHostsProps {
     type: Value<string>;

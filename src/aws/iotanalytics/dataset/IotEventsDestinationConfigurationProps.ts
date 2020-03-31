@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function iotEventsDestinationConfigurationProps(iotEventsDestinationConfigurationPropsProps: IotEventsDestinationConfigurationProps): IotEventsDestinationConfigurationProps { return (iotEventsDestinationConfigurationPropsProps) as unknown as IotEventsDestinationConfigurationProps }
+export function iotEventsDestinationConfigurationProps(iotEventsDestinationConfigurationPropsProps: IotEventsDestinationConfigurationProps): IotEventsDestinationConfigurationProps { return (iotEventsDestinationConfigurationPropsProps) }
 
 export interface IotEventsDestinationConfigurationProps {
     inputName: Value<string>;

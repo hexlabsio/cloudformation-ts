@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function methodSettingProps(methodSettingPropsProps: MethodSettingProps): MethodSettingProps { return (methodSettingPropsProps) as unknown as MethodSettingProps }
+export function methodSettingProps(methodSettingPropsProps: MethodSettingProps): MethodSettingProps { return (methodSettingPropsProps) }
 
 export interface MethodSettingProps {
     cacheDataEncrypted?: Value<boolean>;

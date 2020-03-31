@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function lustreConfigurationProps(lustreConfigurationPropsProps: LustreConfigurationProps): LustreConfigurationProps { return (lustreConfigurationPropsProps) as unknown as LustreConfigurationProps }
+export function lustreConfigurationProps(lustreConfigurationPropsProps: LustreConfigurationProps): LustreConfigurationProps { return (lustreConfigurationPropsProps) }
 
 export interface LustreConfigurationProps {
     importPath?: Value<string>;

@@ -3,7 +3,8 @@ import { StepAdjustmentProps } from '../applicationautoscaling/scalingpolicy/Ste
 import { TargetTrackingConfigurationProps } from './scalingpolicy/TargetTrackingConfigurationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function scalingPolicy(scalingPolicyProps: ScalingPolicy & { logicalName?: string }): ScalingPolicy { return ({ ...scalingPolicyProps, _logicalType: 'AWS::AutoScaling::ScalingPolicy' }) as unknown as ScalingPolicy }
+export type ScalingPolicyAttributes = {  }
+export function scalingPolicy(scalingPolicyProps: ScalingPolicy): ScalingPolicy & { attributes: ScalingPolicyAttributes } { return ({ ...scalingPolicyProps, _logicalType: 'AWS::AutoScaling::ScalingPolicy', attributes: {  } }) }
 
 export interface ScalingPolicy extends KloudResource {
     autoScalingGroupName: Value<string>;

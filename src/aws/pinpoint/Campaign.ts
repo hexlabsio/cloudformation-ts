@@ -5,8 +5,10 @@ import { WriteTreatmentResourceProps } from './campaign/WriteTreatmentResourcePr
 import { LimitsProps } from './campaign/LimitsProps';
 import { CampaignHookProps } from './campaign/CampaignHookProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function campaign(campaignProps: Campaign & { logicalName?: string }): Campaign { return ({ ...campaignProps, _logicalType: 'AWS::Pinpoint::Campaign' }) as unknown as Campaign }
+export type CampaignAttributes = { CampaignId: Attribute<string>; Arn: Attribute<string> }
+export function campaign(campaignProps: Campaign): Campaign & { attributes: CampaignAttributes } { return ({ ...campaignProps, _logicalType: 'AWS::Pinpoint::Campaign', attributes: { CampaignId: 'CampaignId', Arn: 'Arn' } }) }
 
 export interface Campaign extends KloudResource {
     segmentId: Value<string>;

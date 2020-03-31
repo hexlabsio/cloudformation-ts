@@ -3,7 +3,8 @@ import { Tag } from '../Tag';
 import { WorkspacePropertiesProps } from './workspace/WorkspacePropertiesProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function workspace(workspaceProps: Workspace & { logicalName?: string }): Workspace { return ({ ...workspaceProps, _logicalType: 'AWS::WorkSpaces::Workspace' }) as unknown as Workspace }
+export type WorkspaceAttributes = {  }
+export function workspace(workspaceProps: Workspace): Workspace & { attributes: WorkspaceAttributes } { return ({ ...workspaceProps, _logicalType: 'AWS::WorkSpaces::Workspace', attributes: {  } }) }
 
 export interface Workspace extends KloudResource {
     bundleId: Value<string>;

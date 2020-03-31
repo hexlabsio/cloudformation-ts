@@ -8,8 +8,10 @@ import { PlacementStrategyProps } from './service/PlacementStrategyProps';
 import { ServiceRegistryProps } from './taskset/ServiceRegistryProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function service(serviceProps: Service & { logicalName?: string }): Service { return ({ ...serviceProps, _logicalType: 'AWS::ECS::Service' }) as unknown as Service }
+export type ServiceAttributes = { Name: Attribute<string> }
+export function service(serviceProps: Service): Service & { attributes: ServiceAttributes } { return ({ ...serviceProps, _logicalType: 'AWS::ECS::Service', attributes: { Name: 'Name' } }) }
 
 export interface Service extends KloudResource {
     cluster?: Value<string>;

@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { LaunchTemplateSpecificationProps } from './LaunchTemplateSpecificationProps';
 
-export function computeResourcesProps(computeResourcesPropsProps: ComputeResourcesProps): ComputeResourcesProps { return (computeResourcesPropsProps) as unknown as ComputeResourcesProps }
+export function computeResourcesProps(computeResourcesPropsProps: ComputeResourcesProps): ComputeResourcesProps { return (computeResourcesPropsProps) }
 
 export interface ComputeResourcesProps {
     maxvCpus: Value<number>;

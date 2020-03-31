@@ -9,7 +9,7 @@ import { LambdaProps } from './LambdaProps';
 import { DeviceRegistryEnrichProps } from './DeviceRegistryEnrichProps';
 import { RemoveAttributesProps } from './RemoveAttributesProps';
 
-export function activityProps(activityPropsProps: ActivityProps): ActivityProps { return (activityPropsProps) as unknown as ActivityProps }
+export function activityProps(activityPropsProps: ActivityProps): ActivityProps { return (activityPropsProps) }
 
 export interface ActivityProps {
     selectAttributes?: SelectAttributesProps;

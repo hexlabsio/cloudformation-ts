@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function instancesDistributionProps(instancesDistributionPropsProps: InstancesDistributionProps): InstancesDistributionProps { return (instancesDistributionPropsProps) as unknown as InstancesDistributionProps }
+export function instancesDistributionProps(instancesDistributionPropsProps: InstancesDistributionProps): InstancesDistributionProps { return (instancesDistributionPropsProps) }
 
 export interface InstancesDistributionProps {
     onDemandAllocationStrategy?: Value<string>;

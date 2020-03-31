@@ -3,7 +3,8 @@ import { S3DestinationProps } from './resourcedatasync/S3DestinationProps';
 import { SyncSourceProps } from './resourcedatasync/SyncSourceProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function resourceDataSync(resourceDataSyncProps: ResourceDataSync & { logicalName?: string }): ResourceDataSync { return ({ ...resourceDataSyncProps, _logicalType: 'AWS::SSM::ResourceDataSync' }) as unknown as ResourceDataSync }
+export type ResourceDataSyncAttributes = {  }
+export function resourceDataSync(resourceDataSyncProps: ResourceDataSync): ResourceDataSync & { attributes: ResourceDataSyncAttributes } { return ({ ...resourceDataSyncProps, _logicalType: 'AWS::SSM::ResourceDataSync', attributes: {  } }) }
 
 export interface ResourceDataSync extends KloudResource {
     syncName: Value<string>;

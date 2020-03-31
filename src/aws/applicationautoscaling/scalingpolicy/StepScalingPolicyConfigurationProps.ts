@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { StepAdjustmentProps } from './StepAdjustmentProps';
 
-export function stepScalingPolicyConfigurationProps(stepScalingPolicyConfigurationPropsProps: StepScalingPolicyConfigurationProps): StepScalingPolicyConfigurationProps { return (stepScalingPolicyConfigurationPropsProps) as unknown as StepScalingPolicyConfigurationProps }
+export function stepScalingPolicyConfigurationProps(stepScalingPolicyConfigurationPropsProps: StepScalingPolicyConfigurationProps): StepScalingPolicyConfigurationProps { return (stepScalingPolicyConfigurationPropsProps) }
 
 export interface StepScalingPolicyConfigurationProps {
     adjustmentType?: Value<string>;

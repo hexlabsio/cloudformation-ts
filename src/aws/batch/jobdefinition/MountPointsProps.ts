@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function mountPointsProps(mountPointsPropsProps: MountPointsProps): MountPointsProps { return (mountPointsPropsProps) as unknown as MountPointsProps }
+export function mountPointsProps(mountPointsPropsProps: MountPointsProps): MountPointsProps { return (mountPointsPropsProps) }
 
 export interface MountPointsProps {
     readOnly?: Value<boolean>;

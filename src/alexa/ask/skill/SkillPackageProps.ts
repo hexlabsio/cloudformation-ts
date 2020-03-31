@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { OverridesProps } from './OverridesProps';
 
-export function skillPackageProps(skillPackagePropsProps: SkillPackageProps): SkillPackageProps { return (skillPackagePropsProps) as unknown as SkillPackageProps }
+export function skillPackageProps(skillPackagePropsProps: SkillPackageProps): SkillPackageProps { return (skillPackagePropsProps) }
 
 export interface SkillPackageProps {
     s3Bucket: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function tableResourceProps(tableResourcePropsProps: TableResourceProps): TableResourceProps { return (tableResourcePropsProps) as unknown as TableResourceProps }
+export function tableResourceProps(tableResourcePropsProps: TableResourceProps): TableResourceProps { return (tableResourcePropsProps) }
 
 export interface TableResourceProps {
     databaseName?: Value<string>;

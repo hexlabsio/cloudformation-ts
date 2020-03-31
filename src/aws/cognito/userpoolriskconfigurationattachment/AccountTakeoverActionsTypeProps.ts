@@ -1,6 +1,6 @@
 import { AccountTakeoverActionTypeProps } from './AccountTakeoverActionTypeProps';
 
-export function accountTakeoverActionsTypeProps(accountTakeoverActionsTypePropsProps: AccountTakeoverActionsTypeProps): AccountTakeoverActionsTypeProps { return (accountTakeoverActionsTypePropsProps) as unknown as AccountTakeoverActionsTypeProps }
+export function accountTakeoverActionsTypeProps(accountTakeoverActionsTypePropsProps: AccountTakeoverActionsTypeProps): AccountTakeoverActionsTypeProps { return (accountTakeoverActionsTypePropsProps) }
 
 export interface AccountTakeoverActionsTypeProps {
     highAction?: AccountTakeoverActionTypeProps;

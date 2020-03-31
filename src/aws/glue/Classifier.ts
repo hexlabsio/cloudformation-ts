@@ -4,7 +4,8 @@ import { CsvClassifierProps } from './classifier/CsvClassifierProps';
 import { GrokClassifierProps } from './classifier/GrokClassifierProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function classifier(classifierProps: Classifier & { logicalName?: string }): Classifier { return ({ ...classifierProps, _logicalType: 'AWS::Glue::Classifier' }) as unknown as Classifier }
+export type ClassifierAttributes = {  }
+export function classifier(classifierProps: Classifier): Classifier & { attributes: ClassifierAttributes } { return ({ ...classifierProps, _logicalType: 'AWS::Glue::Classifier', attributes: {  } }) }
 
 export interface Classifier extends KloudResource {
     xMLClassifier?: XMLClassifierProps;

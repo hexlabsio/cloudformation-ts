@@ -1,7 +1,8 @@
 import { FilterProps } from './receiptfilter/FilterProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function receiptFilter(receiptFilterProps: ReceiptFilter & { logicalName?: string }): ReceiptFilter { return ({ ...receiptFilterProps, _logicalType: 'AWS::SES::ReceiptFilter' }) as unknown as ReceiptFilter }
+export type ReceiptFilterAttributes = {  }
+export function receiptFilter(receiptFilterProps: ReceiptFilter): ReceiptFilter & { attributes: ReceiptFilterAttributes } { return ({ ...receiptFilterProps, _logicalType: 'AWS::SES::ReceiptFilter', attributes: {  } }) }
 
 export interface ReceiptFilter extends KloudResource {
     filter: FilterProps;

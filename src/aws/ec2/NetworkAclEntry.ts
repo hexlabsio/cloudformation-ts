@@ -3,7 +3,8 @@ import { IcmpProps } from './networkaclentry/IcmpProps';
 import { PortRangeProps } from './networkaclentry/PortRangeProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function networkAclEntry(networkAclEntryProps: NetworkAclEntry & { logicalName?: string }): NetworkAclEntry { return ({ ...networkAclEntryProps, _logicalType: 'AWS::EC2::NetworkAclEntry' }) as unknown as NetworkAclEntry }
+export type NetworkAclEntryAttributes = {  }
+export function networkAclEntry(networkAclEntryProps: NetworkAclEntry): NetworkAclEntry & { attributes: NetworkAclEntryAttributes } { return ({ ...networkAclEntryProps, _logicalType: 'AWS::EC2::NetworkAclEntry', attributes: {  } }) }
 
 export interface NetworkAclEntry extends KloudResource {
     networkAclId: Value<string>;

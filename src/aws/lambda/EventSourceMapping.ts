@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { DestinationConfigProps } from './eventsourcemapping/DestinationConfigProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function eventSourceMapping(eventSourceMappingProps: EventSourceMapping & { logicalName?: string }): EventSourceMapping { return ({ ...eventSourceMappingProps, _logicalType: 'AWS::Lambda::EventSourceMapping' }) as unknown as EventSourceMapping }
+export type EventSourceMappingAttributes = {  }
+export function eventSourceMapping(eventSourceMappingProps: EventSourceMapping): EventSourceMapping & { attributes: EventSourceMappingAttributes } { return ({ ...eventSourceMappingProps, _logicalType: 'AWS::Lambda::EventSourceMapping', attributes: {  } }) }
 
 export interface EventSourceMapping extends KloudResource {
     eventSourceArn: Value<string>;

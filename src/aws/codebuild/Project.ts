@@ -10,8 +10,10 @@ import { ProjectSourceVersionProps } from './project/ProjectSourceVersionProps';
 import { Tag } from '../Tag';
 import { ProjectCacheProps } from './project/ProjectCacheProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function project(projectProps: Project & { logicalName?: string }): Project { return ({ ...projectProps, _logicalType: 'AWS::CodeBuild::Project' }) as unknown as Project }
+export type ProjectAttributes = { Arn: Attribute<string> }
+export function project(projectProps: Project): Project & { attributes: ProjectAttributes } { return ({ ...projectProps, _logicalType: 'AWS::CodeBuild::Project', attributes: { Arn: 'Arn' } }) }
 
 export interface Project extends KloudResource {
     source: SourceProps;

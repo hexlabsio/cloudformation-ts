@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function maintenanceWindowLambdaParametersProps(maintenanceWindowLambdaParametersPropsProps: MaintenanceWindowLambdaParametersProps): MaintenanceWindowLambdaParametersProps { return (maintenanceWindowLambdaParametersPropsProps) as unknown as MaintenanceWindowLambdaParametersProps }
+export function maintenanceWindowLambdaParametersProps(maintenanceWindowLambdaParametersPropsProps: MaintenanceWindowLambdaParametersProps): MaintenanceWindowLambdaParametersProps { return (maintenanceWindowLambdaParametersPropsProps) }
 
 export interface MaintenanceWindowLambdaParametersProps {
     clientContext?: Value<string>;

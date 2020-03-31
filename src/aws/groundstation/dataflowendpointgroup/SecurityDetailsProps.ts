@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function securityDetailsProps(securityDetailsPropsProps: SecurityDetailsProps): SecurityDetailsProps { return (securityDetailsPropsProps) as unknown as SecurityDetailsProps }
+export function securityDetailsProps(securityDetailsPropsProps: SecurityDetailsProps): SecurityDetailsProps { return (securityDetailsPropsProps) }
 
 export interface SecurityDetailsProps {
     subnetIds?: Value<Value<string>[]>;

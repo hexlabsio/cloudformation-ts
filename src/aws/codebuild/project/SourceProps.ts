@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { SourceAuthProps } from './SourceAuthProps';
 import { GitSubmodulesConfigProps } from './GitSubmodulesConfigProps';
 
-export function sourceProps(sourcePropsProps: SourceProps): SourceProps { return (sourcePropsProps) as unknown as SourceProps }
+export function sourceProps(sourcePropsProps: SourceProps): SourceProps { return (sourcePropsProps) }
 
 export interface SourceProps {
     type: Value<string>;

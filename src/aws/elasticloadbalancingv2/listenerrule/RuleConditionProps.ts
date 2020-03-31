@@ -6,7 +6,7 @@ import { PathPatternConfigProps } from './PathPatternConfigProps';
 import { QueryStringConfigProps } from './QueryStringConfigProps';
 import { SourceIpConfigProps } from './SourceIpConfigProps';
 
-export function ruleConditionProps(ruleConditionPropsProps: RuleConditionProps): RuleConditionProps { return (ruleConditionPropsProps) as unknown as RuleConditionProps }
+export function ruleConditionProps(ruleConditionPropsProps: RuleConditionProps): RuleConditionProps { return (ruleConditionPropsProps) }
 
 export interface RuleConditionProps {
     field?: Value<string>;

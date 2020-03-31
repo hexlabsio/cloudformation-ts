@@ -5,7 +5,8 @@ import { NotificationPropertyProps } from './job/NotificationPropertyProps';
 import { ExecutionPropertyProps } from './job/ExecutionPropertyProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function job(jobProps: Job & { logicalName?: string }): Job { return ({ ...jobProps, _logicalType: 'AWS::Glue::Job' }) as unknown as Job }
+export type JobAttributes = {  }
+export function job(jobProps: Job): Job & { attributes: JobAttributes } { return ({ ...jobProps, _logicalType: 'AWS::Glue::Job', attributes: {  } }) }
 
 export interface Job extends KloudResource {
     role: Value<string>;

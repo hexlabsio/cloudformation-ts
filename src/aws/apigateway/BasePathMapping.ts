@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function basePathMapping(basePathMappingProps: BasePathMapping & { logicalName?: string }): BasePathMapping { return ({ ...basePathMappingProps, _logicalType: 'AWS::ApiGateway::BasePathMapping' }) as unknown as BasePathMapping }
+export type BasePathMappingAttributes = {  }
+export function basePathMapping(basePathMappingProps: BasePathMapping): BasePathMapping & { attributes: BasePathMappingAttributes } { return ({ ...basePathMappingProps, _logicalType: 'AWS::ApiGateway::BasePathMapping', attributes: {  } }) }
 
 export interface BasePathMapping extends KloudResource {
     domainName: Value<string>;

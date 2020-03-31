@@ -9,8 +9,10 @@ import { LBCookieStickinessPolicyProps } from './loadbalancer/LBCookieStickiness
 import { PoliciesProps } from './loadbalancer/PoliciesProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function loadBalancer(loadBalancerProps: LoadBalancer & { logicalName?: string }): LoadBalancer { return ({ ...loadBalancerProps, _logicalType: 'AWS::ElasticLoadBalancing::LoadBalancer' }) as unknown as LoadBalancer }
+export type LoadBalancerAttributes = { CanonicalHostedZoneName: Attribute<string>; CanonicalHostedZoneNameID: Attribute<string>; DNSName: Attribute<string>; SourceSecurityGroupGroupName: Attribute<string>; SourceSecurityGroupOwnerAlias: Attribute<string> }
+export function loadBalancer(loadBalancerProps: LoadBalancer): LoadBalancer & { attributes: LoadBalancerAttributes } { return ({ ...loadBalancerProps, _logicalType: 'AWS::ElasticLoadBalancing::LoadBalancer', attributes: { CanonicalHostedZoneName: 'CanonicalHostedZoneName', CanonicalHostedZoneNameID: 'CanonicalHostedZoneNameID', DNSName: 'DNSName', SourceSecurityGroupGroupName: 'SourceSecurityGroup.GroupName', SourceSecurityGroupOwnerAlias: 'SourceSecurityGroup.OwnerAlias' } }) }
 
 export interface LoadBalancer extends KloudResource {
     listeners: ListenersProps[];

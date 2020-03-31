@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function grokClassifierProps(grokClassifierPropsProps: GrokClassifierProps): GrokClassifierProps { return (grokClassifierPropsProps) as unknown as GrokClassifierProps }
+export function grokClassifierProps(grokClassifierPropsProps: GrokClassifierProps): GrokClassifierProps { return (grokClassifierPropsProps) }
 
 export interface GrokClassifierProps {
     grokPattern: Value<string>;

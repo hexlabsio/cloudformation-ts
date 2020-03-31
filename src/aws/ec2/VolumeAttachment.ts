@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function volumeAttachment(volumeAttachmentProps: VolumeAttachment & { logicalName?: string }): VolumeAttachment { return ({ ...volumeAttachmentProps, _logicalType: 'AWS::EC2::VolumeAttachment' }) as unknown as VolumeAttachment }
+export type VolumeAttachmentAttributes = {  }
+export function volumeAttachment(volumeAttachmentProps: VolumeAttachment): VolumeAttachment & { attributes: VolumeAttachmentAttributes } { return ({ ...volumeAttachmentProps, _logicalType: 'AWS::EC2::VolumeAttachment', attributes: {  } }) }
 
 export interface VolumeAttachment extends KloudResource {
     device: Value<string>;

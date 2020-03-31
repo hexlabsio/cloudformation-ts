@@ -1,6 +1,6 @@
 import { ResourceInstanceProps } from '../resourcedefinitionversion/ResourceInstanceProps';
 
-export function resourceDefinitionVersionProps(resourceDefinitionVersionPropsProps: ResourceDefinitionVersionProps): ResourceDefinitionVersionProps { return (resourceDefinitionVersionPropsProps) as unknown as ResourceDefinitionVersionProps }
+export function resourceDefinitionVersionProps(resourceDefinitionVersionPropsProps: ResourceDefinitionVersionProps): ResourceDefinitionVersionProps { return (resourceDefinitionVersionPropsProps) }
 
 export interface ResourceDefinitionVersionProps {
     resources: ResourceInstanceProps[];

@@ -2,8 +2,10 @@ import { Value } from '../../kloudformation/Value';
 import { DimensionProps } from './alarm/DimensionProps';
 import { MetricDataQueryProps } from './alarm/MetricDataQueryProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function alarm(alarmProps: Alarm & { logicalName?: string }): Alarm { return ({ ...alarmProps, _logicalType: 'AWS::CloudWatch::Alarm' }) as unknown as Alarm }
+export type AlarmAttributes = { Arn: Attribute<string> }
+export function alarm(alarmProps: Alarm): Alarm & { attributes: AlarmAttributes } { return ({ ...alarmProps, _logicalType: 'AWS::CloudWatch::Alarm', attributes: { Arn: 'Arn' } }) }
 
 export interface Alarm extends KloudResource {
     comparisonOperator: Value<string>;

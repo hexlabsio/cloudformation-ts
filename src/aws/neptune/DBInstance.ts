@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function dBInstance(dBInstanceProps: DBInstance & { logicalName?: string }): DBInstance { return ({ ...dBInstanceProps, _logicalType: 'AWS::Neptune::DBInstance' }) as unknown as DBInstance }
+export type DBInstanceAttributes = { Endpoint: Attribute<string>; Port: Attribute<string> }
+export function dBInstance(dBInstanceProps: DBInstance): DBInstance & { attributes: DBInstanceAttributes } { return ({ ...dBInstanceProps, _logicalType: 'AWS::Neptune::DBInstance', attributes: { Endpoint: 'Endpoint', Port: 'Port' } }) }
 
 export interface DBInstance extends KloudResource {
     dBInstanceClass: Value<string>;

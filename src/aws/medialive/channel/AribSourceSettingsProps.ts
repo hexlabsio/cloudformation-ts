@@ -1,6 +1,6 @@
 
 
-export function aribSourceSettingsProps(aribSourceSettingsPropsProps: AribSourceSettingsProps): AribSourceSettingsProps { return (aribSourceSettingsPropsProps) as unknown as AribSourceSettingsProps }
+export function aribSourceSettingsProps(aribSourceSettingsPropsProps: AribSourceSettingsProps): AribSourceSettingsProps { return (aribSourceSettingsPropsProps) }
 
 export interface AribSourceSettingsProps {
 

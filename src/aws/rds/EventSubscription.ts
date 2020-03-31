@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function eventSubscription(eventSubscriptionProps: EventSubscription & { logicalName?: string }): EventSubscription { return ({ ...eventSubscriptionProps, _logicalType: 'AWS::RDS::EventSubscription' }) as unknown as EventSubscription }
+export type EventSubscriptionAttributes = {  }
+export function eventSubscription(eventSubscriptionProps: EventSubscription): EventSubscription & { attributes: EventSubscriptionAttributes } { return ({ ...eventSubscriptionProps, _logicalType: 'AWS::RDS::EventSubscription', attributes: {  } }) }
 
 export interface EventSubscription extends KloudResource {
     snsTopicArn: Value<string>;

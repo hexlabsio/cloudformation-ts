@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function defaultPushNotificationTemplateProps(defaultPushNotificationTemplatePropsProps: DefaultPushNotificationTemplateProps): DefaultPushNotificationTemplateProps { return (defaultPushNotificationTemplatePropsProps) as unknown as DefaultPushNotificationTemplateProps }
+export function defaultPushNotificationTemplateProps(defaultPushNotificationTemplatePropsProps: DefaultPushNotificationTemplateProps): DefaultPushNotificationTemplateProps { return (defaultPushNotificationTemplatePropsProps) }
 
 export interface DefaultPushNotificationTemplateProps {
     action?: Value<string>;

@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { S3ReportExportConfigProps } from './S3ReportExportConfigProps';
 
-export function reportExportConfigProps(reportExportConfigPropsProps: ReportExportConfigProps): ReportExportConfigProps { return (reportExportConfigPropsProps) as unknown as ReportExportConfigProps }
+export function reportExportConfigProps(reportExportConfigPropsProps: ReportExportConfigProps): ReportExportConfigProps { return (reportExportConfigPropsProps) }
 
 export interface ReportExportConfigProps {
     exportConfigType: Value<string>;

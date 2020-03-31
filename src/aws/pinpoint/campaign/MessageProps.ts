@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function messageProps(messagePropsProps: MessageProps): MessageProps { return (messagePropsProps) as unknown as MessageProps }
+export function messageProps(messagePropsProps: MessageProps): MessageProps { return (messagePropsProps) }
 
 export interface MessageProps {
     jsonBody?: Value<string>;

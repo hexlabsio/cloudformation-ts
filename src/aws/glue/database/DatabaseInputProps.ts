@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function databaseInputProps(databaseInputPropsProps: DatabaseInputProps): DatabaseInputProps { return (databaseInputPropsProps) as unknown as DatabaseInputProps }
+export function databaseInputProps(databaseInputPropsProps: DatabaseInputProps): DatabaseInputProps { return (databaseInputPropsProps) }
 
 export interface DatabaseInputProps {
     locationUri?: Value<string>;

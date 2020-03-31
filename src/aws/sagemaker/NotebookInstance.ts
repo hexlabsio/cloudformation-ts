@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function notebookInstance(notebookInstanceProps: NotebookInstance & { logicalName?: string }): NotebookInstance { return ({ ...notebookInstanceProps, _logicalType: 'AWS::SageMaker::NotebookInstance' }) as unknown as NotebookInstance }
+export type NotebookInstanceAttributes = { NotebookInstanceName: Attribute<string> }
+export function notebookInstance(notebookInstanceProps: NotebookInstance): NotebookInstance & { attributes: NotebookInstanceAttributes } { return ({ ...notebookInstanceProps, _logicalType: 'AWS::SageMaker::NotebookInstance', attributes: { NotebookInstanceName: 'NotebookInstanceName' } }) }
 
 export interface NotebookInstance extends KloudResource {
     roleArn: Value<string>;

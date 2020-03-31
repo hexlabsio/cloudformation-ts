@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function spotOptionsProps(spotOptionsPropsProps: SpotOptionsProps): SpotOptionsProps { return (spotOptionsPropsProps) as unknown as SpotOptionsProps }
+export function spotOptionsProps(spotOptionsPropsProps: SpotOptionsProps): SpotOptionsProps { return (spotOptionsPropsProps) }
 
 export interface SpotOptionsProps {
     spotInstanceType?: Value<string>;

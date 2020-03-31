@@ -1,7 +1,9 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function profilingGroup(profilingGroupProps: ProfilingGroup & { logicalName?: string }): ProfilingGroup { return ({ ...profilingGroupProps, _logicalType: 'AWS::CodeGuruProfiler::ProfilingGroup' }) as unknown as ProfilingGroup }
+export type ProfilingGroupAttributes = { Arn: Attribute<string> }
+export function profilingGroup(profilingGroupProps: ProfilingGroup): ProfilingGroup & { attributes: ProfilingGroupAttributes } { return ({ ...profilingGroupProps, _logicalType: 'AWS::CodeGuruProfiler::ProfilingGroup', attributes: { Arn: 'Arn' } }) }
 
 export interface ProfilingGroup extends KloudResource {
     profilingGroupName: Value<string>;

@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function resourcePolicy(resourcePolicyProps: ResourcePolicy & { logicalName?: string }): ResourcePolicy { return ({ ...resourcePolicyProps, _logicalType: 'AWS::SecretsManager::ResourcePolicy' }) as unknown as ResourcePolicy }
+export type ResourcePolicyAttributes = {  }
+export function resourcePolicy(resourcePolicyProps: ResourcePolicy): ResourcePolicy & { attributes: ResourcePolicyAttributes } { return ({ ...resourcePolicyProps, _logicalType: 'AWS::SecretsManager::ResourcePolicy', attributes: {  } }) }
 
 export interface ResourcePolicy extends KloudResource {
     secretId: Value<string>;

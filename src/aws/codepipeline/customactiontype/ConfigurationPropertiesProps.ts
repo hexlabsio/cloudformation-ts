@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function configurationPropertiesProps(configurationPropertiesPropsProps: ConfigurationPropertiesProps): ConfigurationPropertiesProps { return (configurationPropertiesPropsProps) as unknown as ConfigurationPropertiesProps }
+export function configurationPropertiesProps(configurationPropertiesPropsProps: ConfigurationPropertiesProps): ConfigurationPropertiesProps { return (configurationPropertiesPropsProps) }
 
 export interface ConfigurationPropertiesProps {
     key: Value<boolean>;

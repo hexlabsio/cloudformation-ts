@@ -5,7 +5,8 @@ import { SettingsProps } from './customactiontype/SettingsProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function customActionType(customActionTypeProps: CustomActionType & { logicalName?: string }): CustomActionType { return ({ ...customActionTypeProps, _logicalType: 'AWS::CodePipeline::CustomActionType' }) as unknown as CustomActionType }
+export type CustomActionTypeAttributes = {  }
+export function customActionType(customActionTypeProps: CustomActionType): CustomActionType & { attributes: CustomActionTypeAttributes } { return ({ ...customActionTypeProps, _logicalType: 'AWS::CodePipeline::CustomActionType', attributes: {  } }) }
 
 export interface CustomActionType extends KloudResource {
     category: Value<string>;

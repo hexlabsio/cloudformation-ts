@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function dBParameterGroup(dBParameterGroupProps: DBParameterGroup & { logicalName?: string }): DBParameterGroup { return ({ ...dBParameterGroupProps, _logicalType: 'AWS::RDS::DBParameterGroup' }) as unknown as DBParameterGroup }
+export type DBParameterGroupAttributes = {  }
+export function dBParameterGroup(dBParameterGroupProps: DBParameterGroup): DBParameterGroup & { attributes: DBParameterGroupAttributes } { return ({ ...dBParameterGroupProps, _logicalType: 'AWS::RDS::DBParameterGroup', attributes: {  } }) }
 
 export interface DBParameterGroup extends KloudResource {
     description: Value<string>;

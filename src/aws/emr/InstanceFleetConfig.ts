@@ -3,7 +3,8 @@ import { InstanceTypeConfigProps } from './instancefleetconfig/InstanceTypeConfi
 import { InstanceFleetProvisioningSpecificationsProps } from './instancefleetconfig/InstanceFleetProvisioningSpecificationsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function instanceFleetConfig(instanceFleetConfigProps: InstanceFleetConfig & { logicalName?: string }): InstanceFleetConfig { return ({ ...instanceFleetConfigProps, _logicalType: 'AWS::EMR::InstanceFleetConfig' }) as unknown as InstanceFleetConfig }
+export type InstanceFleetConfigAttributes = {  }
+export function instanceFleetConfig(instanceFleetConfigProps: InstanceFleetConfig): InstanceFleetConfig & { attributes: InstanceFleetConfigAttributes } { return ({ ...instanceFleetConfigProps, _logicalType: 'AWS::EMR::InstanceFleetConfig', attributes: {  } }) }
 
 export interface InstanceFleetConfig extends KloudResource {
     clusterId: Value<string>;

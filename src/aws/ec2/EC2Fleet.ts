@@ -6,7 +6,8 @@ import { TagSpecificationProps } from './ec2fleet/TagSpecificationProps';
 import { SpotOptionsRequestProps } from './ec2fleet/SpotOptionsRequestProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function eC2Fleet(eC2FleetProps: EC2Fleet & { logicalName?: string }): EC2Fleet { return ({ ...eC2FleetProps, _logicalType: 'AWS::EC2::EC2Fleet' }) as unknown as EC2Fleet }
+export type EC2FleetAttributes = {  }
+export function eC2Fleet(eC2FleetProps: EC2Fleet): EC2Fleet & { attributes: EC2FleetAttributes } { return ({ ...eC2FleetProps, _logicalType: 'AWS::EC2::EC2Fleet', attributes: {  } }) }
 
 export interface EC2Fleet extends KloudResource {
     targetCapacitySpecification: TargetCapacitySpecificationRequestProps;

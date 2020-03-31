@@ -7,7 +7,8 @@ import { Tag } from '../Tag';
 import { VolumeProps } from './taskdefinition/VolumeProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function taskDefinition(taskDefinitionProps: TaskDefinition & { logicalName?: string }): TaskDefinition { return ({ ...taskDefinitionProps, _logicalType: 'AWS::ECS::TaskDefinition' }) as unknown as TaskDefinition }
+export type TaskDefinitionAttributes = {  }
+export function taskDefinition(taskDefinitionProps: TaskDefinition): TaskDefinition & { attributes: TaskDefinitionAttributes } { return ({ ...taskDefinitionProps, _logicalType: 'AWS::ECS::TaskDefinition', attributes: {  } }) }
 
 export interface TaskDefinition extends KloudResource {
     containerDefinitions?: ContainerDefinitionProps[];

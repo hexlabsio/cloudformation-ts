@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function generateSecretStringProps(generateSecretStringPropsProps: GenerateSecretStringProps): GenerateSecretStringProps { return (generateSecretStringPropsProps) as unknown as GenerateSecretStringProps }
+export function generateSecretStringProps(generateSecretStringPropsProps: GenerateSecretStringProps): GenerateSecretStringProps { return (generateSecretStringPropsProps) }
 
 export interface GenerateSecretStringProps {
     excludeUppercase?: Value<boolean>;

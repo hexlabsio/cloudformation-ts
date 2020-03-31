@@ -1,7 +1,9 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function certificate(certificateProps: Certificate & { logicalName?: string }): Certificate { return ({ ...certificateProps, _logicalType: 'AWS::IoT::Certificate' }) as unknown as Certificate }
+export type CertificateAttributes = { Arn: Attribute<string> }
+export function certificate(certificateProps: Certificate): Certificate & { attributes: CertificateAttributes } { return ({ ...certificateProps, _logicalType: 'AWS::IoT::Certificate', attributes: { Arn: 'Arn' } }) }
 
 export interface Certificate extends KloudResource {
     certificateSigningRequest: Value<string>;

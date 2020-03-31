@@ -4,7 +4,8 @@ import { ConfigurationProps } from './instancegroupconfig/ConfigurationProps';
 import { EbsConfigurationProps } from './instancegroupconfig/EbsConfigurationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function instanceGroupConfig(instanceGroupConfigProps: InstanceGroupConfig & { logicalName?: string }): InstanceGroupConfig { return ({ ...instanceGroupConfigProps, _logicalType: 'AWS::EMR::InstanceGroupConfig' }) as unknown as InstanceGroupConfig }
+export type InstanceGroupConfigAttributes = {  }
+export function instanceGroupConfig(instanceGroupConfigProps: InstanceGroupConfig): InstanceGroupConfig & { attributes: InstanceGroupConfigAttributes } { return ({ ...instanceGroupConfigProps, _logicalType: 'AWS::EMR::InstanceGroupConfig', attributes: {  } }) }
 
 export interface InstanceGroupConfig extends KloudResource {
     instanceCount: Value<number>;

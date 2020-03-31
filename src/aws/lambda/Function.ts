@@ -6,8 +6,10 @@ import { Tag } from '../Tag';
 import { TracingConfigProps } from './function/TracingConfigProps';
 import { VpcConfigProps } from './function/VpcConfigProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function lambdaFunction(lambdaFunctionProps: Function & { logicalName?: string }): Function { return ({ ...lambdaFunctionProps, _logicalType: 'AWS::Lambda::Function' }) as unknown as Function }
+export type FunctionAttributes = { Arn: Attribute<string> }
+export function lambdaFunction(lambdaFunctionProps: Function): Function & { attributes: FunctionAttributes } { return ({ ...lambdaFunctionProps, _logicalType: 'AWS::Lambda::Function', attributes: { Arn: 'Arn' } }) }
 
 export interface Function extends KloudResource {
     code: CodeProps;

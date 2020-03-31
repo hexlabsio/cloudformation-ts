@@ -1,10 +1,10 @@
 import { Value } from '../../../kloudformation/Value';
 import { SkewedInfoProps } from './SkewedInfoProps';
-import { ColumnProps } from '../../cassandra/table/ColumnProps';
+import { ColumnProps } from './ColumnProps';
 import { SerdeInfoProps } from './SerdeInfoProps';
 import { OrderProps } from './OrderProps';
 
-export function storageDescriptorProps(storageDescriptorPropsProps: StorageDescriptorProps): StorageDescriptorProps { return (storageDescriptorPropsProps) as unknown as StorageDescriptorProps }
+export function storageDescriptorProps(storageDescriptorPropsProps: StorageDescriptorProps): StorageDescriptorProps { return (storageDescriptorPropsProps) }
 
 export interface StorageDescriptorProps {
     storedAsSubDirectories?: Value<boolean>;

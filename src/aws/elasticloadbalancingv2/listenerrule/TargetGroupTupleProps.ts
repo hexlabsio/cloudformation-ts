@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function targetGroupTupleProps(targetGroupTuplePropsProps: TargetGroupTupleProps): TargetGroupTupleProps { return (targetGroupTuplePropsProps) as unknown as TargetGroupTupleProps }
+export function targetGroupTupleProps(targetGroupTuplePropsProps: TargetGroupTupleProps): TargetGroupTupleProps { return (targetGroupTuplePropsProps) }
 
 export interface TargetGroupTupleProps {
     targetGroupArn?: Value<string>;

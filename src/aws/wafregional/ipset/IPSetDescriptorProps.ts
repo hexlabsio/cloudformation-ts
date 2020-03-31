@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function iPSetDescriptorProps(iPSetDescriptorPropsProps: IPSetDescriptorProps): IPSetDescriptorProps { return (iPSetDescriptorPropsProps) as unknown as IPSetDescriptorProps }
+export function iPSetDescriptorProps(iPSetDescriptorPropsProps: IPSetDescriptorProps): IPSetDescriptorProps { return (iPSetDescriptorPropsProps) }
 
 export interface IPSetDescriptorProps {
     type: Value<string>;

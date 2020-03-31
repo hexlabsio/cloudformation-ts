@@ -3,7 +3,7 @@ import { TableWithColumnsResourceProps } from './TableWithColumnsResourceProps';
 import { TableResourceProps } from './TableResourceProps';
 import { DatabaseResourceProps } from './DatabaseResourceProps';
 
-export function resourceProps(resourcePropsProps: ResourceProps): ResourceProps { return (resourcePropsProps) as unknown as ResourceProps }
+export function resourceProps(resourcePropsProps: ResourceProps): ResourceProps { return (resourcePropsProps) }
 
 export interface ResourceProps {
     dataLocationResource?: DataLocationResourceProps;

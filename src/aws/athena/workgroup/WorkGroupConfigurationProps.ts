@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { ResultConfigurationProps } from './ResultConfigurationProps';
 
-export function workGroupConfigurationProps(workGroupConfigurationPropsProps: WorkGroupConfigurationProps): WorkGroupConfigurationProps { return (workGroupConfigurationPropsProps) as unknown as WorkGroupConfigurationProps }
+export function workGroupConfigurationProps(workGroupConfigurationPropsProps: WorkGroupConfigurationProps): WorkGroupConfigurationProps { return (workGroupConfigurationPropsProps) }
 
 export interface WorkGroupConfigurationProps {
     bytesScannedCutoffPerQuery?: Value<number>;

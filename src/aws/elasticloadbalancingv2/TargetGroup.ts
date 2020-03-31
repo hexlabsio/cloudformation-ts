@@ -4,8 +4,10 @@ import { Tag } from '../Tag';
 import { TargetGroupAttributeProps } from './targetgroup/TargetGroupAttributeProps';
 import { TargetDescriptionProps } from './targetgroup/TargetDescriptionProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function targetGroup(targetGroupProps: TargetGroup & { logicalName?: string }): TargetGroup { return ({ ...targetGroupProps, _logicalType: 'AWS::ElasticLoadBalancingV2::TargetGroup' }) as unknown as TargetGroup }
+export type TargetGroupAttributes = { LoadBalancerArns: Attribute<Value<string>[]>; TargetGroupFullName: Attribute<string>; TargetGroupName: Attribute<string> }
+export function targetGroup(targetGroupProps: TargetGroup): TargetGroup & { attributes: TargetGroupAttributes } { return ({ ...targetGroupProps, _logicalType: 'AWS::ElasticLoadBalancingV2::TargetGroup', attributes: { LoadBalancerArns: 'LoadBalancerArns', TargetGroupFullName: 'TargetGroupFullName', TargetGroupName: 'TargetGroupName' } }) }
 
 export interface TargetGroup extends KloudResource {
     healthCheckEnabled?: Value<boolean>;

@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { AccessControlTranslationProps } from './AccessControlTranslationProps';
 import { EncryptionConfigurationProps } from './EncryptionConfigurationProps';
 
-export function replicationDestinationProps(replicationDestinationPropsProps: ReplicationDestinationProps): ReplicationDestinationProps { return (replicationDestinationPropsProps) as unknown as ReplicationDestinationProps }
+export function replicationDestinationProps(replicationDestinationPropsProps: ReplicationDestinationProps): ReplicationDestinationProps { return (replicationDestinationPropsProps) }
 
 export interface ReplicationDestinationProps {
     bucket: Value<string>;

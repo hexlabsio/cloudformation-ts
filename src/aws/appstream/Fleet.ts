@@ -5,7 +5,8 @@ import { DomainJoinInfoProps } from './fleet/DomainJoinInfoProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function fleet(fleetProps: Fleet & { logicalName?: string }): Fleet { return ({ ...fleetProps, _logicalType: 'AWS::AppStream::Fleet' }) as unknown as Fleet }
+export type FleetAttributes = {  }
+export function fleet(fleetProps: Fleet): Fleet & { attributes: FleetAttributes } { return ({ ...fleetProps, _logicalType: 'AWS::AppStream::Fleet', attributes: {  } }) }
 
 export interface Fleet extends KloudResource {
     computeCapacity: ComputeCapacityProps;

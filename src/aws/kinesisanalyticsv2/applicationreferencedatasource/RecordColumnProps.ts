@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function recordColumnProps(recordColumnPropsProps: RecordColumnProps): RecordColumnProps { return (recordColumnPropsProps) as unknown as RecordColumnProps }
+export function recordColumnProps(recordColumnPropsProps: RecordColumnProps): RecordColumnProps { return (recordColumnPropsProps) }
 
 export interface RecordColumnProps {
     sqlType: Value<string>;

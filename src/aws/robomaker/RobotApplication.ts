@@ -2,8 +2,10 @@ import { RobotSoftwareSuiteProps } from './robotapplication/RobotSoftwareSuitePr
 import { SourceConfigProps } from './robotapplication/SourceConfigProps';
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function robotApplication(robotApplicationProps: RobotApplication & { logicalName?: string }): RobotApplication { return ({ ...robotApplicationProps, _logicalType: 'AWS::RoboMaker::RobotApplication' }) as unknown as RobotApplication }
+export type RobotApplicationAttributes = { CurrentRevisionId: Attribute<string>; Arn: Attribute<string> }
+export function robotApplication(robotApplicationProps: RobotApplication): RobotApplication & { attributes: RobotApplicationAttributes } { return ({ ...robotApplicationProps, _logicalType: 'AWS::RoboMaker::RobotApplication', attributes: { CurrentRevisionId: 'CurrentRevisionId', Arn: 'Arn' } }) }
 
 export interface RobotApplication extends KloudResource {
     robotSoftwareSuite: RobotSoftwareSuiteProps;

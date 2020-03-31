@@ -1,7 +1,9 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function emailTemplate(emailTemplateProps: EmailTemplate & { logicalName?: string }): EmailTemplate { return ({ ...emailTemplateProps, _logicalType: 'AWS::Pinpoint::EmailTemplate' }) as unknown as EmailTemplate }
+export type EmailTemplateAttributes = { Arn: Attribute<string> }
+export function emailTemplate(emailTemplateProps: EmailTemplate): EmailTemplate & { attributes: EmailTemplateAttributes } { return ({ ...emailTemplateProps, _logicalType: 'AWS::Pinpoint::EmailTemplate', attributes: { Arn: 'Arn' } }) }
 
 export interface EmailTemplate extends KloudResource {
     templateName: Value<string>;

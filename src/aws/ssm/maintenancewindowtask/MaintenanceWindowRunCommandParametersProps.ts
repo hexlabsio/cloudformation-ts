@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { NotificationConfigProps } from './NotificationConfigProps';
 
-export function maintenanceWindowRunCommandParametersProps(maintenanceWindowRunCommandParametersPropsProps: MaintenanceWindowRunCommandParametersProps): MaintenanceWindowRunCommandParametersProps { return (maintenanceWindowRunCommandParametersPropsProps) as unknown as MaintenanceWindowRunCommandParametersProps }
+export function maintenanceWindowRunCommandParametersProps(maintenanceWindowRunCommandParametersPropsProps: MaintenanceWindowRunCommandParametersProps): MaintenanceWindowRunCommandParametersProps { return (maintenanceWindowRunCommandParametersPropsProps) }
 
 export interface MaintenanceWindowRunCommandParametersProps {
     timeoutSeconds?: Value<number>;

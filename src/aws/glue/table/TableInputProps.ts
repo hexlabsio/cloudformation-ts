@@ -1,8 +1,8 @@
 import { Value } from '../../../kloudformation/Value';
 import { StorageDescriptorProps } from './StorageDescriptorProps';
-import { ColumnProps } from '../../cassandra/table/ColumnProps';
+import { ColumnProps } from './ColumnProps';
 
-export function tableInputProps(tableInputPropsProps: TableInputProps): TableInputProps { return (tableInputPropsProps) as unknown as TableInputProps }
+export function tableInputProps(tableInputPropsProps: TableInputProps): TableInputProps { return (tableInputPropsProps) }
 
 export interface TableInputProps {
     owner?: Value<string>;

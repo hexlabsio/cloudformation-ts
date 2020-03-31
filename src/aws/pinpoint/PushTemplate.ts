@@ -3,8 +3,10 @@ import { AndroidPushNotificationTemplateProps } from './pushtemplate/AndroidPush
 import { APNSPushNotificationTemplateProps } from './pushtemplate/APNSPushNotificationTemplateProps';
 import { DefaultPushNotificationTemplateProps } from './pushtemplate/DefaultPushNotificationTemplateProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function pushTemplate(pushTemplateProps: PushTemplate & { logicalName?: string }): PushTemplate { return ({ ...pushTemplateProps, _logicalType: 'AWS::Pinpoint::PushTemplate' }) as unknown as PushTemplate }
+export type PushTemplateAttributes = { Arn: Attribute<string> }
+export function pushTemplate(pushTemplateProps: PushTemplate): PushTemplate & { attributes: PushTemplateAttributes } { return ({ ...pushTemplateProps, _logicalType: 'AWS::Pinpoint::PushTemplate', attributes: { Arn: 'Arn' } }) }
 
 export interface PushTemplate extends KloudResource {
     templateName: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function validityProps(validityPropsProps: ValidityProps): ValidityProps { return (validityPropsProps) as unknown as ValidityProps }
+export function validityProps(validityPropsProps: ValidityProps): ValidityProps { return (validityPropsProps) }
 
 export interface ValidityProps {
     value: Value<number>;

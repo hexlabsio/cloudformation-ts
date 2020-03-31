@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function authorizer(authorizerProps: Authorizer & { logicalName?: string }): Authorizer { return ({ ...authorizerProps, _logicalType: 'AWS::ApiGateway::Authorizer' }) as unknown as Authorizer }
+export type AuthorizerAttributes = {  }
+export function authorizer(authorizerProps: Authorizer): Authorizer & { attributes: AuthorizerAttributes } { return ({ ...authorizerProps, _logicalType: 'AWS::ApiGateway::Authorizer', attributes: {  } }) }
 
 export interface Authorizer extends KloudResource {
     restApiId: Value<string>;

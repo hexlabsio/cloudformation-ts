@@ -3,8 +3,10 @@ import { InputSpecificationProps } from './channel/InputSpecificationProps';
 import { Value } from '../../kloudformation/Value';
 import { OutputDestinationProps } from './channel/OutputDestinationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function channel(channelProps: Channel & { logicalName?: string }): Channel { return ({ ...channelProps, _logicalType: 'AWS::MediaLive::Channel' }) as unknown as Channel }
+export type ChannelAttributes = { Arn: Attribute<string>; Inputs: Attribute<Value<string>[]> }
+export function channel(channelProps: Channel): Channel & { attributes: ChannelAttributes } { return ({ ...channelProps, _logicalType: 'AWS::MediaLive::Channel', attributes: { Arn: 'Arn', Inputs: 'Inputs' } }) }
 
 export interface Channel extends KloudResource {
     inputAttachments?: InputAttachmentProps[];

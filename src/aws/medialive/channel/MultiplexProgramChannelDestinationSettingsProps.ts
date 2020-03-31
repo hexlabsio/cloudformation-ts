@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function multiplexProgramChannelDestinationSettingsProps(multiplexProgramChannelDestinationSettingsPropsProps: MultiplexProgramChannelDestinationSettingsProps): MultiplexProgramChannelDestinationSettingsProps { return (multiplexProgramChannelDestinationSettingsPropsProps) as unknown as MultiplexProgramChannelDestinationSettingsProps }
+export function multiplexProgramChannelDestinationSettingsProps(multiplexProgramChannelDestinationSettingsPropsProps: MultiplexProgramChannelDestinationSettingsProps): MultiplexProgramChannelDestinationSettingsProps { return (multiplexProgramChannelDestinationSettingsPropsProps) }
 
 export interface MultiplexProgramChannelDestinationSettingsProps {
     multiplexId?: Value<string>;

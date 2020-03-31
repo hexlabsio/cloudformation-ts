@@ -4,7 +4,7 @@ import { FlinkApplicationConfigurationProps } from './FlinkApplicationConfigurat
 import { SqlApplicationConfigurationProps } from './SqlApplicationConfigurationProps';
 import { ApplicationSnapshotConfigurationProps } from './ApplicationSnapshotConfigurationProps';
 
-export function applicationConfigurationProps(applicationConfigurationPropsProps: ApplicationConfigurationProps): ApplicationConfigurationProps { return (applicationConfigurationPropsProps) as unknown as ApplicationConfigurationProps }
+export function applicationConfigurationProps(applicationConfigurationPropsProps: ApplicationConfigurationProps): ApplicationConfigurationProps { return (applicationConfigurationPropsProps) }
 
 export interface ApplicationConfigurationProps {
     applicationCodeConfiguration?: ApplicationCodeConfigurationProps;

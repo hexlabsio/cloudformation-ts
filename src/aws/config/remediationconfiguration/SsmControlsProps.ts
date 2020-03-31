@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function ssmControlsProps(ssmControlsPropsProps: SsmControlsProps): SsmControlsProps { return (ssmControlsPropsProps) as unknown as SsmControlsProps }
+export function ssmControlsProps(ssmControlsPropsProps: SsmControlsProps): SsmControlsProps { return (ssmControlsPropsProps) }
 
 export interface SsmControlsProps {
     errorPercentage?: Value<number>;

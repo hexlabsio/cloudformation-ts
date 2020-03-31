@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function monitoringConfigurationProps(monitoringConfigurationPropsProps: MonitoringConfigurationProps): MonitoringConfigurationProps { return (monitoringConfigurationPropsProps) as unknown as MonitoringConfigurationProps }
+export function monitoringConfigurationProps(monitoringConfigurationPropsProps: MonitoringConfigurationProps): MonitoringConfigurationProps { return (monitoringConfigurationPropsProps) }
 
 export interface MonitoringConfigurationProps {
     configurationType: Value<string>;

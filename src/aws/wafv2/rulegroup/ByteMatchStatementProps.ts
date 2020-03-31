@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { FieldToMatchProps } from './FieldToMatchProps';
 import { TextTransformationProps } from './TextTransformationProps';
 
-export function byteMatchStatementProps(byteMatchStatementPropsProps: ByteMatchStatementProps): ByteMatchStatementProps { return (byteMatchStatementPropsProps) as unknown as ByteMatchStatementProps }
+export function byteMatchStatementProps(byteMatchStatementPropsProps: ByteMatchStatementProps): ByteMatchStatementProps { return (byteMatchStatementPropsProps) }
 
 export interface ByteMatchStatementProps {
     searchString: Value<string>;

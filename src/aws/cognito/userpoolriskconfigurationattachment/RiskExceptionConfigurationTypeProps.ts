@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function riskExceptionConfigurationTypeProps(riskExceptionConfigurationTypePropsProps: RiskExceptionConfigurationTypeProps): RiskExceptionConfigurationTypeProps { return (riskExceptionConfigurationTypePropsProps) as unknown as RiskExceptionConfigurationTypeProps }
+export function riskExceptionConfigurationTypeProps(riskExceptionConfigurationTypePropsProps: RiskExceptionConfigurationTypeProps): RiskExceptionConfigurationTypeProps { return (riskExceptionConfigurationTypePropsProps) }
 
 export interface RiskExceptionConfigurationTypeProps {
     blockedIPRangeList?: Value<Value<string>[]>;

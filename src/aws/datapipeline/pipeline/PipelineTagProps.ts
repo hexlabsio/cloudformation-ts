@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function pipelineTagProps(pipelineTagPropsProps: PipelineTagProps): PipelineTagProps { return (pipelineTagPropsProps) as unknown as PipelineTagProps }
+export function pipelineTagProps(pipelineTagPropsProps: PipelineTagProps): PipelineTagProps { return (pipelineTagPropsProps) }
 
 export interface PipelineTagProps {
     key: Value<string>;

@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { PredefinedScalingMetricSpecificationProps } from './PredefinedScalingMetricSpecificationProps';
 import { CustomizedScalingMetricSpecificationProps } from './CustomizedScalingMetricSpecificationProps';
 
-export function targetTrackingConfigurationProps(targetTrackingConfigurationPropsProps: TargetTrackingConfigurationProps): TargetTrackingConfigurationProps { return (targetTrackingConfigurationPropsProps) as unknown as TargetTrackingConfigurationProps }
+export function targetTrackingConfigurationProps(targetTrackingConfigurationPropsProps: TargetTrackingConfigurationProps): TargetTrackingConfigurationProps { return (targetTrackingConfigurationPropsProps) }
 
 export interface TargetTrackingConfigurationProps {
     targetValue: Value<number>;

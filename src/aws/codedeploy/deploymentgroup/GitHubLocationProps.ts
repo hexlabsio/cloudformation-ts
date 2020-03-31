@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function gitHubLocationProps(gitHubLocationPropsProps: GitHubLocationProps): GitHubLocationProps { return (gitHubLocationPropsProps) as unknown as GitHubLocationProps }
+export function gitHubLocationProps(gitHubLocationPropsProps: GitHubLocationProps): GitHubLocationProps { return (gitHubLocationPropsProps) }
 
 export interface GitHubLocationProps {
     commitId: Value<string>;

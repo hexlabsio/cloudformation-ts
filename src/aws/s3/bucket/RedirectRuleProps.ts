@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function redirectRuleProps(redirectRulePropsProps: RedirectRuleProps): RedirectRuleProps { return (redirectRulePropsProps) as unknown as RedirectRuleProps }
+export function redirectRuleProps(redirectRulePropsProps: RedirectRuleProps): RedirectRuleProps { return (redirectRulePropsProps) }
 
 export interface RedirectRuleProps {
     hostName?: Value<string>;

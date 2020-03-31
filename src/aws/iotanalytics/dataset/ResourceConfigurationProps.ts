@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function resourceConfigurationProps(resourceConfigurationPropsProps: ResourceConfigurationProps): ResourceConfigurationProps { return (resourceConfigurationPropsProps) as unknown as ResourceConfigurationProps }
+export function resourceConfigurationProps(resourceConfigurationPropsProps: ResourceConfigurationProps): ResourceConfigurationProps { return (resourceConfigurationPropsProps) }
 
 export interface ResourceConfigurationProps {
     volumeSizeInGB: Value<number>;

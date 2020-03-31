@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { IPSetDescriptorProps } from '../wafregional/ipset/IPSetDescriptorProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function iPSet(iPSetProps: IPSet & { logicalName?: string }): IPSet { return ({ ...iPSetProps, _logicalType: 'AWS::WAF::IPSet' }) as unknown as IPSet }
+export type IPSetAttributes = {  }
+export function iPSet(iPSetProps: IPSet): IPSet & { attributes: IPSetAttributes } { return ({ ...iPSetProps, _logicalType: 'AWS::WAF::IPSet', attributes: {  } }) }
 
 export interface IPSet extends KloudResource {
     name: Value<string>;

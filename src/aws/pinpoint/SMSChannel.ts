@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function sMSChannel(sMSChannelProps: SMSChannel & { logicalName?: string }): SMSChannel { return ({ ...sMSChannelProps, _logicalType: 'AWS::Pinpoint::SMSChannel' }) as unknown as SMSChannel }
+export type SMSChannelAttributes = {  }
+export function sMSChannel(sMSChannelProps: SMSChannel): SMSChannel & { attributes: SMSChannelAttributes } { return ({ ...sMSChannelProps, _logicalType: 'AWS::Pinpoint::SMSChannel', attributes: {  } }) }
 
 export interface SMSChannel extends KloudResource {
     applicationId: Value<string>;

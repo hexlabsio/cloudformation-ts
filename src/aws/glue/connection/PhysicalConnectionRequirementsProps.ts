@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function physicalConnectionRequirementsProps(physicalConnectionRequirementsPropsProps: PhysicalConnectionRequirementsProps): PhysicalConnectionRequirementsProps { return (physicalConnectionRequirementsPropsProps) as unknown as PhysicalConnectionRequirementsProps }
+export function physicalConnectionRequirementsProps(physicalConnectionRequirementsPropsProps: PhysicalConnectionRequirementsProps): PhysicalConnectionRequirementsProps { return (physicalConnectionRequirementsPropsProps) }
 
 export interface PhysicalConnectionRequirementsProps {
     availabilityZone?: Value<string>;

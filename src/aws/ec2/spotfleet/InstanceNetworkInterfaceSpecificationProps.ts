@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { InstanceIpv6AddressProps } from './InstanceIpv6AddressProps';
 import { PrivateIpAddressSpecificationProps } from './PrivateIpAddressSpecificationProps';
 
-export function instanceNetworkInterfaceSpecificationProps(instanceNetworkInterfaceSpecificationPropsProps: InstanceNetworkInterfaceSpecificationProps): InstanceNetworkInterfaceSpecificationProps { return (instanceNetworkInterfaceSpecificationPropsProps) as unknown as InstanceNetworkInterfaceSpecificationProps }
+export function instanceNetworkInterfaceSpecificationProps(instanceNetworkInterfaceSpecificationPropsProps: InstanceNetworkInterfaceSpecificationProps): InstanceNetworkInterfaceSpecificationProps { return (instanceNetworkInterfaceSpecificationPropsProps) }
 
 export interface InstanceNetworkInterfaceSpecificationProps {
     associatePublicIpAddress?: Value<boolean>;

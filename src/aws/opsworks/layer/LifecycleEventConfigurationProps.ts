@@ -1,6 +1,6 @@
 import { ShutdownEventConfigurationProps } from './ShutdownEventConfigurationProps';
 
-export function lifecycleEventConfigurationProps(lifecycleEventConfigurationPropsProps: LifecycleEventConfigurationProps): LifecycleEventConfigurationProps { return (lifecycleEventConfigurationPropsProps) as unknown as LifecycleEventConfigurationProps }
+export function lifecycleEventConfigurationProps(lifecycleEventConfigurationPropsProps: LifecycleEventConfigurationProps): LifecycleEventConfigurationProps { return (lifecycleEventConfigurationPropsProps) }
 
 export interface LifecycleEventConfigurationProps {
     shutdownEventConfiguration?: ShutdownEventConfigurationProps;

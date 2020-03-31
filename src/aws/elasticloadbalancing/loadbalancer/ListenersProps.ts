@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function listenersProps(listenersPropsProps: ListenersProps): ListenersProps { return (listenersPropsProps) as unknown as ListenersProps }
+export function listenersProps(listenersPropsProps: ListenersProps): ListenersProps { return (listenersPropsProps) }
 
 export interface ListenersProps {
     instancePort: Value<string>;

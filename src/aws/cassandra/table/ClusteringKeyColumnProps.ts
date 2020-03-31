@@ -1,7 +1,7 @@
-import { ColumnProps } from './ColumnProps';
+import { ColumnProps } from '../../glue/table/ColumnProps';
 import { Value } from '../../../kloudformation/Value';
 
-export function clusteringKeyColumnProps(clusteringKeyColumnPropsProps: ClusteringKeyColumnProps): ClusteringKeyColumnProps { return (clusteringKeyColumnPropsProps) as unknown as ClusteringKeyColumnProps }
+export function clusteringKeyColumnProps(clusteringKeyColumnPropsProps: ClusteringKeyColumnProps): ClusteringKeyColumnProps { return (clusteringKeyColumnPropsProps) }
 
 export interface ClusteringKeyColumnProps {
     column: ColumnProps;

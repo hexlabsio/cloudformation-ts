@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { ColumnWildcardProps } from './ColumnWildcardProps';
 
-export function tableWithColumnsResourceProps(tableWithColumnsResourcePropsProps: TableWithColumnsResourceProps): TableWithColumnsResourceProps { return (tableWithColumnsResourcePropsProps) as unknown as TableWithColumnsResourceProps }
+export function tableWithColumnsResourceProps(tableWithColumnsResourcePropsProps: TableWithColumnsResourceProps): TableWithColumnsResourceProps { return (tableWithColumnsResourcePropsProps) }
 
 export interface TableWithColumnsResourceProps {
     columnNames?: Value<Value<string>[]>;

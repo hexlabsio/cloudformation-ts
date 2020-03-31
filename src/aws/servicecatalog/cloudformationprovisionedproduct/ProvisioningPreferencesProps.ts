@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function provisioningPreferencesProps(provisioningPreferencesPropsProps: ProvisioningPreferencesProps): ProvisioningPreferencesProps { return (provisioningPreferencesPropsProps) as unknown as ProvisioningPreferencesProps }
+export function provisioningPreferencesProps(provisioningPreferencesPropsProps: ProvisioningPreferencesProps): ProvisioningPreferencesProps { return (provisioningPreferencesPropsProps) }
 
 export interface ProvisioningPreferencesProps {
     stackSetAccounts?: Value<Value<string>[]>;

@@ -1,7 +1,7 @@
 import { VideoSelectorSettingsProps } from './VideoSelectorSettingsProps';
 import { Value } from '../../../kloudformation/Value';
 
-export function videoSelectorProps(videoSelectorPropsProps: VideoSelectorProps): VideoSelectorProps { return (videoSelectorPropsProps) as unknown as VideoSelectorProps }
+export function videoSelectorProps(videoSelectorPropsProps: VideoSelectorProps): VideoSelectorProps { return (videoSelectorPropsProps) }
 
 export interface VideoSelectorProps {
     selectorSettings?: VideoSelectorSettingsProps;

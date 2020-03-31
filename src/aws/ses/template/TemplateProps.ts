@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function templateProps(templatePropsProps: TemplateProps): TemplateProps { return (templatePropsProps) as unknown as TemplateProps }
+export function templateProps(templatePropsProps: TemplateProps): TemplateProps { return (templatePropsProps) }
 
 export interface TemplateProps {
     htmlPart?: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function nodeGroupConfigurationProps(nodeGroupConfigurationPropsProps: NodeGroupConfigurationProps): NodeGroupConfigurationProps { return (nodeGroupConfigurationPropsProps) as unknown as NodeGroupConfigurationProps }
+export function nodeGroupConfigurationProps(nodeGroupConfigurationPropsProps: NodeGroupConfigurationProps): NodeGroupConfigurationProps { return (nodeGroupConfigurationPropsProps) }
 
 export interface NodeGroupConfigurationProps {
     nodeGroupId?: Value<string>;

@@ -4,7 +4,8 @@ import { TaskInvocationParametersProps } from './maintenancewindowtask/TaskInvoc
 import { LoggingInfoProps } from './maintenancewindowtask/LoggingInfoProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function maintenanceWindowTask(maintenanceWindowTaskProps: MaintenanceWindowTask & { logicalName?: string }): MaintenanceWindowTask { return ({ ...maintenanceWindowTaskProps, _logicalType: 'AWS::SSM::MaintenanceWindowTask' }) as unknown as MaintenanceWindowTask }
+export type MaintenanceWindowTaskAttributes = {  }
+export function maintenanceWindowTask(maintenanceWindowTaskProps: MaintenanceWindowTask): MaintenanceWindowTask & { attributes: MaintenanceWindowTaskAttributes } { return ({ ...maintenanceWindowTaskProps, _logicalType: 'AWS::SSM::MaintenanceWindowTask', attributes: {  } }) }
 
 export interface MaintenanceWindowTask extends KloudResource {
     maxErrors: Value<string>;

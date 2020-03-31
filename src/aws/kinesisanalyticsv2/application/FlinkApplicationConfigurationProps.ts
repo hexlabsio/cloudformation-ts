@@ -2,7 +2,7 @@ import { CheckpointConfigurationProps } from './CheckpointConfigurationProps';
 import { ParallelismConfigurationProps } from './ParallelismConfigurationProps';
 import { MonitoringConfigurationProps } from './MonitoringConfigurationProps';
 
-export function flinkApplicationConfigurationProps(flinkApplicationConfigurationPropsProps: FlinkApplicationConfigurationProps): FlinkApplicationConfigurationProps { return (flinkApplicationConfigurationPropsProps) as unknown as FlinkApplicationConfigurationProps }
+export function flinkApplicationConfigurationProps(flinkApplicationConfigurationPropsProps: FlinkApplicationConfigurationProps): FlinkApplicationConfigurationProps { return (flinkApplicationConfigurationPropsProps) }
 
 export interface FlinkApplicationConfigurationProps {
     checkpointConfiguration?: CheckpointConfigurationProps;

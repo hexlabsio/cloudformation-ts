@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { BlockDeviceMappingProps } from './launchconfiguration/BlockDeviceMappingProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function launchConfiguration(launchConfigurationProps: LaunchConfiguration & { logicalName?: string }): LaunchConfiguration { return ({ ...launchConfigurationProps, _logicalType: 'AWS::AutoScaling::LaunchConfiguration' }) as unknown as LaunchConfiguration }
+export type LaunchConfigurationAttributes = {  }
+export function launchConfiguration(launchConfigurationProps: LaunchConfiguration): LaunchConfiguration & { attributes: LaunchConfigurationAttributes } { return ({ ...launchConfigurationProps, _logicalType: 'AWS::AutoScaling::LaunchConfiguration', attributes: {  } }) }
 
 export interface LaunchConfiguration extends KloudResource {
     imageId: Value<string>;

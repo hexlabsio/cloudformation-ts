@@ -2,11 +2,13 @@ import { Value } from '../../kloudformation/Value';
 import { TlsConfigProps } from './integration/TlsConfigProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function integration(integrationProps: Integration & { logicalName?: string }): Integration { return ({ ...integrationProps, _logicalType: 'AWS::ApiGatewayV2::Integration' }) as unknown as Integration }
+export type IntegrationAttributes = {  }
+export function integration(integrationProps: Integration): Integration & { attributes: IntegrationAttributes } { return ({ ...integrationProps, _logicalType: 'AWS::ApiGatewayV2::Integration', attributes: {  } }) }
 
 export interface Integration extends KloudResource {
     apiId: Value<string>;
     integrationType: Value<string>;
+    connectionId?: Value<string>;
     tlsConfig?: TlsConfigProps;
     description?: Value<string>;
     templateSelectionExpression?: Value<string>;

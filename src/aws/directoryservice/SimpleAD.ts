@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { VpcSettingsProps } from './simplead/VpcSettingsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function simpleAD(simpleADProps: SimpleAD & { logicalName?: string }): SimpleAD { return ({ ...simpleADProps, _logicalType: 'AWS::DirectoryService::SimpleAD' }) as unknown as SimpleAD }
+export type SimpleADAttributes = { Alias: Attribute<string>; DnsIpAddresses: Attribute<Value<string>[]> }
+export function simpleAD(simpleADProps: SimpleAD): SimpleAD & { attributes: SimpleADAttributes } { return ({ ...simpleADProps, _logicalType: 'AWS::DirectoryService::SimpleAD', attributes: { Alias: 'Alias', DnsIpAddresses: 'DnsIpAddresses' } }) }
 
 export interface SimpleAD extends KloudResource {
     name: Value<string>;

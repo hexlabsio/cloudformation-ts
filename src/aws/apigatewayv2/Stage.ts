@@ -3,7 +3,8 @@ import { AccessLogSettingsProps } from './stage/AccessLogSettingsProps';
 import { RouteSettingsProps } from './stage/RouteSettingsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function stage(stageProps: Stage & { logicalName?: string }): Stage { return ({ ...stageProps, _logicalType: 'AWS::ApiGatewayV2::Stage' }) as unknown as Stage }
+export type StageAttributes = {  }
+export function stage(stageProps: Stage): Stage & { attributes: StageAttributes } { return ({ ...stageProps, _logicalType: 'AWS::ApiGatewayV2::Stage', attributes: {  } }) }
 
 export interface Stage extends KloudResource {
     stageName: Value<string>;

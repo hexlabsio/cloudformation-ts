@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function stack(stackProps: Stack & { logicalName?: string }): Stack { return ({ ...stackProps, _logicalType: 'AWS::CloudFormation::Stack' }) as unknown as Stack }
+export type StackAttributes = {  }
+export function stack(stackProps: Stack): Stack & { attributes: StackAttributes } { return ({ ...stackProps, _logicalType: 'AWS::CloudFormation::Stack', attributes: {  } }) }
 
 export interface Stack extends KloudResource {
     templateURL: Value<string>;

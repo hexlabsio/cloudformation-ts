@@ -3,8 +3,10 @@ import { OptionSettingProps } from './environment/OptionSettingProps';
 import { Tag } from '../Tag';
 import { TierProps } from './environment/TierProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function environment(environmentProps: Environment & { logicalName?: string }): Environment { return ({ ...environmentProps, _logicalType: 'AWS::ElasticBeanstalk::Environment' }) as unknown as Environment }
+export type EnvironmentAttributes = { EndpointURL: Attribute<string> }
+export function environment(environmentProps: Environment): Environment & { attributes: EnvironmentAttributes } { return ({ ...environmentProps, _logicalType: 'AWS::ElasticBeanstalk::Environment', attributes: { EndpointURL: 'EndpointURL' } }) }
 
 export interface Environment extends KloudResource {
     applicationName: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function firehoseProps(firehosePropsProps: FirehoseProps): FirehoseProps { return (firehosePropsProps) as unknown as FirehoseProps }
+export function firehoseProps(firehosePropsProps: FirehoseProps): FirehoseProps { return (firehosePropsProps) }
 
 export interface FirehoseProps {
     deliveryStreamName?: Value<string>;

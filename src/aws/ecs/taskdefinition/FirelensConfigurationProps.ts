@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function firelensConfigurationProps(firelensConfigurationPropsProps: FirelensConfigurationProps): FirelensConfigurationProps { return (firelensConfigurationPropsProps) as unknown as FirelensConfigurationProps }
+export function firelensConfigurationProps(firelensConfigurationPropsProps: FirelensConfigurationProps): FirelensConfigurationProps { return (firelensConfigurationPropsProps) }
 
 export interface FirelensConfigurationProps {
     type: Value<string>;

@@ -4,8 +4,10 @@ import { RobotSoftwareSuiteProps } from './simulationapplication/RobotSoftwareSu
 import { SourceConfigProps } from './simulationapplication/SourceConfigProps';
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function simulationApplication(simulationApplicationProps: SimulationApplication & { logicalName?: string }): SimulationApplication { return ({ ...simulationApplicationProps, _logicalType: 'AWS::RoboMaker::SimulationApplication' }) as unknown as SimulationApplication }
+export type SimulationApplicationAttributes = { CurrentRevisionId: Attribute<string>; Arn: Attribute<string> }
+export function simulationApplication(simulationApplicationProps: SimulationApplication): SimulationApplication & { attributes: SimulationApplicationAttributes } { return ({ ...simulationApplicationProps, _logicalType: 'AWS::RoboMaker::SimulationApplication', attributes: { CurrentRevisionId: 'CurrentRevisionId', Arn: 'Arn' } }) }
 
 export interface SimulationApplication extends KloudResource {
     renderingEngine: RenderingEngineProps;

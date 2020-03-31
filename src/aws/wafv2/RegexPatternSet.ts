@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function regexPatternSet(regexPatternSetProps: RegexPatternSet & { logicalName?: string }): RegexPatternSet { return ({ ...regexPatternSetProps, _logicalType: 'AWS::WAFv2::RegexPatternSet' }) as unknown as RegexPatternSet }
+export type RegexPatternSetAttributes = { Arn: Attribute<string>; Id: Attribute<string> }
+export function regexPatternSet(regexPatternSetProps: RegexPatternSet): RegexPatternSet & { attributes: RegexPatternSetAttributes } { return ({ ...regexPatternSetProps, _logicalType: 'AWS::WAFv2::RegexPatternSet', attributes: { Arn: 'Arn', Id: 'Id' } }) }
 
 export interface RegexPatternSet extends KloudResource {
     regularExpressionList: Value<Value<string>[]>;

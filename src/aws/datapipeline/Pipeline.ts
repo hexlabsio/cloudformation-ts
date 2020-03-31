@@ -5,7 +5,8 @@ import { PipelineObjectProps } from './pipeline/PipelineObjectProps';
 import { PipelineTagProps } from './pipeline/PipelineTagProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function pipeline(pipelineProps: Pipeline & { logicalName?: string }): Pipeline { return ({ ...pipelineProps, _logicalType: 'AWS::DataPipeline::Pipeline' }) as unknown as Pipeline }
+export type PipelineAttributes = {  }
+export function pipeline(pipelineProps: Pipeline): Pipeline & { attributes: PipelineAttributes } { return ({ ...pipelineProps, _logicalType: 'AWS::DataPipeline::Pipeline', attributes: {  } }) }
 
 export interface Pipeline extends KloudResource {
     name: Value<string>;

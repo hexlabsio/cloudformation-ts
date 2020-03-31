@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function sqsActionProps(sqsActionPropsProps: SqsActionProps): SqsActionProps { return (sqsActionPropsProps) as unknown as SqsActionProps }
+export function sqsActionProps(sqsActionPropsProps: SqsActionProps): SqsActionProps { return (sqsActionPropsProps) }
 
 export interface SqsActionProps {
     queueUrl: Value<string>;

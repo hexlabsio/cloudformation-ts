@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { ExecutionProps } from './ExecutionProps';
 import { ResourceAccessPolicyProps } from './ResourceAccessPolicyProps';
 
-export function environmentProps(environmentPropsProps: EnvironmentProps): EnvironmentProps { return (environmentPropsProps) as unknown as EnvironmentProps }
+export function environmentProps(environmentPropsProps: EnvironmentProps): EnvironmentProps { return (environmentPropsProps) }
 
 export interface EnvironmentProps {
     variables?: Value<any>;

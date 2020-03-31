@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function thingPrincipalAttachment(thingPrincipalAttachmentProps: ThingPrincipalAttachment & { logicalName?: string }): ThingPrincipalAttachment { return ({ ...thingPrincipalAttachmentProps, _logicalType: 'AWS::IoT::ThingPrincipalAttachment' }) as unknown as ThingPrincipalAttachment }
+export type ThingPrincipalAttachmentAttributes = {  }
+export function thingPrincipalAttachment(thingPrincipalAttachmentProps: ThingPrincipalAttachment): ThingPrincipalAttachment & { attributes: ThingPrincipalAttachmentAttributes } { return ({ ...thingPrincipalAttachmentProps, _logicalType: 'AWS::IoT::ThingPrincipalAttachment', attributes: {  } }) }
 
 export interface ThingPrincipalAttachment extends KloudResource {
     principal: Value<string>;

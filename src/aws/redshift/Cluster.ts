@@ -2,8 +2,10 @@ import { Value } from '../../kloudformation/Value';
 import { LoggingPropertiesProps } from './cluster/LoggingPropertiesProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function cluster(clusterProps: Cluster & { logicalName?: string }): Cluster { return ({ ...clusterProps, _logicalType: 'AWS::Redshift::Cluster' }) as unknown as Cluster }
+export type ClusterAttributes = { EndpointAddress: Attribute<string>; EndpointPort: Attribute<string> }
+export function cluster(clusterProps: Cluster): Cluster & { attributes: ClusterAttributes } { return ({ ...clusterProps, _logicalType: 'AWS::Redshift::Cluster', attributes: { EndpointAddress: 'Endpoint.Address', EndpointPort: 'Endpoint.Port' } }) }
 
 export interface Cluster extends KloudResource {
     clusterType: Value<string>;

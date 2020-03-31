@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function subnetRouteTableAssociation(subnetRouteTableAssociationProps: SubnetRouteTableAssociation & { logicalName?: string }): SubnetRouteTableAssociation { return ({ ...subnetRouteTableAssociationProps, _logicalType: 'AWS::EC2::SubnetRouteTableAssociation' }) as unknown as SubnetRouteTableAssociation }
+export type SubnetRouteTableAssociationAttributes = {  }
+export function subnetRouteTableAssociation(subnetRouteTableAssociationProps: SubnetRouteTableAssociation): SubnetRouteTableAssociation & { attributes: SubnetRouteTableAssociationAttributes } { return ({ ...subnetRouteTableAssociationProps, _logicalType: 'AWS::EC2::SubnetRouteTableAssociation', attributes: {  } }) }
 
 export interface SubnetRouteTableAssociation extends KloudResource {
     routeTableId: Value<string>;

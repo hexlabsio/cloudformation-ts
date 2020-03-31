@@ -1,6 +1,6 @@
 import { SetDimensionProps } from './SetDimensionProps';
 
-export function demographicProps(demographicPropsProps: DemographicProps): DemographicProps { return (demographicPropsProps) as unknown as DemographicProps }
+export function demographicProps(demographicPropsProps: DemographicProps): DemographicProps { return (demographicPropsProps) }
 
 export interface DemographicProps {
     appVersion?: SetDimensionProps;

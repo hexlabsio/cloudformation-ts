@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function natGateway(natGatewayProps: NatGateway & { logicalName?: string }): NatGateway { return ({ ...natGatewayProps, _logicalType: 'AWS::EC2::NatGateway' }) as unknown as NatGateway }
+export type NatGatewayAttributes = {  }
+export function natGateway(natGatewayProps: NatGateway): NatGateway & { attributes: NatGatewayAttributes } { return ({ ...natGatewayProps, _logicalType: 'AWS::EC2::NatGateway', attributes: {  } }) }
 
 export interface NatGateway extends KloudResource {
     allocationId: Value<string>;

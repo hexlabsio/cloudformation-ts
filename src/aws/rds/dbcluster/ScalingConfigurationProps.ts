@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function scalingConfigurationProps(scalingConfigurationPropsProps: ScalingConfigurationProps): ScalingConfigurationProps { return (scalingConfigurationPropsProps) as unknown as ScalingConfigurationProps }
+export function scalingConfigurationProps(scalingConfigurationPropsProps: ScalingConfigurationProps): ScalingConfigurationProps { return (scalingConfigurationPropsProps) }
 
 export interface ScalingConfigurationProps {
     autoPause?: Value<boolean>;

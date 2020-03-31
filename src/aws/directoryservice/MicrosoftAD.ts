@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { VpcSettingsProps } from './microsoftad/VpcSettingsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function microsoftAD(microsoftADProps: MicrosoftAD & { logicalName?: string }): MicrosoftAD { return ({ ...microsoftADProps, _logicalType: 'AWS::DirectoryService::MicrosoftAD' }) as unknown as MicrosoftAD }
+export type MicrosoftADAttributes = { Alias: Attribute<string>; DnsIpAddresses: Attribute<Value<string>[]> }
+export function microsoftAD(microsoftADProps: MicrosoftAD): MicrosoftAD & { attributes: MicrosoftADAttributes } { return ({ ...microsoftADProps, _logicalType: 'AWS::DirectoryService::MicrosoftAD', attributes: { Alias: 'Alias', DnsIpAddresses: 'DnsIpAddresses' } }) }
 
 export interface MicrosoftAD extends KloudResource {
     name: Value<string>;

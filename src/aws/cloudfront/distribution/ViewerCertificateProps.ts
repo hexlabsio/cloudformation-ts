@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function viewerCertificateProps(viewerCertificatePropsProps: ViewerCertificateProps): ViewerCertificateProps { return (viewerCertificatePropsProps) as unknown as ViewerCertificateProps }
+export function viewerCertificateProps(viewerCertificatePropsProps: ViewerCertificateProps): ViewerCertificateProps { return (viewerCertificatePropsProps) }
 
 export interface ViewerCertificateProps {
     iamCertificateId?: Value<string>;

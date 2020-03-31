@@ -2,7 +2,8 @@ import { ResourceInstanceProps } from './resourcedefinitionversion/ResourceInsta
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function resourceDefinitionVersion(resourceDefinitionVersionProps: ResourceDefinitionVersion & { logicalName?: string }): ResourceDefinitionVersion { return ({ ...resourceDefinitionVersionProps, _logicalType: 'AWS::Greengrass::ResourceDefinitionVersion' }) as unknown as ResourceDefinitionVersion }
+export type ResourceDefinitionVersionAttributes = {  }
+export function resourceDefinitionVersion(resourceDefinitionVersionProps: ResourceDefinitionVersion): ResourceDefinitionVersion & { attributes: ResourceDefinitionVersionAttributes } { return ({ ...resourceDefinitionVersionProps, _logicalType: 'AWS::Greengrass::ResourceDefinitionVersion', attributes: {  } }) }
 
 export interface ResourceDefinitionVersion extends KloudResource {
     resources: ResourceInstanceProps[];

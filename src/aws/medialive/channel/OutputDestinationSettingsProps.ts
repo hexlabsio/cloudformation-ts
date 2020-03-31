@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function outputDestinationSettingsProps(outputDestinationSettingsPropsProps: OutputDestinationSettingsProps): OutputDestinationSettingsProps { return (outputDestinationSettingsPropsProps) as unknown as OutputDestinationSettingsProps }
+export function outputDestinationSettingsProps(outputDestinationSettingsPropsProps: OutputDestinationSettingsProps): OutputDestinationSettingsProps { return (outputDestinationSettingsPropsProps) }
 
 export interface OutputDestinationSettingsProps {
     streamName?: Value<string>;

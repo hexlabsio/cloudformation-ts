@@ -5,7 +5,8 @@ import { ContainerPropertiesProps } from './jobdefinition/ContainerPropertiesPro
 import { RetryStrategyProps } from './jobdefinition/RetryStrategyProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function jobDefinition(jobDefinitionProps: JobDefinition & { logicalName?: string }): JobDefinition { return ({ ...jobDefinitionProps, _logicalType: 'AWS::Batch::JobDefinition' }) as unknown as JobDefinition }
+export type JobDefinitionAttributes = {  }
+export function jobDefinition(jobDefinitionProps: JobDefinition): JobDefinition & { attributes: JobDefinitionAttributes } { return ({ ...jobDefinitionProps, _logicalType: 'AWS::Batch::JobDefinition', attributes: {  } }) }
 
 export interface JobDefinition extends KloudResource {
     type: Value<string>;

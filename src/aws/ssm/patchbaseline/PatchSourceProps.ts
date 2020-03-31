@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function patchSourceProps(patchSourcePropsProps: PatchSourceProps): PatchSourceProps { return (patchSourcePropsProps) as unknown as PatchSourceProps }
+export function patchSourceProps(patchSourcePropsProps: PatchSourceProps): PatchSourceProps { return (patchSourcePropsProps) }
 
 export interface PatchSourceProps {
     products?: Value<Value<string>[]>;

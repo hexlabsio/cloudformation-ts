@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function channelProps(channelPropsProps: ChannelProps): ChannelProps { return (channelPropsProps) as unknown as ChannelProps }
+export function channelProps(channelPropsProps: ChannelProps): ChannelProps { return (channelPropsProps) }
 
 export interface ChannelProps {
     channelName?: Value<string>;

@@ -3,8 +3,10 @@ import { EgressProps } from './securitygroup/EgressProps';
 import { IngressProps } from './securitygroup/IngressProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function securityGroup(securityGroupProps: SecurityGroup & { logicalName?: string }): SecurityGroup { return ({ ...securityGroupProps, _logicalType: 'AWS::EC2::SecurityGroup' }) as unknown as SecurityGroup }
+export type SecurityGroupAttributes = { GroupId: Attribute<string>; VpcId: Attribute<string> }
+export function securityGroup(securityGroupProps: SecurityGroup): SecurityGroup & { attributes: SecurityGroupAttributes } { return ({ ...securityGroupProps, _logicalType: 'AWS::EC2::SecurityGroup', attributes: { GroupId: 'GroupId', VpcId: 'VpcId' } }) }
 
 export interface SecurityGroup extends KloudResource {
     groupDescription: Value<string>;

@@ -1,7 +1,7 @@
 import { ELBInfoProps } from './ELBInfoProps';
 import { TargetGroupInfoProps } from './TargetGroupInfoProps';
 
-export function loadBalancerInfoProps(loadBalancerInfoPropsProps: LoadBalancerInfoProps): LoadBalancerInfoProps { return (loadBalancerInfoPropsProps) as unknown as LoadBalancerInfoProps }
+export function loadBalancerInfoProps(loadBalancerInfoPropsProps: LoadBalancerInfoProps): LoadBalancerInfoProps { return (loadBalancerInfoPropsProps) }
 
 export interface LoadBalancerInfoProps {
     elbInfoList?: ELBInfoProps[];

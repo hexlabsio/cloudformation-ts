@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { S3LocationProps } from './build/S3LocationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function build(buildProps: Build & { logicalName?: string }): Build { return ({ ...buildProps, _logicalType: 'AWS::GameLift::Build' }) as unknown as Build }
+export type BuildAttributes = {  }
+export function build(buildProps: Build): Build & { attributes: BuildAttributes } { return ({ ...buildProps, _logicalType: 'AWS::GameLift::Build', attributes: {  } }) }
 
 export interface Build extends KloudResource {
     name?: Value<string>;

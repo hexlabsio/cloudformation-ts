@@ -3,7 +3,8 @@ import { ConfigurationProps } from './anomalydetector/ConfigurationProps';
 import { DimensionProps } from './anomalydetector/DimensionProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function anomalyDetector(anomalyDetectorProps: AnomalyDetector & { logicalName?: string }): AnomalyDetector { return ({ ...anomalyDetectorProps, _logicalType: 'AWS::CloudWatch::AnomalyDetector' }) as unknown as AnomalyDetector }
+export type AnomalyDetectorAttributes = {  }
+export function anomalyDetector(anomalyDetectorProps: AnomalyDetector): AnomalyDetector & { attributes: AnomalyDetectorAttributes } { return ({ ...anomalyDetectorProps, _logicalType: 'AWS::CloudWatch::AnomalyDetector', attributes: {  } }) }
 
 export interface AnomalyDetector extends KloudResource {
     metricName: Value<string>;

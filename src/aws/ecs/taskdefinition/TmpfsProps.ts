@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function tmpfsProps(tmpfsPropsProps: TmpfsProps): TmpfsProps { return (tmpfsPropsProps) as unknown as TmpfsProps }
+export function tmpfsProps(tmpfsPropsProps: TmpfsProps): TmpfsProps { return (tmpfsPropsProps) }
 
 export interface TmpfsProps {
     size: Value<number>;

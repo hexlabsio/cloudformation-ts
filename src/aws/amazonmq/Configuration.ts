@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { TagsEntryProps } from './configuration/TagsEntryProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function configuration(configurationProps: Configuration & { logicalName?: string }): Configuration { return ({ ...configurationProps, _logicalType: 'AWS::AmazonMQ::Configuration' }) as unknown as Configuration }
+export type ConfigurationAttributes = { Revision: Attribute<number>; Id: Attribute<string>; Arn: Attribute<string> }
+export function configuration(configurationProps: Configuration): Configuration & { attributes: ConfigurationAttributes } { return ({ ...configurationProps, _logicalType: 'AWS::AmazonMQ::Configuration', attributes: { Revision: 'Revision', Id: 'Id', Arn: 'Arn' } }) }
 
 export interface Configuration extends KloudResource {
     engineVersion: Value<string>;

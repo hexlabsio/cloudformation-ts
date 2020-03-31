@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function securityGroupIngress(securityGroupIngressProps: SecurityGroupIngress & { logicalName?: string }): SecurityGroupIngress { return ({ ...securityGroupIngressProps, _logicalType: 'AWS::ElastiCache::SecurityGroupIngress' }) as unknown as SecurityGroupIngress }
+export type SecurityGroupIngressAttributes = {  }
+export function securityGroupIngress(securityGroupIngressProps: SecurityGroupIngress): SecurityGroupIngress & { attributes: SecurityGroupIngressAttributes } { return ({ ...securityGroupIngressProps, _logicalType: 'AWS::ElastiCache::SecurityGroupIngress', attributes: {  } }) }
 
 export interface SecurityGroupIngress extends KloudResource {
     cacheSecurityGroupName: Value<string>;

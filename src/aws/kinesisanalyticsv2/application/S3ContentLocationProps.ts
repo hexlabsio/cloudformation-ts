@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function s3ContentLocationProps(s3ContentLocationPropsProps: S3ContentLocationProps): S3ContentLocationProps { return (s3ContentLocationPropsProps) as unknown as S3ContentLocationProps }
+export function s3ContentLocationProps(s3ContentLocationPropsProps: S3ContentLocationProps): S3ContentLocationProps { return (s3ContentLocationPropsProps) }
 
 export interface S3ContentLocationProps {
     bucketARN?: Value<string>;

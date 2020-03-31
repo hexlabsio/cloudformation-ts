@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function serviceRegistryProps(serviceRegistryPropsProps: ServiceRegistryProps): ServiceRegistryProps { return (serviceRegistryPropsProps) as unknown as ServiceRegistryProps }
+export function serviceRegistryProps(serviceRegistryPropsProps: ServiceRegistryProps): ServiceRegistryProps { return (serviceRegistryPropsProps) }
 
 export interface ServiceRegistryProps {
     containerName?: Value<string>;

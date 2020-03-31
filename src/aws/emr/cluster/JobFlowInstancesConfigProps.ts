@@ -3,7 +3,7 @@ import { InstanceFleetConfigProps } from './InstanceFleetConfigProps';
 import { InstanceGroupConfigProps } from './InstanceGroupConfigProps';
 import { PlacementTypeProps } from './PlacementTypeProps';
 
-export function jobFlowInstancesConfigProps(jobFlowInstancesConfigPropsProps: JobFlowInstancesConfigProps): JobFlowInstancesConfigProps { return (jobFlowInstancesConfigPropsProps) as unknown as JobFlowInstancesConfigProps }
+export function jobFlowInstancesConfigProps(jobFlowInstancesConfigPropsProps: JobFlowInstancesConfigProps): JobFlowInstancesConfigProps { return (jobFlowInstancesConfigPropsProps) }
 
 export interface JobFlowInstancesConfigProps {
     additionalMasterSecurityGroups?: Value<Value<string>[]>;

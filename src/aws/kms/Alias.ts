@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function alias(aliasProps: Alias & { logicalName?: string }): Alias { return ({ ...aliasProps, _logicalType: 'AWS::KMS::Alias' }) as unknown as Alias }
+export type AliasAttributes = {  }
+export function alias(aliasProps: Alias): Alias & { attributes: AliasAttributes } { return ({ ...aliasProps, _logicalType: 'AWS::KMS::Alias', attributes: {  } }) }
 
 export interface Alias extends KloudResource {
     aliasName: Value<string>;

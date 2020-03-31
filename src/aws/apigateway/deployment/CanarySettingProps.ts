@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function canarySettingProps(canarySettingPropsProps: CanarySettingProps): CanarySettingProps { return (canarySettingPropsProps) as unknown as CanarySettingProps }
+export function canarySettingProps(canarySettingPropsProps: CanarySettingProps): CanarySettingProps { return (canarySettingPropsProps) }
 
 export interface CanarySettingProps {
     percentTraffic?: Value<number>;

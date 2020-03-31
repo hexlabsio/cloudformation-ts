@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function robot(robotProps: Robot & { logicalName?: string }): Robot { return ({ ...robotProps, _logicalType: 'AWS::RoboMaker::Robot' }) as unknown as Robot }
+export type RobotAttributes = {  }
+export function robot(robotProps: Robot): Robot & { attributes: RobotAttributes } { return ({ ...robotProps, _logicalType: 'AWS::RoboMaker::Robot', attributes: {  } }) }
 
 export interface Robot extends KloudResource {
     architecture: Value<string>;

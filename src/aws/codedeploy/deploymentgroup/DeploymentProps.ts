@@ -1,7 +1,7 @@
 import { RevisionLocationProps } from './RevisionLocationProps';
 import { Value } from '../../../kloudformation/Value';
 
-export function deploymentProps(deploymentPropsProps: DeploymentProps): DeploymentProps { return (deploymentPropsProps) as unknown as DeploymentProps }
+export function deploymentProps(deploymentPropsProps: DeploymentProps): DeploymentProps { return (deploymentPropsProps) }
 
 export interface DeploymentProps {
     revision: RevisionLocationProps;

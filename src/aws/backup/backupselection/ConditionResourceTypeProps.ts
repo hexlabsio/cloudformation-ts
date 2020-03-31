@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function conditionResourceTypeProps(conditionResourceTypePropsProps: ConditionResourceTypeProps): ConditionResourceTypeProps { return (conditionResourceTypePropsProps) as unknown as ConditionResourceTypeProps }
+export function conditionResourceTypeProps(conditionResourceTypePropsProps: ConditionResourceTypeProps): ConditionResourceTypeProps { return (conditionResourceTypePropsProps) }
 
 export interface ConditionResourceTypeProps {
     conditionValue: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function organizationManagedRuleMetadataProps(organizationManagedRuleMetadataPropsProps: OrganizationManagedRuleMetadataProps): OrganizationManagedRuleMetadataProps { return (organizationManagedRuleMetadataPropsProps) as unknown as OrganizationManagedRuleMetadataProps }
+export function organizationManagedRuleMetadataProps(organizationManagedRuleMetadataPropsProps: OrganizationManagedRuleMetadataProps): OrganizationManagedRuleMetadataProps { return (organizationManagedRuleMetadataPropsProps) }
 
 export interface OrganizationManagedRuleMetadataProps {
     ruleIdentifier: Value<string>;

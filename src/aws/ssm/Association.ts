@@ -4,7 +4,8 @@ import { ParameterValuesProps } from './association/ParameterValuesProps';
 import { TargetProps } from './association/TargetProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function association(associationProps: Association & { logicalName?: string }): Association { return ({ ...associationProps, _logicalType: 'AWS::SSM::Association' }) as unknown as Association }
+export type AssociationAttributes = {  }
+export function association(associationProps: Association): Association & { attributes: AssociationAttributes } { return ({ ...associationProps, _logicalType: 'AWS::SSM::Association', attributes: {  } }) }
 
 export interface Association extends KloudResource {
     name: Value<string>;

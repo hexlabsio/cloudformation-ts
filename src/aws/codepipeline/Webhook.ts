@@ -2,8 +2,10 @@ import { WebhookAuthConfigurationProps } from './webhook/WebhookAuthConfiguratio
 import { WebhookFilterRuleProps } from './webhook/WebhookFilterRuleProps';
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function webhook(webhookProps: Webhook & { logicalName?: string }): Webhook { return ({ ...webhookProps, _logicalType: 'AWS::CodePipeline::Webhook' }) as unknown as Webhook }
+export type WebhookAttributes = { Url: Attribute<string> }
+export function webhook(webhookProps: Webhook): Webhook & { attributes: WebhookAttributes } { return ({ ...webhookProps, _logicalType: 'AWS::CodePipeline::Webhook', attributes: { Url: 'Url' } }) }
 
 export interface Webhook extends KloudResource {
     authenticationConfiguration: WebhookAuthConfigurationProps;

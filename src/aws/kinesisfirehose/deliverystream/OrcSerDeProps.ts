@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function orcSerDeProps(orcSerDePropsProps: OrcSerDeProps): OrcSerDeProps { return (orcSerDePropsProps) as unknown as OrcSerDeProps }
+export function orcSerDeProps(orcSerDePropsProps: OrcSerDeProps): OrcSerDeProps { return (orcSerDePropsProps) }
 
 export interface OrcSerDeProps {
     blockSizeBytes?: Value<number>;

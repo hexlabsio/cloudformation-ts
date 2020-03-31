@@ -1,6 +1,6 @@
 import { PrometheusProps } from './PrometheusProps';
 
-export function openMonitoringProps(openMonitoringPropsProps: OpenMonitoringProps): OpenMonitoringProps { return (openMonitoringPropsProps) as unknown as OpenMonitoringProps }
+export function openMonitoringProps(openMonitoringPropsProps: OpenMonitoringProps): OpenMonitoringProps { return (openMonitoringPropsProps) }
 
 export interface OpenMonitoringProps {
     prometheus: PrometheusProps;

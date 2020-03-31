@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function containerDefinitionProps(containerDefinitionPropsProps: ContainerDefinitionProps): ContainerDefinitionProps { return (containerDefinitionPropsProps) as unknown as ContainerDefinitionProps }
+export function containerDefinitionProps(containerDefinitionPropsProps: ContainerDefinitionProps): ContainerDefinitionProps { return (containerDefinitionPropsProps) }
 
 export interface ContainerDefinitionProps {
     image: Value<string>;

@@ -5,8 +5,10 @@ import { LambdaConfigProps } from './datasource/LambdaConfigProps';
 import { DynamoDBConfigProps } from './datasource/DynamoDBConfigProps';
 import { ElasticsearchConfigProps } from './datasource/ElasticsearchConfigProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function dataSource(dataSourceProps: DataSource & { logicalName?: string }): DataSource { return ({ ...dataSourceProps, _logicalType: 'AWS::AppSync::DataSource' }) as unknown as DataSource }
+export type DataSourceAttributes = { DataSourceArn: Attribute<string>; Name: Attribute<string> }
+export function dataSource(dataSourceProps: DataSource): DataSource & { attributes: DataSourceAttributes } { return ({ ...dataSourceProps, _logicalType: 'AWS::AppSync::DataSource', attributes: { DataSourceArn: 'DataSourceArn', Name: 'Name' } }) }
 
 export interface DataSource extends KloudResource {
     type: Value<string>;

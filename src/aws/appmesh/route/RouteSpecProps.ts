@@ -3,7 +3,7 @@ import { Value } from '../../../kloudformation/Value';
 import { GrpcRouteProps } from './GrpcRouteProps';
 import { TcpRouteProps } from './TcpRouteProps';
 
-export function routeSpecProps(routeSpecPropsProps: RouteSpecProps): RouteSpecProps { return (routeSpecPropsProps) as unknown as RouteSpecProps }
+export function routeSpecProps(routeSpecPropsProps: RouteSpecProps): RouteSpecProps { return (routeSpecPropsProps) }
 
 export interface RouteSpecProps {
     httpRoute?: HttpRouteProps;

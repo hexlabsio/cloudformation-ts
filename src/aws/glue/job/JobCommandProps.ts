@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function jobCommandProps(jobCommandPropsProps: JobCommandProps): JobCommandProps { return (jobCommandPropsProps) as unknown as JobCommandProps }
+export function jobCommandProps(jobCommandPropsProps: JobCommandProps): JobCommandProps { return (jobCommandPropsProps) }
 
 export interface JobCommandProps {
     pythonVersion?: Value<string>;

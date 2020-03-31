@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function accelerateConfigurationProps(accelerateConfigurationPropsProps: AccelerateConfigurationProps): AccelerateConfigurationProps { return (accelerateConfigurationPropsProps) as unknown as AccelerateConfigurationProps }
+export function accelerateConfigurationProps(accelerateConfigurationPropsProps: AccelerateConfigurationProps): AccelerateConfigurationProps { return (accelerateConfigurationPropsProps) }
 
 export interface AccelerateConfigurationProps {
     accelerationStatus: Value<string>;

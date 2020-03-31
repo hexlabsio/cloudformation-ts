@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function iotAnalyticsActionProps(iotAnalyticsActionPropsProps: IotAnalyticsActionProps): IotAnalyticsActionProps { return (iotAnalyticsActionPropsProps) as unknown as IotAnalyticsActionProps }
+export function iotAnalyticsActionProps(iotAnalyticsActionPropsProps: IotAnalyticsActionProps): IotAnalyticsActionProps { return (iotAnalyticsActionPropsProps) }
 
 export interface IotAnalyticsActionProps {
     channelName: Value<string>;

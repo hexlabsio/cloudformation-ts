@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function suspendedStateProps(suspendedStatePropsProps: SuspendedStateProps): SuspendedStateProps { return (suspendedStatePropsProps) as unknown as SuspendedStateProps }
+export function suspendedStateProps(suspendedStatePropsProps: SuspendedStateProps): SuspendedStateProps { return (suspendedStatePropsProps) }
 
 export interface SuspendedStateProps {
     dynamicScalingInSuspended?: Value<boolean>;

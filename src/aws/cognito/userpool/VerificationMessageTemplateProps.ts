@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function verificationMessageTemplateProps(verificationMessageTemplatePropsProps: VerificationMessageTemplateProps): VerificationMessageTemplateProps { return (verificationMessageTemplatePropsProps) as unknown as VerificationMessageTemplateProps }
+export function verificationMessageTemplateProps(verificationMessageTemplatePropsProps: VerificationMessageTemplateProps): VerificationMessageTemplateProps { return (verificationMessageTemplatePropsProps) }
 
 export interface VerificationMessageTemplateProps {
     emailMessageByLink?: Value<string>;

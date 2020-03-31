@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function replicationTask(replicationTaskProps: ReplicationTask & { logicalName?: string }): ReplicationTask { return ({ ...replicationTaskProps, _logicalType: 'AWS::DMS::ReplicationTask' }) as unknown as ReplicationTask }
+export type ReplicationTaskAttributes = {  }
+export function replicationTask(replicationTaskProps: ReplicationTask): ReplicationTask & { attributes: ReplicationTaskAttributes } { return ({ ...replicationTaskProps, _logicalType: 'AWS::DMS::ReplicationTask', attributes: {  } }) }
 
 export interface ReplicationTask extends KloudResource {
     tableMappings: Value<string>;

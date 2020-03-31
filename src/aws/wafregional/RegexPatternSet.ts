@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function regexPatternSet(regexPatternSetProps: RegexPatternSet & { logicalName?: string }): RegexPatternSet { return ({ ...regexPatternSetProps, _logicalType: 'AWS::WAFRegional::RegexPatternSet' }) as unknown as RegexPatternSet }
+export type RegexPatternSetAttributes = {  }
+export function regexPatternSet(regexPatternSetProps: RegexPatternSet): RegexPatternSet & { attributes: RegexPatternSetAttributes } { return ({ ...regexPatternSetProps, _logicalType: 'AWS::WAFRegional::RegexPatternSet', attributes: {  } }) }
 
 export interface RegexPatternSet extends KloudResource {
     regexPatternStrings: Value<Value<string>[]>;

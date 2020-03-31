@@ -12,7 +12,7 @@ import { AndStatementTwoProps } from './AndStatementTwoProps';
 import { OrStatementTwoProps } from './OrStatementTwoProps';
 import { NotStatementTwoProps } from './NotStatementTwoProps';
 
-export function statementTwoProps(statementTwoPropsProps: StatementTwoProps): StatementTwoProps { return (statementTwoPropsProps) as unknown as StatementTwoProps }
+export function statementTwoProps(statementTwoPropsProps: StatementTwoProps): StatementTwoProps { return (statementTwoPropsProps) }
 
 export interface StatementTwoProps {
     byteMatchStatement?: ByteMatchStatementProps;

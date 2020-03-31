@@ -11,8 +11,10 @@ import { LambdaConfigProps } from './userpool/LambdaConfigProps';
 import { DeviceConfigurationProps } from './userpool/DeviceConfigurationProps';
 import { AccountRecoverySettingProps } from './userpool/AccountRecoverySettingProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function userPool(userPoolProps: UserPool & { logicalName?: string }): UserPool { return ({ ...userPoolProps, _logicalType: 'AWS::Cognito::UserPool' }) as unknown as UserPool }
+export type UserPoolAttributes = { ProviderName: Attribute<string>; ProviderURL: Attribute<string>; Arn: Attribute<string> }
+export function userPool(userPoolProps: UserPool): UserPool & { attributes: UserPoolAttributes } { return ({ ...userPoolProps, _logicalType: 'AWS::Cognito::UserPool', attributes: { ProviderName: 'ProviderName', ProviderURL: 'ProviderURL', Arn: 'Arn' } }) }
 
 export interface UserPool extends KloudResource {
     userPoolTags?: Value<any>;

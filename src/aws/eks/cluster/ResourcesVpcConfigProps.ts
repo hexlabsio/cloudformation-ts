@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function resourcesVpcConfigProps(resourcesVpcConfigPropsProps: ResourcesVpcConfigProps): ResourcesVpcConfigProps { return (resourcesVpcConfigPropsProps) as unknown as ResourcesVpcConfigProps }
+export function resourcesVpcConfigProps(resourcesVpcConfigPropsProps: ResourcesVpcConfigProps): ResourcesVpcConfigProps { return (resourcesVpcConfigPropsProps) }
 
 export interface ResourcesVpcConfigProps {
     subnetIds: Value<Value<string>[]>;

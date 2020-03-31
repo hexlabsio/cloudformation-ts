@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function slackChannelConfiguration(slackChannelConfigurationProps: SlackChannelConfiguration & { logicalName?: string }): SlackChannelConfiguration { return ({ ...slackChannelConfigurationProps, _logicalType: 'AWS::Chatbot::SlackChannelConfiguration' }) as unknown as SlackChannelConfiguration }
+export type SlackChannelConfigurationAttributes = {  }
+export function slackChannelConfiguration(slackChannelConfigurationProps: SlackChannelConfiguration): SlackChannelConfiguration & { attributes: SlackChannelConfigurationAttributes } { return ({ ...slackChannelConfigurationProps, _logicalType: 'AWS::Chatbot::SlackChannelConfiguration', attributes: {  } }) }
 
 export interface SlackChannelConfiguration extends KloudResource {
     slackWorkspaceId: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function timeToLiveSpecificationProps(timeToLiveSpecificationPropsProps: TimeToLiveSpecificationProps): TimeToLiveSpecificationProps { return (timeToLiveSpecificationPropsProps) as unknown as TimeToLiveSpecificationProps }
+export function timeToLiveSpecificationProps(timeToLiveSpecificationPropsProps: TimeToLiveSpecificationProps): TimeToLiveSpecificationProps { return (timeToLiveSpecificationPropsProps) }
 
 export interface TimeToLiveSpecificationProps {
     attributeName: Value<string>;

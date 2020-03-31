@@ -3,8 +3,10 @@ import { PushSyncProps } from './identitypool/PushSyncProps';
 import { CognitoIdentityProviderProps } from './identitypool/CognitoIdentityProviderProps';
 import { CognitoStreamsProps } from './identitypool/CognitoStreamsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function identityPool(identityPoolProps: IdentityPool & { logicalName?: string }): IdentityPool { return ({ ...identityPoolProps, _logicalType: 'AWS::Cognito::IdentityPool' }) as unknown as IdentityPool }
+export type IdentityPoolAttributes = { Name: Attribute<string> }
+export function identityPool(identityPoolProps: IdentityPool): IdentityPool & { attributes: IdentityPoolAttributes } { return ({ ...identityPoolProps, _logicalType: 'AWS::Cognito::IdentityPool', attributes: { Name: 'Name' } }) }
 
 export interface IdentityPool extends KloudResource {
     allowUnauthenticatedIdentities: Value<boolean>;

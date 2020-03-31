@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function cognitoUserPoolConfigProps(cognitoUserPoolConfigPropsProps: CognitoUserPoolConfigProps): CognitoUserPoolConfigProps { return (cognitoUserPoolConfigPropsProps) as unknown as CognitoUserPoolConfigProps }
+export function cognitoUserPoolConfigProps(cognitoUserPoolConfigPropsProps: CognitoUserPoolConfigProps): CognitoUserPoolConfigProps { return (cognitoUserPoolConfigPropsProps) }
 
 export interface CognitoUserPoolConfigProps {
     appIdClientRegex?: Value<string>;

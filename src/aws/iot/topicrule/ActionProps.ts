@@ -4,7 +4,10 @@ import { DynamoDBActionProps } from './DynamoDBActionProps';
 import { DynamoDBv2ActionProps } from './DynamoDBv2ActionProps';
 import { ElasticsearchActionProps } from './ElasticsearchActionProps';
 import { FirehoseActionProps } from './FirehoseActionProps';
+import { HttpActionProps } from './HttpActionProps';
 import { IotAnalyticsActionProps } from './IotAnalyticsActionProps';
+import { IotEventsActionProps } from './IotEventsActionProps';
+import { IotSiteWiseActionProps } from './IotSiteWiseActionProps';
 import { KinesisActionProps } from './KinesisActionProps';
 import { LambdaActionProps } from './LambdaActionProps';
 import { RepublishActionProps } from './RepublishActionProps';
@@ -13,7 +16,7 @@ import { SnsActionProps } from './SnsActionProps';
 import { SqsActionProps } from './SqsActionProps';
 import { StepFunctionsActionProps } from './StepFunctionsActionProps';
 
-export function actionProps(actionPropsProps: ActionProps): ActionProps { return (actionPropsProps) as unknown as ActionProps }
+export function actionProps(actionPropsProps: ActionProps): ActionProps { return (actionPropsProps) }
 
 export interface ActionProps {
     cloudwatchAlarm?: CloudwatchAlarmActionProps;
@@ -22,7 +25,10 @@ export interface ActionProps {
     dynamoDBv2?: DynamoDBv2ActionProps;
     elasticsearch?: ElasticsearchActionProps;
     firehose?: FirehoseActionProps;
+    http?: HttpActionProps;
     iotAnalytics?: IotAnalyticsActionProps;
+    iotEvents?: IotEventsActionProps;
+    iotSiteWise?: IotSiteWiseActionProps;
     kinesis?: KinesisActionProps;
     lambda?: LambdaActionProps;
     republish?: RepublishActionProps;

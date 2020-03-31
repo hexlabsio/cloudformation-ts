@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function portfolioPrincipalAssociation(portfolioPrincipalAssociationProps: PortfolioPrincipalAssociation & { logicalName?: string }): PortfolioPrincipalAssociation { return ({ ...portfolioPrincipalAssociationProps, _logicalType: 'AWS::ServiceCatalog::PortfolioPrincipalAssociation' }) as unknown as PortfolioPrincipalAssociation }
+export type PortfolioPrincipalAssociationAttributes = {  }
+export function portfolioPrincipalAssociation(portfolioPrincipalAssociationProps: PortfolioPrincipalAssociation): PortfolioPrincipalAssociation & { attributes: PortfolioPrincipalAssociationAttributes } { return ({ ...portfolioPrincipalAssociationProps, _logicalType: 'AWS::ServiceCatalog::PortfolioPrincipalAssociation', attributes: {  } }) }
 
 export interface PortfolioPrincipalAssociation extends KloudResource {
     principalARN: Value<string>;

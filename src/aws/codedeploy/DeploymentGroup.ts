@@ -11,7 +11,8 @@ import { OnPremisesTagSetProps } from './deploymentgroup/OnPremisesTagSetProps';
 import { TriggerConfigProps } from './deploymentgroup/TriggerConfigProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function deploymentGroup(deploymentGroupProps: DeploymentGroup & { logicalName?: string }): DeploymentGroup { return ({ ...deploymentGroupProps, _logicalType: 'AWS::CodeDeploy::DeploymentGroup' }) as unknown as DeploymentGroup }
+export type DeploymentGroupAttributes = {  }
+export function deploymentGroup(deploymentGroupProps: DeploymentGroup): DeploymentGroup & { attributes: DeploymentGroupAttributes } { return ({ ...deploymentGroupProps, _logicalType: 'AWS::CodeDeploy::DeploymentGroup', attributes: {  } }) }
 
 export interface DeploymentGroup extends KloudResource {
     applicationName: Value<string>;

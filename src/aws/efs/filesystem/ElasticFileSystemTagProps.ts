@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function elasticFileSystemTagProps(elasticFileSystemTagPropsProps: ElasticFileSystemTagProps): ElasticFileSystemTagProps { return (elasticFileSystemTagPropsProps) as unknown as ElasticFileSystemTagProps }
+export function elasticFileSystemTagProps(elasticFileSystemTagPropsProps: ElasticFileSystemTagProps): ElasticFileSystemTagProps { return (elasticFileSystemTagPropsProps) }
 
 export interface ElasticFileSystemTagProps {
     key: Value<string>;

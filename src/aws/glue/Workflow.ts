@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function workflow(workflowProps: Workflow & { logicalName?: string }): Workflow { return ({ ...workflowProps, _logicalType: 'AWS::Glue::Workflow' }) as unknown as Workflow }
+export type WorkflowAttributes = {  }
+export function workflow(workflowProps: Workflow): Workflow & { attributes: WorkflowAttributes } { return ({ ...workflowProps, _logicalType: 'AWS::Glue::Workflow', attributes: {  } }) }
 
 export interface Workflow extends KloudResource {
     description?: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function ulimitProps(ulimitPropsProps: UlimitProps): UlimitProps { return (ulimitPropsProps) as unknown as UlimitProps }
+export function ulimitProps(ulimitPropsProps: UlimitProps): UlimitProps { return (ulimitPropsProps) }
 
 export interface UlimitProps {
     hardLimit: Value<number>;

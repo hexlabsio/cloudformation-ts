@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function ebsProps(ebsPropsProps: EbsProps): EbsProps { return (ebsPropsProps) as unknown as EbsProps }
+export function ebsProps(ebsPropsProps: EbsProps): EbsProps { return (ebsPropsProps) }
 
 export interface EbsProps {
     snapshotId?: Value<string>;

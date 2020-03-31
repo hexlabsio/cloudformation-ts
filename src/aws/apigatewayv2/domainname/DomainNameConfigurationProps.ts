@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function domainNameConfigurationProps(domainNameConfigurationPropsProps: DomainNameConfigurationProps): DomainNameConfigurationProps { return (domainNameConfigurationPropsProps) as unknown as DomainNameConfigurationProps }
+export function domainNameConfigurationProps(domainNameConfigurationPropsProps: DomainNameConfigurationProps): DomainNameConfigurationProps { return (domainNameConfigurationPropsProps) }
 
 export interface DomainNameConfigurationProps {
     endpointType?: Value<string>;

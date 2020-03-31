@@ -2,7 +2,8 @@ import { TableInputProps } from './table/TableInputProps';
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function table(tableProps: Table & { logicalName?: string }): Table { return ({ ...tableProps, _logicalType: 'AWS::Glue::Table' }) as unknown as Table }
+export type TableAttributes = {  }
+export function table(tableProps: Table): Table & { attributes: TableAttributes } { return ({ ...tableProps, _logicalType: 'AWS::Glue::Table', attributes: {  } }) }
 
 export interface Table extends KloudResource {
     tableInput: TableInputProps;

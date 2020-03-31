@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function vPCEndpointConnectionNotification(vPCEndpointConnectionNotificationProps: VPCEndpointConnectionNotification & { logicalName?: string }): VPCEndpointConnectionNotification { return ({ ...vPCEndpointConnectionNotificationProps, _logicalType: 'AWS::EC2::VPCEndpointConnectionNotification' }) as unknown as VPCEndpointConnectionNotification }
+export type VPCEndpointConnectionNotificationAttributes = {  }
+export function vPCEndpointConnectionNotification(vPCEndpointConnectionNotificationProps: VPCEndpointConnectionNotification): VPCEndpointConnectionNotification & { attributes: VPCEndpointConnectionNotificationAttributes } { return ({ ...vPCEndpointConnectionNotificationProps, _logicalType: 'AWS::EC2::VPCEndpointConnectionNotification', attributes: {  } }) }
 
 export interface VPCEndpointConnectionNotification extends KloudResource {
     connectionEvents: Value<Value<string>[]>;

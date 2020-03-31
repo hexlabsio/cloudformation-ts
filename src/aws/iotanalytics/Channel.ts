@@ -4,7 +4,8 @@ import { RetentionPeriodProps } from './channel/RetentionPeriodProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function channel(channelProps: Channel & { logicalName?: string }): Channel { return ({ ...channelProps, _logicalType: 'AWS::IoTAnalytics::Channel' }) as unknown as Channel }
+export type ChannelAttributes = {  }
+export function channel(channelProps: Channel): Channel & { attributes: ChannelAttributes } { return ({ ...channelProps, _logicalType: 'AWS::IoTAnalytics::Channel', attributes: {  } }) }
 
 export interface Channel extends KloudResource {
     channelName?: Value<string>;

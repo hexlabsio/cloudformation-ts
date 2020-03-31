@@ -3,7 +3,8 @@ import { ConfigurationOptionSettingProps } from './configurationtemplate/Configu
 import { SourceConfigurationProps } from './configurationtemplate/SourceConfigurationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function configurationTemplate(configurationTemplateProps: ConfigurationTemplate & { logicalName?: string }): ConfigurationTemplate { return ({ ...configurationTemplateProps, _logicalType: 'AWS::ElasticBeanstalk::ConfigurationTemplate' }) as unknown as ConfigurationTemplate }
+export type ConfigurationTemplateAttributes = {  }
+export function configurationTemplate(configurationTemplateProps: ConfigurationTemplate): ConfigurationTemplate & { attributes: ConfigurationTemplateAttributes } { return ({ ...configurationTemplateProps, _logicalType: 'AWS::ElasticBeanstalk::ConfigurationTemplate', attributes: {  } }) }
 
 export interface ConfigurationTemplate extends KloudResource {
     applicationName: Value<string>;

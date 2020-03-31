@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function authenticateCognitoConfigProps(authenticateCognitoConfigPropsProps: AuthenticateCognitoConfigProps): AuthenticateCognitoConfigProps { return (authenticateCognitoConfigPropsProps) as unknown as AuthenticateCognitoConfigProps }
+export function authenticateCognitoConfigProps(authenticateCognitoConfigPropsProps: AuthenticateCognitoConfigProps): AuthenticateCognitoConfigProps { return (authenticateCognitoConfigPropsProps) }
 
 export interface AuthenticateCognitoConfigProps {
     userPoolArn: Value<string>;

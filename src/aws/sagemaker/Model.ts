@@ -3,8 +3,10 @@ import { ContainerDefinitionProps } from './model/ContainerDefinitionProps';
 import { VpcConfigProps } from './model/VpcConfigProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function model(modelProps: Model & { logicalName?: string }): Model { return ({ ...modelProps, _logicalType: 'AWS::SageMaker::Model' }) as unknown as Model }
+export type ModelAttributes = { ModelName: Attribute<string> }
+export function model(modelProps: Model): Model & { attributes: ModelAttributes } { return ({ ...modelProps, _logicalType: 'AWS::SageMaker::Model', attributes: { ModelName: 'ModelName' } }) }
 
 export interface Model extends KloudResource {
     executionRoleArn: Value<string>;

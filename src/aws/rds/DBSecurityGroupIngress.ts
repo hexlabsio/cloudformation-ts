@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function dBSecurityGroupIngress(dBSecurityGroupIngressProps: DBSecurityGroupIngress & { logicalName?: string }): DBSecurityGroupIngress { return ({ ...dBSecurityGroupIngressProps, _logicalType: 'AWS::RDS::DBSecurityGroupIngress' }) as unknown as DBSecurityGroupIngress }
+export type DBSecurityGroupIngressAttributes = {  }
+export function dBSecurityGroupIngress(dBSecurityGroupIngressProps: DBSecurityGroupIngress): DBSecurityGroupIngress & { attributes: DBSecurityGroupIngressAttributes } { return ({ ...dBSecurityGroupIngressProps, _logicalType: 'AWS::RDS::DBSecurityGroupIngress', attributes: {  } }) }
 
 export interface DBSecurityGroupIngress extends KloudResource {
     dBSecurityGroupName: Value<string>;

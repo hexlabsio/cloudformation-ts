@@ -1,6 +1,6 @@
 import { SsmControlsProps } from './SsmControlsProps';
 
-export function executionControlsProps(executionControlsPropsProps: ExecutionControlsProps): ExecutionControlsProps { return (executionControlsPropsProps) as unknown as ExecutionControlsProps }
+export function executionControlsProps(executionControlsPropsProps: ExecutionControlsProps): ExecutionControlsProps { return (executionControlsPropsProps) }
 
 export interface ExecutionControlsProps {
     ssmControls?: SsmControlsProps;

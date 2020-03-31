@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { FindMatchesParametersProps } from './FindMatchesParametersProps';
 
-export function transformParametersProps(transformParametersPropsProps: TransformParametersProps): TransformParametersProps { return (transformParametersPropsProps) as unknown as TransformParametersProps }
+export function transformParametersProps(transformParametersPropsProps: TransformParametersProps): TransformParametersProps { return (transformParametersPropsProps) }
 
 export interface TransformParametersProps {
     transformType: Value<string>;

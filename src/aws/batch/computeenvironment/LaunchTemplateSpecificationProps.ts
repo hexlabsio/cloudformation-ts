@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function launchTemplateSpecificationProps(launchTemplateSpecificationPropsProps: LaunchTemplateSpecificationProps): LaunchTemplateSpecificationProps { return (launchTemplateSpecificationPropsProps) as unknown as LaunchTemplateSpecificationProps }
+export function launchTemplateSpecificationProps(launchTemplateSpecificationPropsProps: LaunchTemplateSpecificationProps): LaunchTemplateSpecificationProps { return (launchTemplateSpecificationPropsProps) }
 
 export interface LaunchTemplateSpecificationProps {
     launchTemplateName?: Value<string>;

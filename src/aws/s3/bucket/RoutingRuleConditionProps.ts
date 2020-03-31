@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function routingRuleConditionProps(routingRuleConditionPropsProps: RoutingRuleConditionProps): RoutingRuleConditionProps { return (routingRuleConditionPropsProps) as unknown as RoutingRuleConditionProps }
+export function routingRuleConditionProps(routingRuleConditionPropsProps: RoutingRuleConditionProps): RoutingRuleConditionProps { return (routingRuleConditionPropsProps) }
 
 export interface RoutingRuleConditionProps {
     httpErrorCodeReturnedEquals?: Value<string>;

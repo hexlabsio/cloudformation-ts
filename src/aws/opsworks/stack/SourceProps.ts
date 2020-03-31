@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function sourceProps(sourcePropsProps: SourceProps): SourceProps { return (sourcePropsProps) as unknown as SourceProps }
+export function sourceProps(sourcePropsProps: SourceProps): SourceProps { return (sourcePropsProps) }
 
 export interface SourceProps {
     password?: Value<string>;

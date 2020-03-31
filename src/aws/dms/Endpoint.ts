@@ -7,8 +7,10 @@ import { KinesisSettingsProps } from './endpoint/KinesisSettingsProps';
 import { Tag } from '../Tag';
 import { MongoDbSettingsProps } from './endpoint/MongoDbSettingsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function endpoint(endpointProps: Endpoint & { logicalName?: string }): Endpoint { return ({ ...endpointProps, _logicalType: 'AWS::DMS::Endpoint' }) as unknown as Endpoint }
+export type EndpointAttributes = { ExternalId: Attribute<string> }
+export function endpoint(endpointProps: Endpoint): Endpoint & { attributes: EndpointAttributes } { return ({ ...endpointProps, _logicalType: 'AWS::DMS::Endpoint', attributes: { ExternalId: 'ExternalId' } }) }
 
 export interface Endpoint extends KloudResource {
     engineName: Value<string>;

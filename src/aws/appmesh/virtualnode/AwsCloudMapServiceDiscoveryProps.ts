@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { AwsCloudMapInstanceAttributeProps } from './AwsCloudMapInstanceAttributeProps';
 
-export function awsCloudMapServiceDiscoveryProps(awsCloudMapServiceDiscoveryPropsProps: AwsCloudMapServiceDiscoveryProps): AwsCloudMapServiceDiscoveryProps { return (awsCloudMapServiceDiscoveryPropsProps) as unknown as AwsCloudMapServiceDiscoveryProps }
+export function awsCloudMapServiceDiscoveryProps(awsCloudMapServiceDiscoveryPropsProps: AwsCloudMapServiceDiscoveryProps): AwsCloudMapServiceDiscoveryProps { return (awsCloudMapServiceDiscoveryPropsProps) }
 
 export interface AwsCloudMapServiceDiscoveryProps {
     namespaceName: Value<string>;

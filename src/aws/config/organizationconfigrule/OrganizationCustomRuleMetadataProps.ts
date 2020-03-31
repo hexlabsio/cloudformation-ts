@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function organizationCustomRuleMetadataProps(organizationCustomRuleMetadataPropsProps: OrganizationCustomRuleMetadataProps): OrganizationCustomRuleMetadataProps { return (organizationCustomRuleMetadataPropsProps) as unknown as OrganizationCustomRuleMetadataProps }
+export function organizationCustomRuleMetadataProps(organizationCustomRuleMetadataPropsProps: OrganizationCustomRuleMetadataProps): OrganizationCustomRuleMetadataProps { return (organizationCustomRuleMetadataPropsProps) }
 
 export interface OrganizationCustomRuleMetadataProps {
     lambdaFunctionArn: Value<string>;

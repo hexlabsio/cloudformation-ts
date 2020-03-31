@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function sourceConfigurationProps(sourceConfigurationPropsProps: SourceConfigurationProps): SourceConfigurationProps { return (sourceConfigurationPropsProps) as unknown as SourceConfigurationProps }
+export function sourceConfigurationProps(sourceConfigurationPropsProps: SourceConfigurationProps): SourceConfigurationProps { return (sourceConfigurationPropsProps) }
 
 export interface SourceConfigurationProps {
     applicationName: Value<string>;

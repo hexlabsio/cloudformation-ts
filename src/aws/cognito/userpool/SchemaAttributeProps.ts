@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { StringAttributeConstraintsProps } from './StringAttributeConstraintsProps';
 import { NumberAttributeConstraintsProps } from './NumberAttributeConstraintsProps';
 
-export function schemaAttributeProps(schemaAttributePropsProps: SchemaAttributeProps): SchemaAttributeProps { return (schemaAttributePropsProps) as unknown as SchemaAttributeProps }
+export function schemaAttributeProps(schemaAttributePropsProps: SchemaAttributeProps): SchemaAttributeProps { return (schemaAttributePropsProps) }
 
 export interface SchemaAttributeProps {
     developerOnlyAttribute?: Value<boolean>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function integrationResponseProps(integrationResponsePropsProps: IntegrationResponseProps): IntegrationResponseProps { return (integrationResponsePropsProps) as unknown as IntegrationResponseProps }
+export function integrationResponseProps(integrationResponsePropsProps: IntegrationResponseProps): IntegrationResponseProps { return (integrationResponsePropsProps) }
 
 export interface IntegrationResponseProps {
     statusCode: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function kinesisActionProps(kinesisActionPropsProps: KinesisActionProps): KinesisActionProps { return (kinesisActionPropsProps) as unknown as KinesisActionProps }
+export function kinesisActionProps(kinesisActionPropsProps: KinesisActionProps): KinesisActionProps { return (kinesisActionPropsProps) }
 
 export interface KinesisActionProps {
     roleArn: Value<string>;

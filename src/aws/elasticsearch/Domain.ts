@@ -9,8 +9,10 @@ import { SnapshotOptionsProps } from './domain/SnapshotOptionsProps';
 import { Tag } from '../Tag';
 import { VPCOptionsProps } from './domain/VPCOptionsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function domain(domainProps: Domain & { logicalName?: string }): Domain { return ({ ...domainProps, _logicalType: 'AWS::Elasticsearch::Domain' }) as unknown as Domain }
+export type DomainAttributes = { Arn: Attribute<string>; DomainArn: Attribute<string>; DomainEndpoint: Attribute<string> }
+export function domain(domainProps: Domain): Domain & { attributes: DomainAttributes } { return ({ ...domainProps, _logicalType: 'AWS::Elasticsearch::Domain', attributes: { Arn: 'Arn', DomainArn: 'DomainArn', DomainEndpoint: 'DomainEndpoint' } }) }
 
 export interface Domain extends KloudResource {
     accessPolicies?: Value<any>;

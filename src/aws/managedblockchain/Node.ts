@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { NodeConfigurationProps } from './node/NodeConfigurationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function node(nodeProps: Node & { logicalName?: string }): Node { return ({ ...nodeProps, _logicalType: 'AWS::ManagedBlockchain::Node' }) as unknown as Node }
+export type NodeAttributes = { MemberId: Attribute<string>; NodeId: Attribute<string>; Arn: Attribute<string>; NetworkId: Attribute<string> }
+export function node(nodeProps: Node): Node & { attributes: NodeAttributes } { return ({ ...nodeProps, _logicalType: 'AWS::ManagedBlockchain::Node', attributes: { MemberId: 'MemberId', NodeId: 'NodeId', Arn: 'Arn', NetworkId: 'NetworkId' } }) }
 
 export interface Node extends KloudResource {
     memberId: Value<string>;

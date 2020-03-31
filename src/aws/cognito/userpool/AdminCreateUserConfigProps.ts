@@ -1,7 +1,7 @@
 import { InviteMessageTemplateProps } from './InviteMessageTemplateProps';
 import { Value } from '../../../kloudformation/Value';
 
-export function adminCreateUserConfigProps(adminCreateUserConfigPropsProps: AdminCreateUserConfigProps): AdminCreateUserConfigProps { return (adminCreateUserConfigPropsProps) as unknown as AdminCreateUserConfigProps }
+export function adminCreateUserConfigProps(adminCreateUserConfigPropsProps: AdminCreateUserConfigProps): AdminCreateUserConfigProps { return (adminCreateUserConfigPropsProps) }
 
 export interface AdminCreateUserConfigProps {
     inviteMessageTemplate?: InviteMessageTemplateProps;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function notificationProps(notificationPropsProps: NotificationProps): NotificationProps { return (notificationPropsProps) as unknown as NotificationProps }
+export function notificationProps(notificationPropsProps: NotificationProps): NotificationProps { return (notificationPropsProps) }
 
 export interface NotificationProps {
     comparisonOperator: Value<string>;

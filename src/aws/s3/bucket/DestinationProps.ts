@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function destinationProps(destinationPropsProps: DestinationProps): DestinationProps { return (destinationPropsProps) as unknown as DestinationProps }
+export function destinationProps(destinationPropsProps: DestinationProps): DestinationProps { return (destinationPropsProps) }
 
 export interface DestinationProps {
     bucketArn: Value<string>;

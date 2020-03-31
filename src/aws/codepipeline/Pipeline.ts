@@ -5,8 +5,10 @@ import { ArtifactStoreMapProps } from './pipeline/ArtifactStoreMapProps';
 import { StageTransitionProps } from './pipeline/StageTransitionProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function pipeline(pipelineProps: Pipeline & { logicalName?: string }): Pipeline { return ({ ...pipelineProps, _logicalType: 'AWS::CodePipeline::Pipeline' }) as unknown as Pipeline }
+export type PipelineAttributes = { Version: Attribute<string> }
+export function pipeline(pipelineProps: Pipeline): Pipeline & { attributes: PipelineAttributes } { return ({ ...pipelineProps, _logicalType: 'AWS::CodePipeline::Pipeline', attributes: { Version: 'Version' } }) }
 
 export interface Pipeline extends KloudResource {
     roleArn: Value<string>;

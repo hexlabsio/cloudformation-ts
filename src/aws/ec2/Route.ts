@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function route(routeProps: Route & { logicalName?: string }): Route { return ({ ...routeProps, _logicalType: 'AWS::EC2::Route' }) as unknown as Route }
+export type RouteAttributes = {  }
+export function route(routeProps: Route): Route & { attributes: RouteAttributes } { return ({ ...routeProps, _logicalType: 'AWS::EC2::Route', attributes: {  } }) }
 
 export interface Route extends KloudResource {
     routeTableId: Value<string>;

@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { StorageClassAnalysisProps } from './StorageClassAnalysisProps';
 import { TagFilterProps } from './TagFilterProps';
 
-export function analyticsConfigurationProps(analyticsConfigurationPropsProps: AnalyticsConfigurationProps): AnalyticsConfigurationProps { return (analyticsConfigurationPropsProps) as unknown as AnalyticsConfigurationProps }
+export function analyticsConfigurationProps(analyticsConfigurationPropsProps: AnalyticsConfigurationProps): AnalyticsConfigurationProps { return (analyticsConfigurationPropsProps) }
 
 export interface AnalyticsConfigurationProps {
     id: Value<string>;

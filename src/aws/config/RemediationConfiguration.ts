@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { ExecutionControlsProps } from './remediationconfiguration/ExecutionControlsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function remediationConfiguration(remediationConfigurationProps: RemediationConfiguration & { logicalName?: string }): RemediationConfiguration { return ({ ...remediationConfigurationProps, _logicalType: 'AWS::Config::RemediationConfiguration' }) as unknown as RemediationConfiguration }
+export type RemediationConfigurationAttributes = {  }
+export function remediationConfiguration(remediationConfigurationProps: RemediationConfiguration): RemediationConfiguration & { attributes: RemediationConfigurationAttributes } { return ({ ...remediationConfigurationProps, _logicalType: 'AWS::Config::RemediationConfiguration', attributes: {  } }) }
 
 export interface RemediationConfiguration extends KloudResource {
     targetType: Value<string>;

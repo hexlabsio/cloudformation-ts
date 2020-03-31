@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function autoScalingThresholdsProps(autoScalingThresholdsPropsProps: AutoScalingThresholdsProps): AutoScalingThresholdsProps { return (autoScalingThresholdsPropsProps) as unknown as AutoScalingThresholdsProps }
+export function autoScalingThresholdsProps(autoScalingThresholdsPropsProps: AutoScalingThresholdsProps): AutoScalingThresholdsProps { return (autoScalingThresholdsPropsProps) }
 
 export interface AutoScalingThresholdsProps {
     cpuThreshold?: Value<number>;

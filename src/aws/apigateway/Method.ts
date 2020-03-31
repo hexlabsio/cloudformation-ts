@@ -3,7 +3,8 @@ import { IntegrationProps } from './method/IntegrationProps';
 import { MethodResponseProps } from './method/MethodResponseProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function method(methodProps: Method & { logicalName?: string }): Method { return ({ ...methodProps, _logicalType: 'AWS::ApiGateway::Method' }) as unknown as Method }
+export type MethodAttributes = {  }
+export function method(methodProps: Method): Method & { attributes: MethodAttributes } { return ({ ...methodProps, _logicalType: 'AWS::ApiGateway::Method', attributes: {  } }) }
 
 export interface Method extends KloudResource {
     httpMethod: Value<string>;

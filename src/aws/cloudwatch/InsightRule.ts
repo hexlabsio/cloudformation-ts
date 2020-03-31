@@ -1,7 +1,9 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function insightRule(insightRuleProps: InsightRule & { logicalName?: string }): InsightRule { return ({ ...insightRuleProps, _logicalType: 'AWS::CloudWatch::InsightRule' }) as unknown as InsightRule }
+export type InsightRuleAttributes = { Arn: Attribute<string>; RuleName: Attribute<string> }
+export function insightRule(insightRuleProps: InsightRule): InsightRule & { attributes: InsightRuleAttributes } { return ({ ...insightRuleProps, _logicalType: 'AWS::CloudWatch::InsightRule', attributes: { Arn: 'Arn', RuleName: 'RuleName' } }) }
 
 export interface InsightRule extends KloudResource {
     ruleState: Value<string>;

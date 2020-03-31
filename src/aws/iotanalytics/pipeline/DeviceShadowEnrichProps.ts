@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function deviceShadowEnrichProps(deviceShadowEnrichPropsProps: DeviceShadowEnrichProps): DeviceShadowEnrichProps { return (deviceShadowEnrichPropsProps) as unknown as DeviceShadowEnrichProps }
+export function deviceShadowEnrichProps(deviceShadowEnrichPropsProps: DeviceShadowEnrichProps): DeviceShadowEnrichProps { return (deviceShadowEnrichPropsProps) }
 
 export interface DeviceShadowEnrichProps {
     attribute?: Value<string>;

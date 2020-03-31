@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function notificationConfigurationProps(notificationConfigurationPropsProps: NotificationConfigurationProps): NotificationConfigurationProps { return (notificationConfigurationPropsProps) as unknown as NotificationConfigurationProps }
+export function notificationConfigurationProps(notificationConfigurationPropsProps: NotificationConfigurationProps): NotificationConfigurationProps { return (notificationConfigurationPropsProps) }
 
 export interface NotificationConfigurationProps {
     notificationTopicArn: Value<string>;

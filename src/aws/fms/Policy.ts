@@ -3,8 +3,10 @@ import { IEMapProps } from './policy/IEMapProps';
 import { ResourceTagProps } from './policy/ResourceTagProps';
 import { PolicyTagProps } from './policy/PolicyTagProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function policy(policyProps: Policy & { logicalName?: string }): Policy { return ({ ...policyProps, _logicalType: 'AWS::FMS::Policy' }) as unknown as Policy }
+export type PolicyAttributes = { Id: Attribute<string>; Arn: Attribute<string> }
+export function policy(policyProps: Policy): Policy & { attributes: PolicyAttributes } { return ({ ...policyProps, _logicalType: 'AWS::FMS::Policy', attributes: { Id: 'Id', Arn: 'Arn' } }) }
 
 export interface Policy extends KloudResource {
     excludeResourceTags: Value<boolean>;

@@ -7,8 +7,10 @@ import { KerberosAttributesProps } from './cluster/KerberosAttributesProps';
 import { StepConfigProps } from './cluster/StepConfigProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function cluster(clusterProps: Cluster & { logicalName?: string }): Cluster { return ({ ...clusterProps, _logicalType: 'AWS::EMR::Cluster' }) as unknown as Cluster }
+export type ClusterAttributes = { MasterPublicDNS: Attribute<string> }
+export function cluster(clusterProps: Cluster): Cluster & { attributes: ClusterAttributes } { return ({ ...clusterProps, _logicalType: 'AWS::EMR::Cluster', attributes: { MasterPublicDNS: 'MasterPublicDNS' } }) }
 
 export interface Cluster extends KloudResource {
     instances: JobFlowInstancesConfigProps;

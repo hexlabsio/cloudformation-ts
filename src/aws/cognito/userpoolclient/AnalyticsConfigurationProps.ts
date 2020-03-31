@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function analyticsConfigurationProps(analyticsConfigurationPropsProps: AnalyticsConfigurationProps): AnalyticsConfigurationProps { return (analyticsConfigurationPropsProps) as unknown as AnalyticsConfigurationProps }
+export function analyticsConfigurationProps(analyticsConfigurationPropsProps: AnalyticsConfigurationProps): AnalyticsConfigurationProps { return (analyticsConfigurationPropsProps) }
 
 export interface AnalyticsConfigurationProps {
     userDataShared?: Value<boolean>;

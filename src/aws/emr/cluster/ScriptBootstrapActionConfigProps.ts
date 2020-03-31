@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function scriptBootstrapActionConfigProps(scriptBootstrapActionConfigPropsProps: ScriptBootstrapActionConfigProps): ScriptBootstrapActionConfigProps { return (scriptBootstrapActionConfigPropsProps) as unknown as ScriptBootstrapActionConfigProps }
+export function scriptBootstrapActionConfigProps(scriptBootstrapActionConfigPropsProps: ScriptBootstrapActionConfigProps): ScriptBootstrapActionConfigProps { return (scriptBootstrapActionConfigPropsProps) }
 
 export interface ScriptBootstrapActionConfigProps {
     path: Value<string>;

@@ -3,7 +3,8 @@ import { Value } from '../../kloudformation/Value';
 import { ActivatedRuleProps } from './webacl/ActivatedRuleProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function webACL(webACLProps: WebACL & { logicalName?: string }): WebACL { return ({ ...webACLProps, _logicalType: 'AWS::WAF::WebACL' }) as unknown as WebACL }
+export type WebACLAttributes = {  }
+export function webACL(webACLProps: WebACL): WebACL & { attributes: WebACLAttributes } { return ({ ...webACLProps, _logicalType: 'AWS::WAF::WebACL', attributes: {  } }) }
 
 export interface WebACL extends KloudResource {
     defaultAction: WafActionProps;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function policiesProps(policiesPropsProps: PoliciesProps): PoliciesProps { return (policiesPropsProps) as unknown as PoliciesProps }
+export function policiesProps(policiesPropsProps: PoliciesProps): PoliciesProps { return (policiesPropsProps) }
 
 export interface PoliciesProps {
     attributes: Value<Value<any>[]>;

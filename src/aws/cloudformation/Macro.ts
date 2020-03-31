@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function macro(macroProps: Macro & { logicalName?: string }): Macro { return ({ ...macroProps, _logicalType: 'AWS::CloudFormation::Macro' }) as unknown as Macro }
+export type MacroAttributes = {  }
+export function macro(macroProps: Macro): Macro & { attributes: MacroAttributes } { return ({ ...macroProps, _logicalType: 'AWS::CloudFormation::Macro', attributes: {  } }) }
 
 export interface Macro extends KloudResource {
     functionName: Value<string>;

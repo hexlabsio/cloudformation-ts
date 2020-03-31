@@ -3,7 +3,8 @@ import { MonitorsProps } from './environment/MonitorsProps';
 import { TagsProps } from './environment/TagsProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function environment(environmentProps: Environment & { logicalName?: string }): Environment { return ({ ...environmentProps, _logicalType: 'AWS::AppConfig::Environment' }) as unknown as Environment }
+export type EnvironmentAttributes = {  }
+export function environment(environmentProps: Environment): Environment & { attributes: EnvironmentAttributes } { return ({ ...environmentProps, _logicalType: 'AWS::AppConfig::Environment', attributes: {  } }) }
 
 export interface Environment extends KloudResource {
     applicationId: Value<string>;

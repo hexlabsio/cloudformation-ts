@@ -2,8 +2,10 @@ import { Value } from '../../kloudformation/Value';
 import { ScalingConfigProps } from './nodegroup/ScalingConfigProps';
 import { RemoteAccessProps } from './nodegroup/RemoteAccessProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function nodegroup(nodegroupProps: Nodegroup & { logicalName?: string }): Nodegroup { return ({ ...nodegroupProps, _logicalType: 'AWS::EKS::Nodegroup' }) as unknown as Nodegroup }
+export type NodegroupAttributes = { NodegroupName: Attribute<string>; ClusterName: Attribute<string>; Arn: Attribute<string> }
+export function nodegroup(nodegroupProps: Nodegroup): Nodegroup & { attributes: NodegroupAttributes } { return ({ ...nodegroupProps, _logicalType: 'AWS::EKS::Nodegroup', attributes: { NodegroupName: 'NodegroupName', ClusterName: 'ClusterName', Arn: 'Arn' } }) }
 
 export interface Nodegroup extends KloudResource {
     subnets: Value<Value<string>[]>;

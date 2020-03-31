@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { AlarmIdentifierProps } from './AlarmIdentifierProps';
 
-export function healthCheckConfigProps(healthCheckConfigPropsProps: HealthCheckConfigProps): HealthCheckConfigProps { return (healthCheckConfigPropsProps) as unknown as HealthCheckConfigProps }
+export function healthCheckConfigProps(healthCheckConfigPropsProps: HealthCheckConfigProps): HealthCheckConfigProps { return (healthCheckConfigPropsProps) }
 
 export interface HealthCheckConfigProps {
     type: Value<string>;

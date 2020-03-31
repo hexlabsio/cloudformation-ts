@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function stackSetConstraint(stackSetConstraintProps: StackSetConstraint & { logicalName?: string }): StackSetConstraint { return ({ ...stackSetConstraintProps, _logicalType: 'AWS::ServiceCatalog::StackSetConstraint' }) as unknown as StackSetConstraint }
+export type StackSetConstraintAttributes = {  }
+export function stackSetConstraint(stackSetConstraintProps: StackSetConstraint): StackSetConstraint & { attributes: StackSetConstraintAttributes } { return ({ ...stackSetConstraintProps, _logicalType: 'AWS::ServiceCatalog::StackSetConstraint', attributes: {  } }) }
 
 export interface StackSetConstraint extends KloudResource {
     description: Value<string>;

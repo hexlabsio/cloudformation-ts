@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function geoLocationProps(geoLocationPropsProps: GeoLocationProps): GeoLocationProps { return (geoLocationPropsProps) as unknown as GeoLocationProps }
+export function geoLocationProps(geoLocationPropsProps: GeoLocationProps): GeoLocationProps { return (geoLocationPropsProps) }
 
 export interface GeoLocationProps {
     continentCode?: Value<string>;

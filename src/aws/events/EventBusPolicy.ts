@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { ConditionProps } from './eventbuspolicy/ConditionProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function eventBusPolicy(eventBusPolicyProps: EventBusPolicy & { logicalName?: string }): EventBusPolicy { return ({ ...eventBusPolicyProps, _logicalType: 'AWS::Events::EventBusPolicy' }) as unknown as EventBusPolicy }
+export type EventBusPolicyAttributes = {  }
+export function eventBusPolicy(eventBusPolicyProps: EventBusPolicy): EventBusPolicy & { attributes: EventBusPolicyAttributes } { return ({ ...eventBusPolicyProps, _logicalType: 'AWS::Events::EventBusPolicy', attributes: {  } }) }
 
 export interface EventBusPolicy extends KloudResource {
     action: Value<string>;

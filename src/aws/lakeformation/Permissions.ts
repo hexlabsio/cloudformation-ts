@@ -3,7 +3,8 @@ import { ResourceProps } from './permissions/ResourceProps';
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function permissions(permissionsProps: Permissions & { logicalName?: string }): Permissions { return ({ ...permissionsProps, _logicalType: 'AWS::LakeFormation::Permissions' }) as unknown as Permissions }
+export type PermissionsAttributes = {  }
+export function permissions(permissionsProps: Permissions): Permissions & { attributes: PermissionsAttributes } { return ({ ...permissionsProps, _logicalType: 'AWS::LakeFormation::Permissions', attributes: {  } }) }
 
 export interface Permissions extends KloudResource {
     dataLakePrincipal: DataLakePrincipalProps;

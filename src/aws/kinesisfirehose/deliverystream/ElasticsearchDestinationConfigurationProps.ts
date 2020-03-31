@@ -5,7 +5,7 @@ import { S3DestinationConfigurationProps } from './S3DestinationConfigurationPro
 import { CloudWatchLoggingOptionsProps } from './CloudWatchLoggingOptionsProps';
 import { ProcessingConfigurationProps } from './ProcessingConfigurationProps';
 
-export function elasticsearchDestinationConfigurationProps(elasticsearchDestinationConfigurationPropsProps: ElasticsearchDestinationConfigurationProps): ElasticsearchDestinationConfigurationProps { return (elasticsearchDestinationConfigurationPropsProps) as unknown as ElasticsearchDestinationConfigurationProps }
+export function elasticsearchDestinationConfigurationProps(elasticsearchDestinationConfigurationPropsProps: ElasticsearchDestinationConfigurationProps): ElasticsearchDestinationConfigurationProps { return (elasticsearchDestinationConfigurationPropsProps) }
 
 export interface ElasticsearchDestinationConfigurationProps {
     bufferingHints: ElasticsearchBufferingHintsProps;

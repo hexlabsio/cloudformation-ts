@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { FieldToMatchProps } from './FieldToMatchProps';
 
-export function byteMatchTupleProps(byteMatchTuplePropsProps: ByteMatchTupleProps): ByteMatchTupleProps { return (byteMatchTuplePropsProps) as unknown as ByteMatchTupleProps }
+export function byteMatchTupleProps(byteMatchTuplePropsProps: ByteMatchTupleProps): ByteMatchTupleProps { return (byteMatchTuplePropsProps) }
 
 export interface ByteMatchTupleProps {
     positionalConstraint: Value<string>;

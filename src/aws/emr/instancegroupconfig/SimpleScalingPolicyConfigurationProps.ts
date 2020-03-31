@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function simpleScalingPolicyConfigurationProps(simpleScalingPolicyConfigurationPropsProps: SimpleScalingPolicyConfigurationProps): SimpleScalingPolicyConfigurationProps { return (simpleScalingPolicyConfigurationPropsProps) as unknown as SimpleScalingPolicyConfigurationProps }
+export function simpleScalingPolicyConfigurationProps(simpleScalingPolicyConfigurationPropsProps: SimpleScalingPolicyConfigurationProps): SimpleScalingPolicyConfigurationProps { return (simpleScalingPolicyConfigurationPropsProps) }
 
 export interface SimpleScalingPolicyConfigurationProps {
     scalingAdjustment: Value<number>;

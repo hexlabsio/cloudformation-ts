@@ -5,7 +5,8 @@ import { EnvironmentVariableProps } from '../amplify/app/EnvironmentVariableProp
 import { SslConfigurationProps } from './app/SslConfigurationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function app(appProps: App & { logicalName?: string }): App { return ({ ...appProps, _logicalType: 'AWS::OpsWorks::App' }) as unknown as App }
+export type AppAttributes = {  }
+export function app(appProps: App): App & { attributes: AppAttributes } { return ({ ...appProps, _logicalType: 'AWS::OpsWorks::App', attributes: {  } }) }
 
 export interface App extends KloudResource {
     name: Value<string>;

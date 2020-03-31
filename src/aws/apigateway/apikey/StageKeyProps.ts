@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function stageKeyProps(stageKeyPropsProps: StageKeyProps): StageKeyProps { return (stageKeyPropsProps) as unknown as StageKeyProps }
+export function stageKeyProps(stageKeyPropsProps: StageKeyProps): StageKeyProps { return (stageKeyPropsProps) }
 
 export interface StageKeyProps {
     restApiId?: Value<string>;

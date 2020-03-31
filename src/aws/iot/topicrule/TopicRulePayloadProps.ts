@@ -1,7 +1,7 @@
 import { ActionProps } from './ActionProps';
 import { Value } from '../../../kloudformation/Value';
 
-export function topicRulePayloadProps(topicRulePayloadPropsProps: TopicRulePayloadProps): TopicRulePayloadProps { return (topicRulePayloadPropsProps) as unknown as TopicRulePayloadProps }
+export function topicRulePayloadProps(topicRulePayloadPropsProps: TopicRulePayloadProps): TopicRulePayloadProps { return (topicRulePayloadPropsProps) }
 
 export interface TopicRulePayloadProps {
     actions: ActionProps[];

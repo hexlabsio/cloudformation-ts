@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function mongoDbSettingsProps(mongoDbSettingsPropsProps: MongoDbSettingsProps): MongoDbSettingsProps { return (mongoDbSettingsPropsProps) as unknown as MongoDbSettingsProps }
+export function mongoDbSettingsProps(mongoDbSettingsPropsProps: MongoDbSettingsProps): MongoDbSettingsProps { return (mongoDbSettingsPropsProps) }
 
 export interface MongoDbSettingsProps {
     authSource?: Value<string>;

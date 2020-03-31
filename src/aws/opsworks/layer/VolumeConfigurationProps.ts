@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function volumeConfigurationProps(volumeConfigurationPropsProps: VolumeConfigurationProps): VolumeConfigurationProps { return (volumeConfigurationPropsProps) as unknown as VolumeConfigurationProps }
+export function volumeConfigurationProps(volumeConfigurationPropsProps: VolumeConfigurationProps): VolumeConfigurationProps { return (volumeConfigurationPropsProps) }
 
 export interface VolumeConfigurationProps {
     encrypted?: Value<boolean>;

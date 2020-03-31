@@ -1,6 +1,6 @@
 import { AccessLogProps } from './AccessLogProps';
 
-export function loggingProps(loggingPropsProps: LoggingProps): LoggingProps { return (loggingPropsProps) as unknown as LoggingProps }
+export function loggingProps(loggingPropsProps: LoggingProps): LoggingProps { return (loggingPropsProps) }
 
 export interface LoggingProps {
     accessLog?: AccessLogProps;

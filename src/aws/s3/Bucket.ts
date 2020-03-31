@@ -15,8 +15,10 @@ import { Tag } from '../Tag';
 import { VersioningConfigurationProps } from './bucket/VersioningConfigurationProps';
 import { WebsiteConfigurationProps } from './bucket/WebsiteConfigurationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function bucket(bucketProps: Bucket & { logicalName?: string }): Bucket { return ({ ...bucketProps, _logicalType: 'AWS::S3::Bucket' }) as unknown as Bucket }
+export type BucketAttributes = { Arn: Attribute<string>; DomainName: Attribute<string>; DualStackDomainName: Attribute<string>; RegionalDomainName: Attribute<string>; WebsiteURL: Attribute<string> }
+export function bucket(bucketProps: Bucket): Bucket & { attributes: BucketAttributes } { return ({ ...bucketProps, _logicalType: 'AWS::S3::Bucket', attributes: { Arn: 'Arn', DomainName: 'DomainName', DualStackDomainName: 'DualStackDomainName', RegionalDomainName: 'RegionalDomainName', WebsiteURL: 'WebsiteURL' } }) }
 
 export interface Bucket extends KloudResource {
     accelerateConfiguration?: AccelerateConfigurationProps;

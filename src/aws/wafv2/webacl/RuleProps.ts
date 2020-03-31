@@ -4,7 +4,7 @@ import { VisibilityConfigProps } from './VisibilityConfigProps';
 import { RuleActionProps } from './RuleActionProps';
 import { OverrideActionProps } from './OverrideActionProps';
 
-export function ruleProps(rulePropsProps: RuleProps): RuleProps { return (rulePropsProps) as unknown as RuleProps }
+export function ruleProps(rulePropsProps: RuleProps): RuleProps { return (rulePropsProps) }
 
 export interface RuleProps {
     name: Value<string>;

@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function transitGateway(transitGatewayProps: TransitGateway & { logicalName?: string }): TransitGateway { return ({ ...transitGatewayProps, _logicalType: 'AWS::EC2::TransitGateway' }) as unknown as TransitGateway }
+export type TransitGatewayAttributes = {  }
+export function transitGateway(transitGatewayProps: TransitGateway): TransitGateway & { attributes: TransitGatewayAttributes } { return ({ ...transitGatewayProps, _logicalType: 'AWS::EC2::TransitGateway', attributes: {  } }) }
 
 export interface TransitGateway extends KloudResource {
     defaultRouteTablePropagation?: Value<string>;

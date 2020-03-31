@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function csvClassifierProps(csvClassifierPropsProps: CsvClassifierProps): CsvClassifierProps { return (csvClassifierPropsProps) as unknown as CsvClassifierProps }
+export function csvClassifierProps(csvClassifierPropsProps: CsvClassifierProps): CsvClassifierProps { return (csvClassifierPropsProps) }
 
 export interface CsvClassifierProps {
     quoteSymbol?: Value<string>;

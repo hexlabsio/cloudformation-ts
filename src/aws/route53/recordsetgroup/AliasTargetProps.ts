@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function aliasTargetProps(aliasTargetPropsProps: AliasTargetProps): AliasTargetProps { return (aliasTargetPropsProps) as unknown as AliasTargetProps }
+export function aliasTargetProps(aliasTargetPropsProps: AliasTargetProps): AliasTargetProps { return (aliasTargetPropsProps) }
 
 export interface AliasTargetProps {
     dNSName: Value<string>;

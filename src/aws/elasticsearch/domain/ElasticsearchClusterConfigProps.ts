@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { ZoneAwarenessConfigProps } from './ZoneAwarenessConfigProps';
 
-export function elasticsearchClusterConfigProps(elasticsearchClusterConfigPropsProps: ElasticsearchClusterConfigProps): ElasticsearchClusterConfigProps { return (elasticsearchClusterConfigPropsProps) as unknown as ElasticsearchClusterConfigProps }
+export function elasticsearchClusterConfigProps(elasticsearchClusterConfigPropsProps: ElasticsearchClusterConfigProps): ElasticsearchClusterConfigProps { return (elasticsearchClusterConfigPropsProps) }
 
 export interface ElasticsearchClusterConfigProps {
     dedicatedMasterCount?: Value<number>;

@@ -3,8 +3,10 @@ import { InstanceIpv6AddressProps } from './networkinterface/InstanceIpv6Address
 import { PrivateIpAddressSpecificationProps } from './networkinterface/PrivateIpAddressSpecificationProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function networkInterface(networkInterfaceProps: NetworkInterface & { logicalName?: string }): NetworkInterface { return ({ ...networkInterfaceProps, _logicalType: 'AWS::EC2::NetworkInterface' }) as unknown as NetworkInterface }
+export type NetworkInterfaceAttributes = { PrimaryPrivateIpAddress: Attribute<string>; SecondaryPrivateIpAddresses: Attribute<Value<string>[]> }
+export function networkInterface(networkInterfaceProps: NetworkInterface): NetworkInterface & { attributes: NetworkInterfaceAttributes } { return ({ ...networkInterfaceProps, _logicalType: 'AWS::EC2::NetworkInterface', attributes: { PrimaryPrivateIpAddress: 'PrimaryPrivateIpAddress', SecondaryPrivateIpAddresses: 'SecondaryPrivateIpAddresses' } }) }
 
 export interface NetworkInterface extends KloudResource {
     subnetId: Value<string>;

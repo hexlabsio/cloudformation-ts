@@ -7,7 +7,8 @@ import { RdsDbInstanceProps } from './stack/RdsDbInstanceProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function stack(stackProps: Stack & { logicalName?: string }): Stack { return ({ ...stackProps, _logicalType: 'AWS::OpsWorks::Stack' }) as unknown as Stack }
+export type StackAttributes = {  }
+export function stack(stackProps: Stack): Stack & { attributes: StackAttributes } { return ({ ...stackProps, _logicalType: 'AWS::OpsWorks::Stack', attributes: {  } }) }
 
 export interface Stack extends KloudResource {
     defaultInstanceProfileArn: Value<string>;

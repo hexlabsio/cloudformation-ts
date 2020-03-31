@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function aPNSPushNotificationTemplateProps(aPNSPushNotificationTemplatePropsProps: APNSPushNotificationTemplateProps): APNSPushNotificationTemplateProps { return (aPNSPushNotificationTemplatePropsProps) as unknown as APNSPushNotificationTemplateProps }
+export function aPNSPushNotificationTemplateProps(aPNSPushNotificationTemplatePropsProps: APNSPushNotificationTemplateProps): APNSPushNotificationTemplateProps { return (aPNSPushNotificationTemplatePropsProps) }
 
 export interface APNSPushNotificationTemplateProps {
     action?: Value<string>;

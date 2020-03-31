@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function predicateProps(predicatePropsProps: PredicateProps): PredicateProps { return (predicatePropsProps) as unknown as PredicateProps }
+export function predicateProps(predicatePropsProps: PredicateProps): PredicateProps { return (predicatePropsProps) }
 
 export interface PredicateProps {
     dataId: Value<string>;

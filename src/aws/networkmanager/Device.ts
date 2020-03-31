@@ -2,8 +2,10 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { LocationProps } from './device/LocationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function device(deviceProps: Device & { logicalName?: string }): Device { return ({ ...deviceProps, _logicalType: 'AWS::NetworkManager::Device' }) as unknown as Device }
+export type DeviceAttributes = { DeviceArn: Attribute<string>; DeviceId: Attribute<string> }
+export function device(deviceProps: Device): Device & { attributes: DeviceAttributes } { return ({ ...deviceProps, _logicalType: 'AWS::NetworkManager::Device', attributes: { DeviceArn: 'DeviceArn', DeviceId: 'DeviceId' } }) }
 
 export interface Device extends KloudResource {
     globalNetworkId: Value<string>;

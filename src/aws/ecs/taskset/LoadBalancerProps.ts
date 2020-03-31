@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function loadBalancerProps(loadBalancerPropsProps: LoadBalancerProps): LoadBalancerProps { return (loadBalancerPropsProps) as unknown as LoadBalancerProps }
+export function loadBalancerProps(loadBalancerPropsProps: LoadBalancerProps): LoadBalancerProps { return (loadBalancerPropsProps) }
 
 export interface LoadBalancerProps {
     containerName?: Value<string>;

@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { InstanceIpv6AddressProps } from '../networkinterface/InstanceIpv6AddressProps';
 import { PrivateIpAddressSpecificationProps } from './PrivateIpAddressSpecificationProps';
 
-export function networkInterfaceProps(networkInterfacePropsProps: NetworkInterfaceProps): NetworkInterfaceProps { return (networkInterfacePropsProps) as unknown as NetworkInterfaceProps }
+export function networkInterfaceProps(networkInterfacePropsProps: NetworkInterfaceProps): NetworkInterfaceProps { return (networkInterfacePropsProps) }
 
 export interface NetworkInterfaceProps {
     deviceIndex: Value<string>;

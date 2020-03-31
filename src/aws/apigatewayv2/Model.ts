@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function model(modelProps: Model & { logicalName?: string }): Model { return ({ ...modelProps, _logicalType: 'AWS::ApiGatewayV2::Model' }) as unknown as Model }
+export type ModelAttributes = {  }
+export function model(modelProps: Model): Model & { attributes: ModelAttributes } { return ({ ...modelProps, _logicalType: 'AWS::ApiGatewayV2::Model', attributes: {  } }) }
 
 export interface Model extends KloudResource {
     schema: Value<any>;

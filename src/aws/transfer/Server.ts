@@ -3,8 +3,10 @@ import { IdentityProviderDetailsProps } from './server/IdentityProviderDetailsPr
 import { EndpointDetailsProps } from './server/EndpointDetailsProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function server(serverProps: Server & { logicalName?: string }): Server { return ({ ...serverProps, _logicalType: 'AWS::Transfer::Server' }) as unknown as Server }
+export type ServerAttributes = { ServerId: Attribute<string>; Arn: Attribute<string> }
+export function server(serverProps: Server): Server & { attributes: ServerAttributes } { return ({ ...serverProps, _logicalType: 'AWS::Transfer::Server', attributes: { ServerId: 'ServerId', Arn: 'Arn' } }) }
 
 export interface Server extends KloudResource {
     loggingRole?: Value<string>;

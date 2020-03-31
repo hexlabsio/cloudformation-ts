@@ -4,7 +4,7 @@ import { CloudWatchDestinationProps } from '../../ses/configurationseteventdesti
 import { PinpointDestinationProps } from './PinpointDestinationProps';
 import { KinesisFirehoseDestinationProps } from '../../ses/configurationseteventdestination/KinesisFirehoseDestinationProps';
 
-export function eventDestinationProps(eventDestinationPropsProps: EventDestinationProps): EventDestinationProps { return (eventDestinationPropsProps) as unknown as EventDestinationProps }
+export function eventDestinationProps(eventDestinationPropsProps: EventDestinationProps): EventDestinationProps { return (eventDestinationPropsProps) }
 
 export interface EventDestinationProps {
     matchingEventTypes: Value<Value<string>[]>;

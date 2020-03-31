@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function spotPlacementProps(spotPlacementPropsProps: SpotPlacementProps): SpotPlacementProps { return (spotPlacementPropsProps) as unknown as SpotPlacementProps }
+export function spotPlacementProps(spotPlacementPropsProps: SpotPlacementProps): SpotPlacementProps { return (spotPlacementPropsProps) }
 
 export interface SpotPlacementProps {
     availabilityZone?: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function codeProps(codePropsProps: CodeProps): CodeProps { return (codePropsProps) as unknown as CodeProps }
+export function codeProps(codePropsProps: CodeProps): CodeProps { return (codePropsProps) }
 
 export interface CodeProps {
     s3Bucket?: Value<string>;

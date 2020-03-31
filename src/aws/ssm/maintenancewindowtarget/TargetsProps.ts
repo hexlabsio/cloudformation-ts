@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function targetsProps(targetsPropsProps: TargetsProps): TargetsProps { return (targetsPropsProps) as unknown as TargetsProps }
+export function targetsProps(targetsPropsProps: TargetsProps): TargetsProps { return (targetsPropsProps) }
 
 export interface TargetsProps {
     key: Value<string>;

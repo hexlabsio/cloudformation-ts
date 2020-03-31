@@ -4,8 +4,10 @@ import { InputVpcRequestProps } from './input/InputVpcRequestProps';
 import { MediaConnectFlowRequestProps } from './input/MediaConnectFlowRequestProps';
 import { InputSourceRequestProps } from './input/InputSourceRequestProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function input(inputProps: Input & { logicalName?: string }): Input { return ({ ...inputProps, _logicalType: 'AWS::MediaLive::Input' }) as unknown as Input }
+export type InputAttributes = { Destinations: Attribute<Value<string>[]>; Arn: Attribute<string>; Sources: Attribute<Value<string>[]> }
+export function input(inputProps: Input): Input & { attributes: InputAttributes } { return ({ ...inputProps, _logicalType: 'AWS::MediaLive::Input', attributes: { Destinations: 'Destinations', Arn: 'Arn', Sources: 'Sources' } }) }
 
 export interface Input extends KloudResource {
     type?: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function userPoolConfigProps(userPoolConfigPropsProps: UserPoolConfigProps): UserPoolConfigProps { return (userPoolConfigPropsProps) as unknown as UserPoolConfigProps }
+export function userPoolConfigProps(userPoolConfigPropsProps: UserPoolConfigProps): UserPoolConfigProps { return (userPoolConfigPropsProps) }
 
 export interface UserPoolConfigProps {
     appIdClientRegex?: Value<string>;

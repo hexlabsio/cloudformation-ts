@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function dHCPOptions(dHCPOptionsProps: DHCPOptions & { logicalName?: string }): DHCPOptions { return ({ ...dHCPOptionsProps, _logicalType: 'AWS::EC2::DHCPOptions' }) as unknown as DHCPOptions }
+export type DHCPOptionsAttributes = {  }
+export function dHCPOptions(dHCPOptionsProps: DHCPOptions): DHCPOptions & { attributes: DHCPOptionsAttributes } { return ({ ...dHCPOptionsProps, _logicalType: 'AWS::EC2::DHCPOptions', attributes: {  } }) }
 
 export interface DHCPOptions extends KloudResource {
     domainName?: Value<string>;

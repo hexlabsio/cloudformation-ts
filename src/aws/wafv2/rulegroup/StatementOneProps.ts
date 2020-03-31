@@ -10,7 +10,7 @@ import { AndStatementOneProps } from './AndStatementOneProps';
 import { OrStatementOneProps } from './OrStatementOneProps';
 import { NotStatementOneProps } from './NotStatementOneProps';
 
-export function statementOneProps(statementOnePropsProps: StatementOneProps): StatementOneProps { return (statementOnePropsProps) as unknown as StatementOneProps }
+export function statementOneProps(statementOnePropsProps: StatementOneProps): StatementOneProps { return (statementOnePropsProps) }
 
 export interface StatementOneProps {
     byteMatchStatement?: ByteMatchStatementProps;

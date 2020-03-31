@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { TagSpecificationProps } from './capacityreservation/TagSpecificationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function capacityReservation(capacityReservationProps: CapacityReservation & { logicalName?: string }): CapacityReservation { return ({ ...capacityReservationProps, _logicalType: 'AWS::EC2::CapacityReservation' }) as unknown as CapacityReservation }
+export type CapacityReservationAttributes = { Tenancy: Attribute<string>; AvailableInstanceCount: Attribute<number>; AvailabilityZone: Attribute<string>; TotalInstanceCount: Attribute<number>; InstanceType: Attribute<string> }
+export function capacityReservation(capacityReservationProps: CapacityReservation): CapacityReservation & { attributes: CapacityReservationAttributes } { return ({ ...capacityReservationProps, _logicalType: 'AWS::EC2::CapacityReservation', attributes: { Tenancy: 'Tenancy', AvailableInstanceCount: 'AvailableInstanceCount', AvailabilityZone: 'AvailabilityZone', TotalInstanceCount: 'TotalInstanceCount', InstanceType: 'InstanceType' } }) }
 
 export interface CapacityReservation extends KloudResource {
     instanceCount: Value<number>;

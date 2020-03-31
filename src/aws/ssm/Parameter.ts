@@ -1,7 +1,9 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function parameter(parameterProps: Parameter & { logicalName?: string }): Parameter { return ({ ...parameterProps, _logicalType: 'AWS::SSM::Parameter' }) as unknown as Parameter }
+export type ParameterAttributes = { Type: Attribute<string>; Value: Attribute<string> }
+export function parameter(parameterProps: Parameter): Parameter & { attributes: ParameterAttributes } { return ({ ...parameterProps, _logicalType: 'AWS::SSM::Parameter', attributes: { Type: 'Type', Value: 'Value' } }) }
 
 export interface Parameter extends KloudResource {
     type: Value<string>;

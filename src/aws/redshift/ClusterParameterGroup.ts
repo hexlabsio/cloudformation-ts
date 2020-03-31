@@ -3,7 +3,8 @@ import { ParameterProps } from './clusterparametergroup/ParameterProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function clusterParameterGroup(clusterParameterGroupProps: ClusterParameterGroup & { logicalName?: string }): ClusterParameterGroup { return ({ ...clusterParameterGroupProps, _logicalType: 'AWS::Redshift::ClusterParameterGroup' }) as unknown as ClusterParameterGroup }
+export type ClusterParameterGroupAttributes = {  }
+export function clusterParameterGroup(clusterParameterGroupProps: ClusterParameterGroup): ClusterParameterGroup & { attributes: ClusterParameterGroupAttributes } { return ({ ...clusterParameterGroupProps, _logicalType: 'AWS::Redshift::ClusterParameterGroup', attributes: {  } }) }
 
 export interface ClusterParameterGroup extends KloudResource {
     description: Value<string>;

@@ -4,7 +4,8 @@ import { OrganizationAggregationSourceProps } from './configurationaggregator/Or
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function configurationAggregator(configurationAggregatorProps: ConfigurationAggregator & { logicalName?: string }): ConfigurationAggregator { return ({ ...configurationAggregatorProps, _logicalType: 'AWS::Config::ConfigurationAggregator' }) as unknown as ConfigurationAggregator }
+export type ConfigurationAggregatorAttributes = {  }
+export function configurationAggregator(configurationAggregatorProps: ConfigurationAggregator): ConfigurationAggregator & { attributes: ConfigurationAggregatorAttributes } { return ({ ...configurationAggregatorProps, _logicalType: 'AWS::Config::ConfigurationAggregator', attributes: {  } }) }
 
 export interface ConfigurationAggregator extends KloudResource {
     configurationAggregatorName: Value<string>;

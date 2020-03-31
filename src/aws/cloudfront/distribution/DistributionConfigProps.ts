@@ -1,18 +1,17 @@
 import { Value } from '../../../kloudformation/Value';
-import { OriginGroupsProps } from './OriginGroupsProps';
 import { LoggingProps } from '../streamingdistribution/LoggingProps';
 import { OriginProps } from './OriginProps';
 import { ViewerCertificateProps } from './ViewerCertificateProps';
 import { DefaultCacheBehaviorProps } from './DefaultCacheBehaviorProps';
 import { CustomErrorResponseProps } from './CustomErrorResponseProps';
+import { OriginGroupsProps } from './OriginGroupsProps';
 import { RestrictionsProps } from './RestrictionsProps';
 import { CacheBehaviorProps } from './CacheBehaviorProps';
 
-export function distributionConfigProps(distributionConfigPropsProps: DistributionConfigProps): DistributionConfigProps { return (distributionConfigPropsProps) as unknown as DistributionConfigProps }
+export function distributionConfigProps(distributionConfigPropsProps: DistributionConfigProps): DistributionConfigProps { return (distributionConfigPropsProps) }
 
 export interface DistributionConfigProps {
     enabled: Value<boolean>;
-    originGroups?: OriginGroupsProps;
     logging?: LoggingProps;
     comment?: Value<string>;
     defaultRootObject?: Value<string>;
@@ -21,6 +20,7 @@ export interface DistributionConfigProps {
     priceClass?: Value<string>;
     defaultCacheBehavior?: DefaultCacheBehaviorProps;
     customErrorResponses?: CustomErrorResponseProps[];
+    originGroups?: OriginGroupsProps;
     aliases?: Value<Value<string>[]>;
     iPV6Enabled?: Value<boolean>;
     webACLId?: Value<string>;

@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function policyPrincipalAttachment(policyPrincipalAttachmentProps: PolicyPrincipalAttachment & { logicalName?: string }): PolicyPrincipalAttachment { return ({ ...policyPrincipalAttachmentProps, _logicalType: 'AWS::IoT::PolicyPrincipalAttachment' }) as unknown as PolicyPrincipalAttachment }
+export type PolicyPrincipalAttachmentAttributes = {  }
+export function policyPrincipalAttachment(policyPrincipalAttachmentProps: PolicyPrincipalAttachment): PolicyPrincipalAttachment & { attributes: PolicyPrincipalAttachmentAttributes } { return ({ ...policyPrincipalAttachmentProps, _logicalType: 'AWS::IoT::PolicyPrincipalAttachment', attributes: {  } }) }
 
 export interface PolicyPrincipalAttachment extends KloudResource {
     policyName: Value<string>;

@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function userToGroupAddition(userToGroupAdditionProps: UserToGroupAddition & { logicalName?: string }): UserToGroupAddition { return ({ ...userToGroupAdditionProps, _logicalType: 'AWS::IAM::UserToGroupAddition' }) as unknown as UserToGroupAddition }
+export type UserToGroupAdditionAttributes = {  }
+export function userToGroupAddition(userToGroupAdditionProps: UserToGroupAddition): UserToGroupAddition & { attributes: UserToGroupAdditionAttributes } { return ({ ...userToGroupAdditionProps, _logicalType: 'AWS::IAM::UserToGroupAddition', attributes: {  } }) }
 
 export interface UserToGroupAddition extends KloudResource {
     groupName: Value<string>;

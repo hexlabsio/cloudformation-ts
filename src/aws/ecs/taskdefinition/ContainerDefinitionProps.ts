@@ -15,7 +15,7 @@ import { SystemControlProps } from './SystemControlProps';
 import { UlimitProps } from './UlimitProps';
 import { VolumeFromProps } from './VolumeFromProps';
 
-export function containerDefinitionProps(containerDefinitionPropsProps: ContainerDefinitionProps): ContainerDefinitionProps { return (containerDefinitionPropsProps) as unknown as ContainerDefinitionProps }
+export function containerDefinitionProps(containerDefinitionPropsProps: ContainerDefinitionProps): ContainerDefinitionProps { return (containerDefinitionPropsProps) }
 
 export interface ContainerDefinitionProps {
     command?: Value<Value<string>[]>;

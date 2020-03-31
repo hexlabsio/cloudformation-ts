@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { NotificationFilterProps } from './NotificationFilterProps';
 
-export function queueConfigurationProps(queueConfigurationPropsProps: QueueConfigurationProps): QueueConfigurationProps { return (queueConfigurationPropsProps) as unknown as QueueConfigurationProps }
+export function queueConfigurationProps(queueConfigurationPropsProps: QueueConfigurationProps): QueueConfigurationProps { return (queueConfigurationPropsProps) }
 
 export interface QueueConfigurationProps {
     event: Value<string>;

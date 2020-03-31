@@ -10,8 +10,10 @@ import { StreamSpecificationProps } from './table/StreamSpecificationProps';
 import { Tag } from '../Tag';
 import { TimeToLiveSpecificationProps } from './table/TimeToLiveSpecificationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function table(tableProps: Table & { logicalName?: string }): Table { return ({ ...tableProps, _logicalType: 'AWS::DynamoDB::Table' }) as unknown as Table }
+export type TableAttributes = { Arn: Attribute<string>; StreamArn: Attribute<string> }
+export function table(tableProps: Table): Table & { attributes: TableAttributes } { return ({ ...tableProps, _logicalType: 'AWS::DynamoDB::Table', attributes: { Arn: 'Arn', StreamArn: 'StreamArn' } }) }
 
 export interface Table extends KloudResource {
     keySchema: KeySchemaProps[];

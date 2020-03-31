@@ -3,7 +3,7 @@ import { SpendProps } from './SpendProps';
 import { TimePeriodProps } from './TimePeriodProps';
 import { CostTypesProps } from './CostTypesProps';
 
-export function budgetDataProps(budgetDataPropsProps: BudgetDataProps): BudgetDataProps { return (budgetDataPropsProps) as unknown as BudgetDataProps }
+export function budgetDataProps(budgetDataPropsProps: BudgetDataProps): BudgetDataProps { return (budgetDataPropsProps) }
 
 export interface BudgetDataProps {
     timeUnit: Value<string>;

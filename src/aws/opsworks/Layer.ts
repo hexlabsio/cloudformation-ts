@@ -6,7 +6,8 @@ import { Tag } from '../Tag';
 import { VolumeConfigurationProps } from './layer/VolumeConfigurationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function layer(layerProps: Layer & { logicalName?: string }): Layer { return ({ ...layerProps, _logicalType: 'AWS::OpsWorks::Layer' }) as unknown as Layer }
+export type LayerAttributes = {  }
+export function layer(layerProps: Layer): Layer & { attributes: LayerAttributes } { return ({ ...layerProps, _logicalType: 'AWS::OpsWorks::Layer', attributes: {  } }) }
 
 export interface Layer extends KloudResource {
     autoAssignElasticIps: Value<boolean>;

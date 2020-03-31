@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function statusCodesProps(statusCodesPropsProps: StatusCodesProps): StatusCodesProps { return (statusCodesPropsProps) as unknown as StatusCodesProps }
+export function statusCodesProps(statusCodesPropsProps: StatusCodesProps): StatusCodesProps { return (statusCodesPropsProps) }
 
 export interface StatusCodesProps {
     quantity: Value<number>;

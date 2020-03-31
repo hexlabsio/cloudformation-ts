@@ -9,7 +9,7 @@ import { ClearTimerProps } from './ClearTimerProps';
 import { LambdaProps } from './LambdaProps';
 import { SetVariableProps } from './SetVariableProps';
 
-export function actionProps(actionPropsProps: ActionProps): ActionProps { return (actionPropsProps) as unknown as ActionProps }
+export function actionProps(actionPropsProps: ActionProps): ActionProps { return (actionPropsProps) }
 
 export interface ActionProps {
     iotEvents?: IotEventsProps;

@@ -1,9 +1,10 @@
 // import * as info from "./info.json";
 // import {generate} from "./kloudformation/builder/generator";
+// generate(info);
+
 import {KloudResource} from "./kloudformation/KloudResource";
 import {aws as AWS} from "./kloudformation/template";
 
-//generate(info);
 
 interface KloudFormationTemplate {
   Resources: {
@@ -16,9 +17,9 @@ interface KloudFormationTemplate {
 
 class Template {
   private logicalNames: string[] = [];
-  
+
   resources: KloudResource[] = [];
-  
+
   private logicalName(prefix: string): string {
     const prefixed = this.logicalNames.filter(it => it.startsWith(prefix));
     if(prefixed.length === 0){
@@ -40,13 +41,14 @@ class Template {
       const prefix = resource._logicalType!.replace(/::/g, '.').split('.').pop()!;
       const logicalName = Object.prototype.hasOwnProperty.call(resource, 'logicalName') ? resource.logicalName : this.logicalName(prefix);
       if(this.resources.find(it => it.logicalName === logicalName)) {
-        throw Error(`Logical Name ${logicalName} for resource type ${resource._logicalType} is already being used, try updating it to somthing else.`);
+        throw Error(`Logical Name ${logicalName} for resource type ${resource._logicalType} is already being used, try updating it to something else.`);
       }
-      this.resources.push({ ...resource, logicalName });
-      return resource;
+      const { attributes, ... actualResource } = resource as any;
+      this.resources.push({ ...actualResource, logicalName });
+      return {...resource, attributes: Object.keys(attributes).reduce((prev, attribute) => ({...prev, [attribute]: {'Fn:GetAtt': [logicalName, attributes[attribute]]}}), {})};
     }) as unknown as T;
   }
-  
+
   private static capitalize<T extends any>(props: T): T {
     function caps(key: string): string { return key.substring(0,1).toUpperCase() + key.substring(1) }
     if(typeof props === 'object') {
@@ -57,7 +59,7 @@ class Template {
     }
     return props;
   }
-  
+
   static create(builder: (aws: typeof AWS) => void): KloudFormationTemplate {
     const template = new Template();
     builder(Object.keys(AWS).reduce((prev, key) => Object.assign(prev, {[key]: template.modify((AWS as any)[key])}), {} as typeof AWS));
@@ -82,7 +84,7 @@ function template() {
     console.log(t1);
     aws.dynamodbTable({
       keySchema: [{keyType: 'HASH', attributeName: 'awsAccountId'}, {keyType: 'RANGE', attributeName: 'lineItemId'}],
-      tableName: `klouds-billing-line-items-${process.env.ABC}`
+      tableName: t1.attributes.Arn
     });
     aws.dynamodbTable({
       keySchema: [{keyType: 'HASH', attributeName: 'awsAccountId'}, {keyType: 'RANGE', attributeName: 'lineItemId'}],

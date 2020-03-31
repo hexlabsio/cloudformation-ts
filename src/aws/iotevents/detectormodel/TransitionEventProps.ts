@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { ActionProps } from './ActionProps';
 
-export function transitionEventProps(transitionEventPropsProps: TransitionEventProps): TransitionEventProps { return (transitionEventPropsProps) as unknown as TransitionEventProps }
+export function transitionEventProps(transitionEventPropsProps: TransitionEventProps): TransitionEventProps { return (transitionEventPropsProps) }
 
 export interface TransitionEventProps {
     condition?: Value<string>;

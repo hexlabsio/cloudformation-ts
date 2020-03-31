@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function deviceProps(devicePropsProps: DeviceProps): DeviceProps { return (devicePropsProps) as unknown as DeviceProps }
+export function deviceProps(devicePropsProps: DeviceProps): DeviceProps { return (devicePropsProps) }
 
 export interface DeviceProps {
     hostPath: Value<string>;

@@ -3,7 +3,8 @@ import { Tag } from '../Tag';
 import { VpnTunnelOptionsSpecificationProps } from './vpnconnection/VpnTunnelOptionsSpecificationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function vPNConnection(vPNConnectionProps: VPNConnection & { logicalName?: string }): VPNConnection { return ({ ...vPNConnectionProps, _logicalType: 'AWS::EC2::VPNConnection' }) as unknown as VPNConnection }
+export type VPNConnectionAttributes = {  }
+export function vPNConnection(vPNConnectionProps: VPNConnection): VPNConnection & { attributes: VPNConnectionAttributes } { return ({ ...vPNConnectionProps, _logicalType: 'AWS::EC2::VPNConnection', attributes: {  } }) }
 
 export interface VPNConnection extends KloudResource {
     customerGatewayId: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../kloudformation/Value';
 
-export function tag(tagProps: Tag): Tag { return (tagProps) as unknown as Tag }
+export function tag(tagProps: Tag): Tag { return (tagProps) }
 
 export interface Tag {
     key: Value<string>;

@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { SubscriptionDefinitionVersionProps } from './subscriptiondefinition/SubscriptionDefinitionVersionProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function subscriptionDefinition(subscriptionDefinitionProps: SubscriptionDefinition & { logicalName?: string }): SubscriptionDefinition { return ({ ...subscriptionDefinitionProps, _logicalType: 'AWS::Greengrass::SubscriptionDefinition' }) as unknown as SubscriptionDefinition }
+export type SubscriptionDefinitionAttributes = { LatestVersionArn: Attribute<string>; Id: Attribute<string>; Arn: Attribute<string>; Name: Attribute<string> }
+export function subscriptionDefinition(subscriptionDefinitionProps: SubscriptionDefinition): SubscriptionDefinition & { attributes: SubscriptionDefinitionAttributes } { return ({ ...subscriptionDefinitionProps, _logicalType: 'AWS::Greengrass::SubscriptionDefinition', attributes: { LatestVersionArn: 'LatestVersionArn', Id: 'Id', Arn: 'Arn', Name: 'Name' } }) }
 
 export interface SubscriptionDefinition extends KloudResource {
     name: Value<string>;

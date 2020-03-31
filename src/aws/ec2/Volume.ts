@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function volume(volumeProps: Volume & { logicalName?: string }): Volume { return ({ ...volumeProps, _logicalType: 'AWS::EC2::Volume' }) as unknown as Volume }
+export type VolumeAttributes = {  }
+export function volume(volumeProps: Volume): Volume & { attributes: VolumeAttributes } { return ({ ...volumeProps, _logicalType: 'AWS::EC2::Volume', attributes: {  } }) }
 
 export interface Volume extends KloudResource {
     availabilityZone: Value<string>;
@@ -10,6 +11,7 @@ export interface Volume extends KloudResource {
     encrypted?: Value<boolean>;
     iops?: Value<number>;
     kmsKeyId?: Value<string>;
+    multiAttachEnabled?: Value<boolean>;
     size?: Value<number>;
     snapshotId?: Value<string>;
     tags?: Tag[];

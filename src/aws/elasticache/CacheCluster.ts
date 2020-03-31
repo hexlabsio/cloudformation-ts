@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function cacheCluster(cacheClusterProps: CacheCluster & { logicalName?: string }): CacheCluster { return ({ ...cacheClusterProps, _logicalType: 'AWS::ElastiCache::CacheCluster' }) as unknown as CacheCluster }
+export type CacheClusterAttributes = { ConfigurationEndpointAddress: Attribute<string>; ConfigurationEndpointPort: Attribute<string>; RedisEndpointAddress: Attribute<string>; RedisEndpointPort: Attribute<string> }
+export function cacheCluster(cacheClusterProps: CacheCluster): CacheCluster & { attributes: CacheClusterAttributes } { return ({ ...cacheClusterProps, _logicalType: 'AWS::ElastiCache::CacheCluster', attributes: { ConfigurationEndpointAddress: 'ConfigurationEndpoint.Address', ConfigurationEndpointPort: 'ConfigurationEndpoint.Port', RedisEndpointAddress: 'RedisEndpoint.Address', RedisEndpointPort: 'RedisEndpoint.Port' } }) }
 
 export interface CacheCluster extends KloudResource {
     cacheNodeType: Value<string>;

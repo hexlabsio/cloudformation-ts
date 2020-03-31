@@ -3,7 +3,7 @@ import { SpotFleetLaunchSpecificationProps } from './SpotFleetLaunchSpecificatio
 import { LaunchTemplateConfigProps } from './LaunchTemplateConfigProps';
 import { LoadBalancersConfigProps } from './LoadBalancersConfigProps';
 
-export function spotFleetRequestConfigDataProps(spotFleetRequestConfigDataPropsProps: SpotFleetRequestConfigDataProps): SpotFleetRequestConfigDataProps { return (spotFleetRequestConfigDataPropsProps) as unknown as SpotFleetRequestConfigDataProps }
+export function spotFleetRequestConfigDataProps(spotFleetRequestConfigDataPropsProps: SpotFleetRequestConfigDataProps): SpotFleetRequestConfigDataProps { return (spotFleetRequestConfigDataPropsProps) }
 
 export interface SpotFleetRequestConfigDataProps {
     iamFleetRole: Value<string>;

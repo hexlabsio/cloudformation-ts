@@ -1,7 +1,7 @@
 import { MetricProps } from './MetricProps';
 import { Value } from '../../../kloudformation/Value';
 
-export function metricStatProps(metricStatPropsProps: MetricStatProps): MetricStatProps { return (metricStatPropsProps) as unknown as MetricStatProps }
+export function metricStatProps(metricStatPropsProps: MetricStatProps): MetricStatProps { return (metricStatPropsProps) }
 
 export interface MetricStatProps {
     metric: MetricProps;

@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { PhysicalConnectionRequirementsProps } from './PhysicalConnectionRequirementsProps';
 
-export function connectionInputProps(connectionInputPropsProps: ConnectionInputProps): ConnectionInputProps { return (connectionInputPropsProps) as unknown as ConnectionInputProps }
+export function connectionInputProps(connectionInputPropsProps: ConnectionInputProps): ConnectionInputProps { return (connectionInputPropsProps) }
 
 export interface ConnectionInputProps {
     connectionType: Value<string>;

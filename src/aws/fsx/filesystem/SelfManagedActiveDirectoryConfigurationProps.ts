@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function selfManagedActiveDirectoryConfigurationProps(selfManagedActiveDirectoryConfigurationPropsProps: SelfManagedActiveDirectoryConfigurationProps): SelfManagedActiveDirectoryConfigurationProps { return (selfManagedActiveDirectoryConfigurationPropsProps) as unknown as SelfManagedActiveDirectoryConfigurationProps }
+export function selfManagedActiveDirectoryConfigurationProps(selfManagedActiveDirectoryConfigurationPropsProps: SelfManagedActiveDirectoryConfigurationProps): SelfManagedActiveDirectoryConfigurationProps { return (selfManagedActiveDirectoryConfigurationPropsProps) }
 
 export interface SelfManagedActiveDirectoryConfigurationProps {
     fileSystemAdministratorsGroup?: Value<string>;

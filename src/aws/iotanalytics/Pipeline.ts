@@ -3,7 +3,8 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function pipeline(pipelineProps: Pipeline & { logicalName?: string }): Pipeline { return ({ ...pipelineProps, _logicalType: 'AWS::IoTAnalytics::Pipeline' }) as unknown as Pipeline }
+export type PipelineAttributes = {  }
+export function pipeline(pipelineProps: Pipeline): Pipeline & { attributes: PipelineAttributes } { return ({ ...pipelineProps, _logicalType: 'AWS::IoTAnalytics::Pipeline', attributes: {  } }) }
 
 export interface Pipeline extends KloudResource {
     pipelineActivities: ActivityProps[];

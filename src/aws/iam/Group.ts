@@ -1,8 +1,10 @@
 import { Value } from '../../kloudformation/Value';
 import { PolicyProps } from './group/PolicyProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function group(groupProps: Group & { logicalName?: string }): Group { return ({ ...groupProps, _logicalType: 'AWS::IAM::Group' }) as unknown as Group }
+export type GroupAttributes = { Arn: Attribute<string> }
+export function group(groupProps: Group): Group & { attributes: GroupAttributes } { return ({ ...groupProps, _logicalType: 'AWS::IAM::Group', attributes: { Arn: 'Arn' } }) }
 
 export interface Group extends KloudResource {
     groupName?: Value<string>;

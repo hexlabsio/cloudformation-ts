@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function linkAssociation(linkAssociationProps: LinkAssociation & { logicalName?: string }): LinkAssociation { return ({ ...linkAssociationProps, _logicalType: 'AWS::NetworkManager::LinkAssociation' }) as unknown as LinkAssociation }
+export type LinkAssociationAttributes = {  }
+export function linkAssociation(linkAssociationProps: LinkAssociation): LinkAssociation & { attributes: LinkAssociationAttributes } { return ({ ...linkAssociationProps, _logicalType: 'AWS::NetworkManager::LinkAssociation', attributes: {  } }) }
 
 export interface LinkAssociation extends KloudResource {
     globalNetworkId: Value<string>;

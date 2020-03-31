@@ -3,8 +3,10 @@ import { DBInstanceRoleProps } from './dbinstance/DBInstanceRoleProps';
 import { ProcessorFeatureProps } from './dbinstance/ProcessorFeatureProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function dBInstance(dBInstanceProps: DBInstance & { logicalName?: string }): DBInstance { return ({ ...dBInstanceProps, _logicalType: 'AWS::RDS::DBInstance' }) as unknown as DBInstance }
+export type DBInstanceAttributes = { EndpointAddress: Attribute<string>; EndpointPort: Attribute<string> }
+export function dBInstance(dBInstanceProps: DBInstance): DBInstance & { attributes: DBInstanceAttributes } { return ({ ...dBInstanceProps, _logicalType: 'AWS::RDS::DBInstance', attributes: { EndpointAddress: 'Endpoint.Address', EndpointPort: 'Endpoint.Port' } }) }
 
 export interface DBInstance extends KloudResource {
     dBInstanceClass: Value<string>;

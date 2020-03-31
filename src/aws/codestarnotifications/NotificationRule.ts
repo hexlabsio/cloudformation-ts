@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { TargetProps } from './notificationrule/TargetProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function notificationRule(notificationRuleProps: NotificationRule & { logicalName?: string }): NotificationRule { return ({ ...notificationRuleProps, _logicalType: 'AWS::CodeStarNotifications::NotificationRule' }) as unknown as NotificationRule }
+export type NotificationRuleAttributes = {  }
+export function notificationRule(notificationRuleProps: NotificationRule): NotificationRule & { attributes: NotificationRuleAttributes } { return ({ ...notificationRuleProps, _logicalType: 'AWS::CodeStarNotifications::NotificationRule', attributes: {  } }) }
 
 export interface NotificationRule extends KloudResource {
     eventTypeIds: Value<Value<string>[]>;

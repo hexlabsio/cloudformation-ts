@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function scheduledAction(scheduledActionProps: ScheduledAction & { logicalName?: string }): ScheduledAction { return ({ ...scheduledActionProps, _logicalType: 'AWS::AutoScaling::ScheduledAction' }) as unknown as ScheduledAction }
+export type ScheduledActionAttributes = {  }
+export function scheduledAction(scheduledActionProps: ScheduledAction): ScheduledAction & { attributes: ScheduledActionAttributes } { return ({ ...scheduledActionProps, _logicalType: 'AWS::AutoScaling::ScheduledAction', attributes: {  } }) }
 
 export interface ScheduledAction extends KloudResource {
     autoScalingGroupName: Value<string>;

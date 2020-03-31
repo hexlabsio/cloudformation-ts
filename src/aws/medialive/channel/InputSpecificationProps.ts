@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function inputSpecificationProps(inputSpecificationPropsProps: InputSpecificationProps): InputSpecificationProps { return (inputSpecificationPropsProps) as unknown as InputSpecificationProps }
+export function inputSpecificationProps(inputSpecificationPropsProps: InputSpecificationProps): InputSpecificationProps { return (inputSpecificationPropsProps) }
 
 export interface InputSpecificationProps {
     codec?: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function egressProps(egressPropsProps: EgressProps): EgressProps { return (egressPropsProps) as unknown as EgressProps }
+export function egressProps(egressPropsProps: EgressProps): EgressProps { return (egressPropsProps) }
 
 export interface EgressProps {
     ipProtocol: Value<string>;

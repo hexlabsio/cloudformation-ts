@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { FindingCriteriaProps } from './filter/FindingCriteriaProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function filter(filterProps: Filter & { logicalName?: string }): Filter { return ({ ...filterProps, _logicalType: 'AWS::GuardDuty::Filter' }) as unknown as Filter }
+export type FilterAttributes = {  }
+export function filter(filterProps: Filter): Filter & { attributes: FilterAttributes } { return ({ ...filterProps, _logicalType: 'AWS::GuardDuty::Filter', attributes: {  } }) }
 
 export interface Filter extends KloudResource {
     action: Value<string>;

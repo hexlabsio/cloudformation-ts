@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function portfolioProductAssociation(portfolioProductAssociationProps: PortfolioProductAssociation & { logicalName?: string }): PortfolioProductAssociation { return ({ ...portfolioProductAssociationProps, _logicalType: 'AWS::ServiceCatalog::PortfolioProductAssociation' }) as unknown as PortfolioProductAssociation }
+export type PortfolioProductAssociationAttributes = {  }
+export function portfolioProductAssociation(portfolioProductAssociationProps: PortfolioProductAssociation): PortfolioProductAssociation & { attributes: PortfolioProductAssociationAttributes } { return ({ ...portfolioProductAssociationProps, _logicalType: 'AWS::ServiceCatalog::PortfolioProductAssociation', attributes: {  } }) }
 
 export interface PortfolioProductAssociation extends KloudResource {
     portfolioId: Value<string>;

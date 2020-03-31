@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function sslConfigurationProps(sslConfigurationPropsProps: SslConfigurationProps): SslConfigurationProps { return (sslConfigurationPropsProps) as unknown as SslConfigurationProps }
+export function sslConfigurationProps(sslConfigurationPropsProps: SslConfigurationProps): SslConfigurationProps { return (sslConfigurationPropsProps) }
 
 export interface SslConfigurationProps {
     certificate?: Value<string>;

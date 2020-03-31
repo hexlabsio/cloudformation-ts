@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function scheduleProps(schedulePropsProps: ScheduleProps): ScheduleProps { return (schedulePropsProps) as unknown as ScheduleProps }
+export function scheduleProps(schedulePropsProps: ScheduleProps): ScheduleProps { return (schedulePropsProps) }
 
 export interface ScheduleProps {
     scheduleExpression?: Value<string>;

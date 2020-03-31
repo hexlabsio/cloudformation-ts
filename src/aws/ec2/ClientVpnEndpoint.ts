@@ -4,7 +4,8 @@ import { ClientAuthenticationRequestProps } from './clientvpnendpoint/ClientAuth
 import { TagSpecificationProps } from './clientvpnendpoint/TagSpecificationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function clientVpnEndpoint(clientVpnEndpointProps: ClientVpnEndpoint & { logicalName?: string }): ClientVpnEndpoint { return ({ ...clientVpnEndpointProps, _logicalType: 'AWS::EC2::ClientVpnEndpoint' }) as unknown as ClientVpnEndpoint }
+export type ClientVpnEndpointAttributes = {  }
+export function clientVpnEndpoint(clientVpnEndpointProps: ClientVpnEndpoint): ClientVpnEndpoint & { attributes: ClientVpnEndpointAttributes } { return ({ ...clientVpnEndpointProps, _logicalType: 'AWS::EC2::ClientVpnEndpoint', attributes: {  } }) }
 
 export interface ClientVpnEndpoint extends KloudResource {
     clientCidrBlock: Value<string>;

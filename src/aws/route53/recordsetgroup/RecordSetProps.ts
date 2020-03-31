@@ -2,7 +2,7 @@ import { Value } from '../../../kloudformation/Value';
 import { AliasTargetProps } from './AliasTargetProps';
 import { GeoLocationProps } from './GeoLocationProps';
 
-export function recordSetProps(recordSetPropsProps: RecordSetProps): RecordSetProps { return (recordSetPropsProps) as unknown as RecordSetProps }
+export function recordSetProps(recordSetPropsProps: RecordSetProps): RecordSetProps { return (recordSetPropsProps) }
 
 export interface RecordSetProps {
     name: Value<string>;

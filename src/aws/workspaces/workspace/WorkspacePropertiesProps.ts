@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function workspacePropertiesProps(workspacePropertiesPropsProps: WorkspacePropertiesProps): WorkspacePropertiesProps { return (workspacePropertiesPropsProps) as unknown as WorkspacePropertiesProps }
+export function workspacePropertiesProps(workspacePropertiesPropsProps: WorkspacePropertiesProps): WorkspacePropertiesProps { return (workspacePropertiesPropsProps) }
 
 export interface WorkspacePropertiesProps {
     computeTypeName?: Value<string>;

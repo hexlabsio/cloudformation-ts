@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function queryStringKeyValueProps(queryStringKeyValuePropsProps: QueryStringKeyValueProps): QueryStringKeyValueProps { return (queryStringKeyValuePropsProps) as unknown as QueryStringKeyValueProps }
+export function queryStringKeyValueProps(queryStringKeyValuePropsProps: QueryStringKeyValueProps): QueryStringKeyValueProps { return (queryStringKeyValuePropsProps) }
 
 export interface QueryStringKeyValueProps {
     key?: Value<string>;

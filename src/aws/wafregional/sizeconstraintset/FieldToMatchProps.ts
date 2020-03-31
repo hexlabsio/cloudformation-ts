@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function fieldToMatchProps(fieldToMatchPropsProps: FieldToMatchProps): FieldToMatchProps { return (fieldToMatchPropsProps) as unknown as FieldToMatchProps }
+export function fieldToMatchProps(fieldToMatchPropsProps: FieldToMatchProps): FieldToMatchProps { return (fieldToMatchPropsProps) }
 
 export interface FieldToMatchProps {
     type: Value<string>;

@@ -3,7 +3,7 @@ import { CatalogTargetProps } from './CatalogTargetProps';
 import { JdbcTargetProps } from './JdbcTargetProps';
 import { DynamoDBTargetProps } from './DynamoDBTargetProps';
 
-export function targetsProps(targetsPropsProps: TargetsProps): TargetsProps { return (targetsPropsProps) as unknown as TargetsProps }
+export function targetsProps(targetsPropsProps: TargetsProps): TargetsProps { return (targetsPropsProps) }
 
 export interface TargetsProps {
     s3Targets?: S3TargetProps[];

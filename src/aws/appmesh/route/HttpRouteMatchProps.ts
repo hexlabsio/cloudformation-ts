@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { HttpRouteHeaderProps } from './HttpRouteHeaderProps';
 
-export function httpRouteMatchProps(httpRouteMatchPropsProps: HttpRouteMatchProps): HttpRouteMatchProps { return (httpRouteMatchPropsProps) as unknown as HttpRouteMatchProps }
+export function httpRouteMatchProps(httpRouteMatchPropsProps: HttpRouteMatchProps): HttpRouteMatchProps { return (httpRouteMatchPropsProps) }
 
 export interface HttpRouteMatchProps {
     prefix: Value<string>;

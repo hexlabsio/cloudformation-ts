@@ -3,7 +3,7 @@ import { InputFormatConfigurationProps } from './InputFormatConfigurationProps';
 import { OutputFormatConfigurationProps } from './OutputFormatConfigurationProps';
 import { SchemaConfigurationProps } from './SchemaConfigurationProps';
 
-export function dataFormatConversionConfigurationProps(dataFormatConversionConfigurationPropsProps: DataFormatConversionConfigurationProps): DataFormatConversionConfigurationProps { return (dataFormatConversionConfigurationPropsProps) as unknown as DataFormatConversionConfigurationProps }
+export function dataFormatConversionConfigurationProps(dataFormatConversionConfigurationPropsProps: DataFormatConversionConfigurationProps): DataFormatConversionConfigurationProps { return (dataFormatConversionConfigurationPropsProps) }
 
 export interface DataFormatConversionConfigurationProps {
     enabled: Value<boolean>;

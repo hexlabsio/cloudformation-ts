@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function lifecycleHook(lifecycleHookProps: LifecycleHook & { logicalName?: string }): LifecycleHook { return ({ ...lifecycleHookProps, _logicalType: 'AWS::AutoScaling::LifecycleHook' }) as unknown as LifecycleHook }
+export type LifecycleHookAttributes = {  }
+export function lifecycleHook(lifecycleHookProps: LifecycleHook): LifecycleHook & { attributes: LifecycleHookAttributes } { return ({ ...lifecycleHookProps, _logicalType: 'AWS::AutoScaling::LifecycleHook', attributes: {  } }) }
 
 export interface LifecycleHook extends KloudResource {
     autoScalingGroupName: Value<string>;

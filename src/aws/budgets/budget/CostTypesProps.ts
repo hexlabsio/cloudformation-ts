@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function costTypesProps(costTypesPropsProps: CostTypesProps): CostTypesProps { return (costTypesPropsProps) as unknown as CostTypesProps }
+export function costTypesProps(costTypesPropsProps: CostTypesProps): CostTypesProps { return (costTypesPropsProps) }
 
 export interface CostTypesProps {
     includeSupport?: Value<boolean>;

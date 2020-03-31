@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function provisionedThroughputProps(provisionedThroughputPropsProps: ProvisionedThroughputProps): ProvisionedThroughputProps { return (provisionedThroughputPropsProps) as unknown as ProvisionedThroughputProps }
+export function provisionedThroughputProps(provisionedThroughputPropsProps: ProvisionedThroughputProps): ProvisionedThroughputProps { return (provisionedThroughputPropsProps) }
 
 export interface ProvisionedThroughputProps {
     readCapacityUnits: Value<number>;

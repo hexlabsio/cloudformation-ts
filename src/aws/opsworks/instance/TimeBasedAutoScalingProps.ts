@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function timeBasedAutoScalingProps(timeBasedAutoScalingPropsProps: TimeBasedAutoScalingProps): TimeBasedAutoScalingProps { return (timeBasedAutoScalingPropsProps) as unknown as TimeBasedAutoScalingProps }
+export function timeBasedAutoScalingProps(timeBasedAutoScalingPropsProps: TimeBasedAutoScalingProps): TimeBasedAutoScalingProps { return (timeBasedAutoScalingPropsProps) }
 
 export interface TimeBasedAutoScalingProps {
     friday?: { [key: string]: Value<string> };

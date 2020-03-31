@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function recipesProps(recipesPropsProps: RecipesProps): RecipesProps { return (recipesPropsProps) as unknown as RecipesProps }
+export function recipesProps(recipesPropsProps: RecipesProps): RecipesProps { return (recipesPropsProps) }
 
 export interface RecipesProps {
     configure?: Value<Value<string>[]>;

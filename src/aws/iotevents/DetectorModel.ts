@@ -3,7 +3,8 @@ import { Value } from '../../kloudformation/Value';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function detectorModel(detectorModelProps: DetectorModel & { logicalName?: string }): DetectorModel { return ({ ...detectorModelProps, _logicalType: 'AWS::IoTEvents::DetectorModel' }) as unknown as DetectorModel }
+export type DetectorModelAttributes = {  }
+export function detectorModel(detectorModelProps: DetectorModel): DetectorModel & { attributes: DetectorModelAttributes } { return ({ ...detectorModelProps, _logicalType: 'AWS::IoTEvents::DetectorModel', attributes: {  } }) }
 
 export interface DetectorModel extends KloudResource {
     detectorModelDefinition?: DetectorModelDefinitionProps;

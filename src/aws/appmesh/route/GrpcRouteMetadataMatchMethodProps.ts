@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { MatchRangeProps } from './MatchRangeProps';
 
-export function grpcRouteMetadataMatchMethodProps(grpcRouteMetadataMatchMethodPropsProps: GrpcRouteMetadataMatchMethodProps): GrpcRouteMetadataMatchMethodProps { return (grpcRouteMetadataMatchMethodPropsProps) as unknown as GrpcRouteMetadataMatchMethodProps }
+export function grpcRouteMetadataMatchMethodProps(grpcRouteMetadataMatchMethodPropsProps: GrpcRouteMetadataMatchMethodProps): GrpcRouteMetadataMatchMethodProps { return (grpcRouteMetadataMatchMethodPropsProps) }
 
 export interface GrpcRouteMetadataMatchMethodProps {
     suffix?: Value<string>;

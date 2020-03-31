@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function queuePolicy(queuePolicyProps: QueuePolicy & { logicalName?: string }): QueuePolicy { return ({ ...queuePolicyProps, _logicalType: 'AWS::SQS::QueuePolicy' }) as unknown as QueuePolicy }
+export type QueuePolicyAttributes = {  }
+export function queuePolicy(queuePolicyProps: QueuePolicy): QueuePolicy & { attributes: QueuePolicyAttributes } { return ({ ...queuePolicyProps, _logicalType: 'AWS::SQS::QueuePolicy', attributes: {  } }) }
 
 export interface QueuePolicy extends KloudResource {
     policyDocument: Value<any>;

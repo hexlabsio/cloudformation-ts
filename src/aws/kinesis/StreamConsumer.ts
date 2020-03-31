@@ -1,7 +1,9 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function streamConsumer(streamConsumerProps: StreamConsumer & { logicalName?: string }): StreamConsumer { return ({ ...streamConsumerProps, _logicalType: 'AWS::Kinesis::StreamConsumer' }) as unknown as StreamConsumer }
+export type StreamConsumerAttributes = { ConsumerCreationTimestamp: Attribute<string>; ConsumerName: Attribute<string>; ConsumerARN: Attribute<string>; ConsumerStatus: Attribute<string>; StreamARN: Attribute<string> }
+export function streamConsumer(streamConsumerProps: StreamConsumer): StreamConsumer & { attributes: StreamConsumerAttributes } { return ({ ...streamConsumerProps, _logicalType: 'AWS::Kinesis::StreamConsumer', attributes: { ConsumerCreationTimestamp: 'ConsumerCreationTimestamp', ConsumerName: 'ConsumerName', ConsumerARN: 'ConsumerARN', ConsumerStatus: 'ConsumerStatus', StreamARN: 'StreamARN' } }) }
 
 export interface StreamConsumer extends KloudResource {
     consumerName: Value<string>;

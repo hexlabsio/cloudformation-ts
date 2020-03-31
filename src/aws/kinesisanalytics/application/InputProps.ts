@@ -5,7 +5,7 @@ import { KinesisFirehoseInputProps } from './KinesisFirehoseInputProps';
 import { InputProcessingConfigurationProps } from './InputProcessingConfigurationProps';
 import { InputParallelismProps } from './InputParallelismProps';
 
-export function inputProps(inputPropsProps: InputProps): InputProps { return (inputPropsProps) as unknown as InputProps }
+export function inputProps(inputPropsProps: InputProps): InputProps { return (inputPropsProps) }
 
 export interface InputProps {
     namePrefix: Value<string>;

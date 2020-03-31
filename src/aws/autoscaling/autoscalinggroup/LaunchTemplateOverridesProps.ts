@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function launchTemplateOverridesProps(launchTemplateOverridesPropsProps: LaunchTemplateOverridesProps): LaunchTemplateOverridesProps { return (launchTemplateOverridesPropsProps) as unknown as LaunchTemplateOverridesProps }
+export function launchTemplateOverridesProps(launchTemplateOverridesPropsProps: LaunchTemplateOverridesProps): LaunchTemplateOverridesProps { return (launchTemplateOverridesPropsProps) }
 
 export interface LaunchTemplateOverridesProps {
     instanceType?: Value<string>;

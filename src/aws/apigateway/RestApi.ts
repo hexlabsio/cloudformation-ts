@@ -3,8 +3,10 @@ import { S3LocationProps } from './restapi/S3LocationProps';
 import { EndpointConfigurationProps } from './restapi/EndpointConfigurationProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function restApi(restApiProps: RestApi & { logicalName?: string }): RestApi { return ({ ...restApiProps, _logicalType: 'AWS::ApiGateway::RestApi' }) as unknown as RestApi }
+export type RestApiAttributes = { RootResourceId: Attribute<string> }
+export function restApi(restApiProps: RestApi): RestApi & { attributes: RestApiAttributes } { return ({ ...restApiProps, _logicalType: 'AWS::ApiGateway::RestApi', attributes: { RootResourceId: 'RootResourceId' } }) }
 
 export interface RestApi extends KloudResource {
     apiKeySourceType?: Value<string>;

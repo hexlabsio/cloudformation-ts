@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function authenticationConfigurationProps(authenticationConfigurationPropsProps: AuthenticationConfigurationProps): AuthenticationConfigurationProps { return (authenticationConfigurationPropsProps) as unknown as AuthenticationConfigurationProps }
+export function authenticationConfigurationProps(authenticationConfigurationPropsProps: AuthenticationConfigurationProps): AuthenticationConfigurationProps { return (authenticationConfigurationPropsProps) }
 
 export interface AuthenticationConfigurationProps {
     refreshToken: Value<string>;

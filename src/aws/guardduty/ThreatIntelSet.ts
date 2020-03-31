@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function threatIntelSet(threatIntelSetProps: ThreatIntelSet & { logicalName?: string }): ThreatIntelSet { return ({ ...threatIntelSetProps, _logicalType: 'AWS::GuardDuty::ThreatIntelSet' }) as unknown as ThreatIntelSet }
+export type ThreatIntelSetAttributes = {  }
+export function threatIntelSet(threatIntelSetProps: ThreatIntelSet): ThreatIntelSet & { attributes: ThreatIntelSetAttributes } { return ({ ...threatIntelSetProps, _logicalType: 'AWS::GuardDuty::ThreatIntelSet', attributes: {  } }) }
 
 export interface ThreatIntelSet extends KloudResource {
     format: Value<string>;

@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function stepAdjustmentProps(stepAdjustmentPropsProps: StepAdjustmentProps): StepAdjustmentProps { return (stepAdjustmentPropsProps) as unknown as StepAdjustmentProps }
+export function stepAdjustmentProps(stepAdjustmentPropsProps: StepAdjustmentProps): StepAdjustmentProps { return (stepAdjustmentPropsProps) }
 
 export interface StepAdjustmentProps {
     scalingAdjustment: Value<number>;

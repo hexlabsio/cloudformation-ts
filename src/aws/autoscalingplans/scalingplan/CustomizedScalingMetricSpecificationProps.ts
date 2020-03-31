@@ -1,7 +1,7 @@
 import { Value } from '../../../kloudformation/Value';
 import { MetricDimensionProps } from './MetricDimensionProps';
 
-export function customizedScalingMetricSpecificationProps(customizedScalingMetricSpecificationPropsProps: CustomizedScalingMetricSpecificationProps): CustomizedScalingMetricSpecificationProps { return (customizedScalingMetricSpecificationPropsProps) as unknown as CustomizedScalingMetricSpecificationProps }
+export function customizedScalingMetricSpecificationProps(customizedScalingMetricSpecificationPropsProps: CustomizedScalingMetricSpecificationProps): CustomizedScalingMetricSpecificationProps { return (customizedScalingMetricSpecificationPropsProps) }
 
 export interface CustomizedScalingMetricSpecificationProps {
     metricName: Value<string>;

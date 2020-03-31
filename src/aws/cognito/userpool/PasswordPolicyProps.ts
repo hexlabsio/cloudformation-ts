@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function passwordPolicyProps(passwordPolicyPropsProps: PasswordPolicyProps): PasswordPolicyProps { return (passwordPolicyPropsProps) as unknown as PasswordPolicyProps }
+export function passwordPolicyProps(passwordPolicyPropsProps: PasswordPolicyProps): PasswordPolicyProps { return (passwordPolicyPropsProps) }
 
 export interface PasswordPolicyProps {
     requireNumbers?: Value<boolean>;

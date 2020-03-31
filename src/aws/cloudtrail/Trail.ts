@@ -2,8 +2,10 @@ import { Value } from '../../kloudformation/Value';
 import { EventSelectorProps } from './trail/EventSelectorProps';
 import { Tag } from '../Tag';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function trail(trailProps: Trail & { logicalName?: string }): Trail { return ({ ...trailProps, _logicalType: 'AWS::CloudTrail::Trail' }) as unknown as Trail }
+export type TrailAttributes = { Arn: Attribute<string>; SnsTopicArn: Attribute<string> }
+export function trail(trailProps: Trail): Trail & { attributes: TrailAttributes } { return ({ ...trailProps, _logicalType: 'AWS::CloudTrail::Trail', attributes: { Arn: 'Arn', SnsTopicArn: 'SnsTopicArn' } }) }
 
 export interface Trail extends KloudResource {
     isLogging: Value<boolean>;

@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function member(memberProps: Member & { logicalName?: string }): Member { return ({ ...memberProps, _logicalType: 'AWS::GuardDuty::Member' }) as unknown as Member }
+export type MemberAttributes = {  }
+export function member(memberProps: Member): Member & { attributes: MemberAttributes } { return ({ ...memberProps, _logicalType: 'AWS::GuardDuty::Member', attributes: {  } }) }
 
 export interface Member extends KloudResource {
     memberId: Value<string>;

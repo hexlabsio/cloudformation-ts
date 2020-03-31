@@ -5,7 +5,8 @@ import { ResourceCreationLimitPolicyProps } from './fleet/ResourceCreationLimitP
 import { RuntimeConfigurationProps } from './fleet/RuntimeConfigurationProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function fleet(fleetProps: Fleet & { logicalName?: string }): Fleet { return ({ ...fleetProps, _logicalType: 'AWS::GameLift::Fleet' }) as unknown as Fleet }
+export type FleetAttributes = {  }
+export function fleet(fleetProps: Fleet): Fleet & { attributes: FleetAttributes } { return ({ ...fleetProps, _logicalType: 'AWS::GameLift::Fleet', attributes: {  } }) }
 
 export interface Fleet extends KloudResource {
     eC2InstanceType: Value<string>;

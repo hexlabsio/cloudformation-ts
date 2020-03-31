@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function logConfigProps(logConfigPropsProps: LogConfigProps): LogConfigProps { return (logConfigPropsProps) as unknown as LogConfigProps }
+export function logConfigProps(logConfigPropsProps: LogConfigProps): LogConfigProps { return (logConfigPropsProps) }
 
 export interface LogConfigProps {
     cloudWatchLogsRoleArn?: Value<string>;

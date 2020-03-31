@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function webhookFilterProps(webhookFilterPropsProps: WebhookFilterProps): WebhookFilterProps { return (webhookFilterPropsProps) as unknown as WebhookFilterProps }
+export function webhookFilterProps(webhookFilterPropsProps: WebhookFilterProps): WebhookFilterProps { return (webhookFilterPropsProps) }
 
 export interface WebhookFilterProps {
     pattern: Value<string>;

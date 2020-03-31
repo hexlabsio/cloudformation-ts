@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function crlConfigurationProps(crlConfigurationPropsProps: CrlConfigurationProps): CrlConfigurationProps { return (crlConfigurationPropsProps) as unknown as CrlConfigurationProps }
+export function crlConfigurationProps(crlConfigurationPropsProps: CrlConfigurationProps): CrlConfigurationProps { return (crlConfigurationPropsProps) }
 
 export interface CrlConfigurationProps {
     enabled?: Value<boolean>;

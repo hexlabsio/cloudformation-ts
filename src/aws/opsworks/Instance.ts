@@ -2,8 +2,10 @@ import { Value } from '../../kloudformation/Value';
 import { BlockDeviceMappingProps } from './instance/BlockDeviceMappingProps';
 import { TimeBasedAutoScalingProps } from './instance/TimeBasedAutoScalingProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
+import { Attribute } from '../../kloudformation/Attribute';
 
-export function instance(instanceProps: Instance & { logicalName?: string }): Instance { return ({ ...instanceProps, _logicalType: 'AWS::OpsWorks::Instance' }) as unknown as Instance }
+export type InstanceAttributes = { AvailabilityZone: Attribute<string>; PrivateDnsName: Attribute<string>; PrivateIp: Attribute<string>; PublicDnsName: Attribute<string>; PublicIp: Attribute<string> }
+export function instance(instanceProps: Instance): Instance & { attributes: InstanceAttributes } { return ({ ...instanceProps, _logicalType: 'AWS::OpsWorks::Instance', attributes: { AvailabilityZone: 'AvailabilityZone', PrivateDnsName: 'PrivateDnsName', PrivateIp: 'PrivateIp', PublicDnsName: 'PublicDnsName', PublicIp: 'PublicIp' } }) }
 
 export interface Instance extends KloudResource {
     instanceType: Value<string>;

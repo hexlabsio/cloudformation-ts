@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function elasticInferenceAcceleratorProps(elasticInferenceAcceleratorPropsProps: ElasticInferenceAcceleratorProps): ElasticInferenceAcceleratorProps { return (elasticInferenceAcceleratorPropsProps) as unknown as ElasticInferenceAcceleratorProps }
+export function elasticInferenceAcceleratorProps(elasticInferenceAcceleratorPropsProps: ElasticInferenceAcceleratorProps): ElasticInferenceAcceleratorProps { return (elasticInferenceAcceleratorPropsProps) }
 
 export interface ElasticInferenceAcceleratorProps {
     type: Value<string>;

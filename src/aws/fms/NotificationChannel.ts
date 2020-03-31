@@ -1,7 +1,8 @@
 import { Value } from '../../kloudformation/Value';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function notificationChannel(notificationChannelProps: NotificationChannel & { logicalName?: string }): NotificationChannel { return ({ ...notificationChannelProps, _logicalType: 'AWS::FMS::NotificationChannel' }) as unknown as NotificationChannel }
+export type NotificationChannelAttributes = {  }
+export function notificationChannel(notificationChannelProps: NotificationChannel): NotificationChannel & { attributes: NotificationChannelAttributes } { return ({ ...notificationChannelProps, _logicalType: 'AWS::FMS::NotificationChannel', attributes: {  } }) }
 
 export interface NotificationChannel extends KloudResource {
     snsRoleName: Value<string>;

@@ -1,7 +1,7 @@
 import { DnsServiceDiscoveryProps } from './DnsServiceDiscoveryProps';
 import { AwsCloudMapServiceDiscoveryProps } from './AwsCloudMapServiceDiscoveryProps';
 
-export function serviceDiscoveryProps(serviceDiscoveryPropsProps: ServiceDiscoveryProps): ServiceDiscoveryProps { return (serviceDiscoveryPropsProps) as unknown as ServiceDiscoveryProps }
+export function serviceDiscoveryProps(serviceDiscoveryPropsProps: ServiceDiscoveryProps): ServiceDiscoveryProps { return (serviceDiscoveryPropsProps) }
 
 export interface ServiceDiscoveryProps {
     dNS?: DnsServiceDiscoveryProps;

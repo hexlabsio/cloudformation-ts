@@ -4,7 +4,8 @@ import { AccountTakeoverRiskConfigurationTypeProps } from './userpoolriskconfigu
 import { RiskExceptionConfigurationTypeProps } from './userpoolriskconfigurationattachment/RiskExceptionConfigurationTypeProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function userPoolRiskConfigurationAttachment(userPoolRiskConfigurationAttachmentProps: UserPoolRiskConfigurationAttachment & { logicalName?: string }): UserPoolRiskConfigurationAttachment { return ({ ...userPoolRiskConfigurationAttachmentProps, _logicalType: 'AWS::Cognito::UserPoolRiskConfigurationAttachment' }) as unknown as UserPoolRiskConfigurationAttachment }
+export type UserPoolRiskConfigurationAttachmentAttributes = {  }
+export function userPoolRiskConfigurationAttachment(userPoolRiskConfigurationAttachmentProps: UserPoolRiskConfigurationAttachment): UserPoolRiskConfigurationAttachment & { attributes: UserPoolRiskConfigurationAttachmentAttributes } { return ({ ...userPoolRiskConfigurationAttachmentProps, _logicalType: 'AWS::Cognito::UserPoolRiskConfigurationAttachment', attributes: {  } }) }
 
 export interface UserPoolRiskConfigurationAttachment extends KloudResource {
     userPoolId: Value<string>;

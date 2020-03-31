@@ -5,7 +5,7 @@ import { EmbeddedSourceSettingsProps } from './EmbeddedSourceSettingsProps';
 import { Scte20SourceSettingsProps } from './Scte20SourceSettingsProps';
 import { TeletextSourceSettingsProps } from './TeletextSourceSettingsProps';
 
-export function captionSelectorSettingsProps(captionSelectorSettingsPropsProps: CaptionSelectorSettingsProps): CaptionSelectorSettingsProps { return (captionSelectorSettingsPropsProps) as unknown as CaptionSelectorSettingsProps }
+export function captionSelectorSettingsProps(captionSelectorSettingsPropsProps: CaptionSelectorSettingsProps): CaptionSelectorSettingsProps { return (captionSelectorSettingsPropsProps) }
 
 export interface CaptionSelectorSettingsProps {
     dvbSubSourceSettings?: DvbSubSourceSettingsProps;

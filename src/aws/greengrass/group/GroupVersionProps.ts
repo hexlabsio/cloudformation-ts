@@ -1,6 +1,6 @@
 import { Value } from '../../../kloudformation/Value';
 
-export function groupVersionProps(groupVersionPropsProps: GroupVersionProps): GroupVersionProps { return (groupVersionPropsProps) as unknown as GroupVersionProps }
+export function groupVersionProps(groupVersionPropsProps: GroupVersionProps): GroupVersionProps { return (groupVersionPropsProps) }
 
 export interface GroupVersionProps {
     loggerDefinitionVersionArn?: Value<string>;

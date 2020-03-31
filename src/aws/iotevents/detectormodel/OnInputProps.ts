@@ -1,7 +1,7 @@
 import { EventProps } from './EventProps';
 import { TransitionEventProps } from './TransitionEventProps';
 
-export function onInputProps(onInputPropsProps: OnInputProps): OnInputProps { return (onInputPropsProps) as unknown as OnInputProps }
+export function onInputProps(onInputPropsProps: OnInputProps): OnInputProps { return (onInputPropsProps) }
 
 export interface OnInputProps {
     events?: EventProps[];

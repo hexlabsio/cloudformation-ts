@@ -2,7 +2,8 @@ import { Value } from '../../kloudformation/Value';
 import { CodeProps } from './githubrepository/CodeProps';
 import { KloudResource } from '../../kloudformation/KloudResource';
 
-export function gitHubRepository(gitHubRepositoryProps: GitHubRepository & { logicalName?: string }): GitHubRepository { return ({ ...gitHubRepositoryProps, _logicalType: 'AWS::CodeStar::GitHubRepository' }) as unknown as GitHubRepository }
+export type GitHubRepositoryAttributes = {  }
+export function gitHubRepository(gitHubRepositoryProps: GitHubRepository): GitHubRepository & { attributes: GitHubRepositoryAttributes } { return ({ ...gitHubRepositoryProps, _logicalType: 'AWS::CodeStar::GitHubRepository', attributes: {  } }) }
 
 export interface GitHubRepository extends KloudResource {
     repositoryName: Value<string>;
