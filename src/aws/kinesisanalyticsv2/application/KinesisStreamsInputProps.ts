@@ -1,7 +1,0 @@
-import { Value } from '../../../kloudformation/Value';
-
-export function kinesisStreamsInputProps(kinesisStreamsInputPropsProps: KinesisStreamsInputProps): KinesisStreamsInputProps { return (kinesisStreamsInputPropsProps) }
-
-export interface KinesisStreamsInputProps {
-    resourceARN: Value<string>;
-}

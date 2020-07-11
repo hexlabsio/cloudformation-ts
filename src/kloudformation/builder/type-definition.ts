@@ -22,6 +22,7 @@ export function nameFor(typeDefinition: TypeDefinition): string {
     case 'array': return `${nameFor(child)}[]`;
     case 'map': return `{ [key: string]: ${nameFor(child)} }`;
     case 'Value': return `Value<${nameFor(child)}>`;
+    case 'java.time.Instant': return 'string';
     case 'com.fasterxml.jackson.databind.JsonNode': return 'any';
     default: return typeDefinition.typeName;
   }
@@ -41,6 +42,10 @@ export function typeDefinitionFor(type: string, resource = false): TypeDefinitio
     }
     if(type.startsWith('io.kloudformation.property.alexa')) {
       return typeDefinitionFor('Alexa::' + type.substring('io.kloudformation.property.alexa'.length+1).replace('.', '::'))
+    }
+
+    else if (type.startsWith('io.kloudformation.property')) {
+      return typeDefinitionFor(type.substring('io.kloudformation.property'.length+1).replace('.','::'));
     }
     if(type.includes('<')) {
       const prefix = type.substring(0, type.indexOf('<'));

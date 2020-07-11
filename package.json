@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
-    "build": "ts-node --project tsconfig.json src/index.ts",
+    "generate": "ts-node --project tsconfig.json src/kloudformation/builder/generator.ts",
+    "run": "ts-node --project tsconfig.json src/index.ts",
+    "build": "webpack",
     "test": "jest --ci --runInBand --coverage --reporters=default --reporters=jest-junit",
     "lint": "eslint **/*.ts"
   },

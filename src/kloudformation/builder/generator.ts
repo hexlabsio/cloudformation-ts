@@ -1,17 +1,23 @@
 import * as fs from "fs";
-import {nameFor, TypeDefinition, typeDefinitionFor} from "./type-definition";
+import {nameFor, ParamType, TypeDefinition, typeDefinitionFor} from "./type-definition";
 export type MappedTypeDetail = TypeDetail & { interfaceName: TypeDefinition; required:  { [key: string]: TypeDefinition }; notRequired: { [key: string]: TypeDefinition }; awsType: string; attributes: { [key: string]: TypeDefinition }}
 export type TypeDetail = { type: string; name: string; resource: boolean; required: { [key: string]: string }; notRequired: { [key: string]: string }; attributes: { [key: string]: string } }
 export type TypeInfo = {
   [typeName: string]: TypeDetail;
 }
 
-function importsFrom(typeDefinition: TypeDefinition, imports: TypeDefinition[] = []): TypeDefinition[] {
-  if(typeDefinition.location || typeDefinition.typeName === 'Value') imports.push(typeDefinition);
-  if((typeDefinition as any).childType){
-    return importsFrom((typeDefinition as any).childType, imports);
+function importableTypesFor(typeDefinition: TypeDefinition): TypeDefinition[] {
+  const imports = typeDefinition.location ? [typeDefinition] : [];
+  if(typeDefinition instanceof ParamType) {
+    return [...imports, ...importableTypesFor(typeDefinition.childType)];
   }
   return imports;
+}
+
+function importsFrom(typeDefinition: TypeDefinition, imports: TypeDefinition[] = []): TypeDefinition[] {
+  const importables = importableTypesFor(typeDefinition);
+  importables.forEach(i => imports.push(i));
+  return importables;
 }
 
 function keyValues(item: any): any {
@@ -43,6 +49,9 @@ function importsFor(type: MappedTypeDetail): string[] {
       const rest = [...Array(importLocation.length - matching)].map(() => importLocation.pop()).reverse().join('/');
       const prefix = [...new Array(location.length - matching)].map(() => '..').join('/');
       const importString = `${prefix === '' ? '.' : prefix}${rest === '' ? '' : `/${rest}`}/${im.typeName}`;
+      if(im.typeName === `${type.name}Props` && !type.resource){
+        return '';
+      }
       return `import { ${im.typeName} } from '${importString}';`;
     } else return im.location;
   }).reduce((prev, im) => prev.add(im!), new Set<string>())];
@@ -91,12 +100,12 @@ export function generate(typeInformation: TypeInfo): void {
     const asImport = name === 'function' ? 'lambdaFunction' : `${name} as ${prefix}${it.interfaceName.typeName}`;
     return `import { ${asImport} } from '../${it.interfaceName.location!.replace(/\./g, '/')}/${it.interfaceName.typeName}';`;
   }).join('\n');
-  const parent = imports + '\n\nexport const aws = {\n' + typeInfo.filter(it => it.resource).map(it => {
+  const parent = imports + '\n\nexport type AWS = typeof aws;' +
+    '\n\nexport const aws = {\n' + typeInfo.filter(it => it.resource).map(it => {
     const prefix = it.interfaceName.location!.split('.').pop();
-    console.log(prefix + it.interfaceName.typeName);
     return '    ' + prefix + it.interfaceName.typeName
   }).join(',\n') + '\n};';
-  fs.writeFileSync('src/kloudformation/template.ts', parent);
+  fs.writeFileSync('src/kloudformation/aws.ts', parent);
   fileInfo(typeInfo).forEach(it => {
     if(!it.location) {
       console.error(it);
@@ -109,3 +118,5 @@ export function generate(typeInformation: TypeInfo): void {
     }
   });
 }
+
+generate(JSON.parse(fs.readFileSync('info.json').toString()));

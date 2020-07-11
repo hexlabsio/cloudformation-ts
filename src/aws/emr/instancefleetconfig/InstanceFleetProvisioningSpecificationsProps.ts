@@ -1,7 +1,0 @@
-import { SpotProvisioningSpecificationProps } from './SpotProvisioningSpecificationProps';
-
-export function instanceFleetProvisioningSpecificationsProps(instanceFleetProvisioningSpecificationsPropsProps: InstanceFleetProvisioningSpecificationsProps): InstanceFleetProvisioningSpecificationsProps { return (instanceFleetProvisioningSpecificationsPropsProps) }
-
-export interface InstanceFleetProvisioningSpecificationsProps {
-    spotSpecification: SpotProvisioningSpecificationProps;
-}
