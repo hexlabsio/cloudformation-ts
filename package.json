@@ -50,7 +50,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hexlabsio/typescript-template.git"
+    "url": "git+https://github.com/hexlabsio/kloudformation-ts.git"
   },
   "author": "hexlabs",
   "bugs": {
@@ -70,7 +70,7 @@
       "js"
     ]
   },
-  "homepage": "https://github.com/hexlabsio/typescript-template#readme",
+  "homepage": "https://github.com/hexlabsio/kloudformation-ts#readme",
   "devDependencies": {
     "@types/jest": "^24.0.23",
     "@types/node": "^12.12.14",
