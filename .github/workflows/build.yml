@@ -32,6 +32,9 @@ jobs:
 
       - name: Install
         run: npm install
+
+      - name: Install typescript
+        run: npm install -g typescript
 #
 #      - name: Lint
 #        run: npm run lint
@@ -47,8 +50,7 @@ jobs:
         run: find src/* ! -user root -type f -ls
 
       - name: Production Build
-        run: npm run build
-        env: { NODE_OPTIONS: --max_old_space_size=4096 }
+        run: tsc
 
       - name: Package
         run: npm pack
