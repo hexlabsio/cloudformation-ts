@@ -40,9 +40,11 @@ jobs:
 #        run: npm test
 #        env: { CI: true }
 
+      - name: Generation
+        run: npm run generate
+
       - name: Production Build
-        run: npm ci && npm run build
-        env: { CI: true }
+        run: npm run build
 
       - name: Package
         run: npm pack

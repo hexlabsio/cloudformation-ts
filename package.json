@@ -8,7 +8,8 @@
   "scripts": {
     "run": "ts-node --project tsconfig.json src/index.ts",
     "prebuild": "rimraf dist",
-    "build": "ts-node --project tsconfig.json src/kloudformation/builder/discovery.ts && tsc",
+    "generate": "ts-node --project tsconfig.json src/kloudformation/builder/discovery.ts",
+    "build": "tsc",
     "test": "jest --ci --runInBand --coverage --reporters=default --reporters=jest-junit",
     "lint": "eslint **/*.ts"
   },
