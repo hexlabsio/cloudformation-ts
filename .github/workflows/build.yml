@@ -32,9 +32,6 @@ jobs:
 
       - name: Install
         run: npm install
-
-      - name: Install typescript
-        run: npm install -g typescript
 #
 #      - name: Lint
 #        run: npm run lint
