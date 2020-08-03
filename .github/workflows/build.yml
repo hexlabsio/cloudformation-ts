@@ -43,14 +43,11 @@ jobs:
 #        run: npm test
 #        env: { CI: true }
 
-#      - name: Generation
-#        run: npm run generate
-
-      - name: List
-        run: find src/* ! -user root -type f -ls
+      - name: Generation
+        run: npm run generate
 
       - name: Production Build
-        run: tsc
+        run: npm run build
 
       - name: Package
         run: npm pack

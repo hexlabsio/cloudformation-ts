@@ -3,4 +3,7 @@ node_modules
 dist
 junit.xml
 coverage
+src/alexa
+src/aws
+src/kloudformation/aws.ts
 template.json
