@@ -32,6 +32,10 @@ jobs:
 
       - name: Install
         run: npm install
+
+      - name: Install
+        run: tsc -v
+
 #
 #      - name: Lint
 #        run: npm run lint
