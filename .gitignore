@@ -3,6 +3,4 @@ node_modules
 dist
 junit.xml
 coverage
-src/alexa
-src/aws
 template.json
