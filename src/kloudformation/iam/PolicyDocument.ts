@@ -7,14 +7,14 @@ export interface PolicyDocument {
 }
 
 export interface PolicyStatement {
-  action?: string | string[],
-  notAction?: string | string[],
-  effect: 'Allow' | 'Deny',
-  resource?: string | string[],
-  notResource?: string | string[],
-  sid?: string,
-  principal?: Principal
-  notPrincipal?: Principal,
+  action?: string | string[];
+  notAction?: string | string[];
+  effect: 'Allow' | 'Deny';
+  resource?: string | string[];
+  notResource?: string | string[];
+  sid?: string;
+  principal?: Principal;
+  notPrincipal?: Principal;
   condition?: any;
 }
 

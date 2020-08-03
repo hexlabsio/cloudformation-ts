@@ -2,10 +2,10 @@ import {Attribute} from "./Attribute";
 import {KloudResource} from "./KloudResource";
 
 export type Ref = {
-  'Ref': string
+  'Ref': string;
 }
 export type Join = {
-  'Fn:Join': [string, Value<string>[]]
+  'Fn:Join': [string, Value<string>[]];
 }
 
 export type Value<T> = T | Ref | Attribute<T> | Join | KloudResource;

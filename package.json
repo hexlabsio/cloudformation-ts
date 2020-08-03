@@ -1,15 +1,24 @@
 {
-  "name": "typescript-template",
-  "sideEfects": false,
+  "name": "kloudformation-ts",
+  "description": "A Typescript way to build CloudFormation",
+  "license": "Apache-2.0",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "dist/kloudformation/kloudformation.js",
+  "types": "dist/kloudformation/kloudformation.d.ts",
   "scripts": {
-    "generate": "ts-node --project tsconfig.json src/kloudformation/builder/generator.ts",
     "run": "ts-node --project tsconfig.json src/index.ts",
-    "build": "webpack",
+    "prebuild": "rimraf dist",
+    "build": "ts-node --project tsconfig.json src/kloudformation/builder/discovery.ts && tsc",
     "test": "jest --ci --runInBand --coverage --reporters=default --reporters=jest-junit",
     "lint": "eslint **/*.ts"
   },
+  "files": [
+    "dist"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
   "eslintIgnore": [
     "webpack.config.js"
   ],
@@ -47,11 +56,6 @@
   "bugs": {
     "url": "https://github.com/hexlabsio/typescript-template/issues"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
-  },
   "jest": {
     "transform": {
       ".(ts)": "ts-jest"
@@ -70,6 +74,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.23",
     "@types/node": "^12.12.14",
+    "@types/request-promise": "^4.1.46",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
     "eslint": "^6.7.2",
@@ -77,14 +82,12 @@
     "husky": "^3.1.0",
     "jest": "^25.2.4",
     "jest-junit": "^10.0.0",
-    "json-loader": "^0.5.7",
-    "node-loader": "^0.6.0",
+    "request-promise": "^4.2.5",
+    "rimraf": "^3.0.2",
     "ts-jest": "^25.3.0",
     "ts-loader": "^6.2.1",
     "ts-node": "^8.8.1",
-    "typescript": "^3.7.3",
-    "webpack": "^4.41.3",
-    "webpack-cli": "^3.3.10"
+    "typescript": "^3.7.3"
   },
   "dependencies": {}
 }

@@ -47,7 +47,8 @@ export class Template {
         throw Error(`Logical Name ${logicalName} for resource type ${resource._logicalType} is already being used, try updating it to something else.`);
       }
       const { attributes } = resource as any;
-      const result  = {...resource, _logicalName: logicalName, attributes: Object.keys(attributes).reduce((prev, attribute) => ({...prev, [attribute]: {'Fn:GetAtt': [logicalName, attributes[attribute]]}}), {})};
+      //TODO fix dot named attributes
+      const result  = {...resource, _logicalName: logicalName, attributes: Object.keys(attributes || []).reduce((prev, attribute) => ({...prev, [attribute]: {'Fn:GetAtt': [logicalName, attributes[attribute]]}}), {})};
       this.resources.push(result);
       return result
     }) as unknown as T;
