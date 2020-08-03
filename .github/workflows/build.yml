@@ -48,7 +48,7 @@ jobs:
         run: npm run generate
 
       - name: Production Build
-        run: npm run build
+        run: tsc -v && tsc
 
       - name: Package
         run: npm pack
