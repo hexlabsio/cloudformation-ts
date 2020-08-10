@@ -36,9 +36,9 @@ jobs:
 #      - name: Lint
 #        run: npm run lint
 
-      - name: Test
-        run: npm test
-        env: { CI: true }
+#      - name: Test
+#        run: npm test
+#        env: { CI: true }
 
       - name: Generation
         run: npm run generate
