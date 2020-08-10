@@ -1,5 +1,5 @@
 {
-  "name": "kloudformation-ts",
+  "name": "@hexlabs/kloudformation-ts",
   "description": "A Typescript way to build CloudFormation",
   "license": "Apache-2.0",
   "version": "1.0.0",
@@ -9,7 +9,7 @@
     "run": "ts-node --project tsconfig.json src/index.ts",
     "prebuild": "rimraf dist",
     "generate": "ts-node --project tsconfig.json src/kloudformation/builder/discovery.ts",
-    "build": "tsc",
+    "build": "node --max-old-space-size=8192 node_modules/typescript/bin/tsc",
     "test": "jest --ci --runInBand --coverage --reporters=default --reporters=jest-junit",
     "lint": "eslint **/*.ts"
   },
