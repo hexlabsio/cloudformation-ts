@@ -33,22 +33,19 @@ jobs:
       - name: Install
         run: npm install
 
-      - name: Install Typescript
-        run: npm install -g typescript@3.7.3 && tsc -v
+      - name: Lint
+        run: npm run lint
 
-#
-#      - name: Lint
-#        run: npm run lint
-#
-#      - name: Test
-#        run: npm test
-#        env: { CI: true }
+      - name: Test
+        run: npm test
+        env: { CI: true }
 
       - name: Generation
         run: npm run generate
 
       - name: Production Build
-        run: node --max-old-space-size=8192 node_modules/typescript/bin/tsc
+        run: npm run build
+        env: { CI: true }
 
       - name: Package
         run: npm pack

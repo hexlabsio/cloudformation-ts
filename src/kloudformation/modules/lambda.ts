@@ -5,7 +5,7 @@ import {Permission} from "../../aws/lambda/Permission";
 import {LogGroup} from "../../aws/logs/LogGroup";
 import {Subscription} from "../../aws/sns/Subscription";
 import {AWS} from "../aws";
-import {iamPolicy} from "../iam/policyDocument";
+import {iamPolicy} from "../iam/PolicyDocument";
 import {normalize} from "../kloudformation";
 import {Value} from "../Value";
 

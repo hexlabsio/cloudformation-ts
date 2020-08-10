@@ -90,7 +90,7 @@ function importLocation(name: string, locationName: string, currentLocation: str
   const importLocation = name === 'Tag' ? ['aws'] : locationName.split('.');
   const location = currentLocation.split('.');
   const matching = countMatching(importLocation, location);
-  const rest = [...Array(importLocation.length - matching)].map(() => importLocation.pop()).reverse().join('/');
+  const rest = [...Array(importLocation.length - matching)].map(() => importLocation.pop()!.toLocaleLowerCase()).reverse().join('/');
   const prefix = [...new Array(location.length - matching)].map(() => '..').join('/');
   return `${prefix === '' ? '.' : prefix}${rest === '' ? '' : `/${rest}`}/${name}`;
 }
