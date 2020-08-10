@@ -48,7 +48,7 @@ jobs:
         run: npm run generate
 
       - name: Production Build
-        run: tsc -v && tsc
+        run: node --max-old-space-size=8192 node_modules/typescript/bin/tsc
 
       - name: Package
         run: npm pack
