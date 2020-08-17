@@ -43,16 +43,23 @@ async function buildType(from: PropertyInfo, resource: boolean, name: string, do
   const lowerName = prop.substring(0,1).toLowerCase() + prop.substring(1);
   const functionName = lowerName === 'function' ? 'lambdaFunction' : lowerName;
   let excess = '';
+  const documentation = await docsCache.get(from.Documentation);
+  const descriptionString = `/**
+  ${documentation.description || ''}
+  For full documentation go to <a href="${from.Documentation || ''}">the AWS Docs</a>
+*/`;
   if(resource) {
     if(from.Attributes) {
       function attName(name: string) { return name.replace(/\./g, '_')}
       const attributes = Object.keys(from.Attributes).map(attribute => `${attName(attribute)}: Attribute<${stringFor(getType(from.Attributes![attribute], attribute, location, false))}>`).join(';');
       const attributeNames = Object.keys(from.Attributes).map(attribute => `${attName(attribute)}: '${attribute}'`).join(',');
       excess = `export type ${prop}Attributes = { ${attributes} }
+${descriptionString}
 export function ${functionName}(${lowerName}Props: ${prop}): ${prop} & {attributes: ${prop}Attributes} { return ({ ...${lowerName}Props, _logicalType: '${name}', attributes: { ${attributeNames} } }) }
    `;
     } else {
-      excess = `export function ${functionName}(${lowerName}Props: ${prop}): ${prop} { return ({ ...${lowerName}Props, _logicalType: '' }) }
+      excess = `${descriptionString}
+export function ${functionName}(${lowerName}Props: ${prop}): ${prop} { return ({ ...${lowerName}Props, _logicalType: '' }) }
   `;
     }
   }
@@ -62,7 +69,6 @@ export function ${functionName}(${lowerName}Props: ${prop}): ${prop} & {attribut
     if(prop.Type) return { ...prop, Type: prop.Type + 'Props' };
     return prop;
   }
-  const documentation = await docsCache.get(from.Documentation);
   if(from.Properties) {
     const props: PropertyInfo['Properties']  = Object.keys(from.Properties!).reduce((prev, cur) => ({...prev, [cur]: rename(from.Properties![cur])}), {});
     const properties: [string, TypeInfo][] = Object.keys(props).map(k => [k, getType(props![k], k, location + (resource ? ('.' + lowerName) : ''), true)]);
@@ -74,14 +80,11 @@ export function ${functionName}(${lowerName}Props: ${prop}): ${prop} & {attribut
     const importString = importsForProperties(all.map(([_,b]) => b), location, interfaceName, resource);
     const result: NameLocationContent = [interfaceName, location, `${importString}
 ${excess}
-/**
-  ${documentation.description || ''}
-  For full documentation go to <a href="${from.Documentation || ''}">the AWS Docs</a>
-*/
+${descriptionString}
 export interface ${interfaceName} ${resource ? 'extends KloudResource ' : ''}{
   ${properties.map(it => `
   /** ${docForProperty(it[0], documentation)} */
-  ${it[0].substring(0,1).toLowerCase()}${it[0].substring(1)}${it[1].required ? '': '?'}: ${stringFor(it[1])}`).join('\n  ')}
+  ${it[0].substring(0,1).toLowerCase()}${it[0].substring(1)}${it[1].required ? '': '?'}: ${updateType(stringFor(it[1]), it[0], documentation)}`).join('\n  ')}
 }`];
     return result;
   }
@@ -91,13 +94,24 @@ export interface ${interfaceName} ${resource ? 'extends KloudResource ' : ''}{
   return [interfaceName,location,`${imports}\nexport type ${interfaceName} = ${stringFor(type)};`];
 }
 
+function updateType(type: string, name: string, documentation: Documentation): string {
+  if(documentation && documentation.properties && documentation.properties.hasOwnProperty(name)) {
+    if(documentation.properties[name]["Allowed values"] && type === 'Value<string>') {
+      const allowedValues = documentation.properties[name]["Allowed values"];
+      const values = allowedValues.substring(allowedValues.indexOf('<code>') + 6, allowedValues.indexOf('</code>')).split('|').map(it => `'${it.trim()}'`);
+      return `Value<${values.join(' | ')}>`;
+    }
+  }
+  return type;
+}
+
 function docForProperty(name: string, documentation: Documentation): string {
   if(documentation && documentation.properties && documentation.properties.hasOwnProperty(name)) {
     const subprops = documentation.properties[name];
      return subprops.Description + Object.keys(subprops)
      .filter(it => it !== 'Description' && it !== 'Type')
      .reduce((str, current) => {
-      return `${str}\n${current}: ${subprops[current]}`
+      return `${str}\n${current}: ${subprops[current].replace('*/', '*§/')}`
       }, '')
   }
   return '';
