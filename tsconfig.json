@@ -3,11 +3,11 @@
     "rootDir": "src",
     "baseUrl": "src",
     "outDir": "./dist",
-    "noUnusedLocals": true,
-    "allowSyntheticDefaultImports": false,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
+    "noUnusedLocals": false,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "alwaysStrict": false,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "allowJs": true,
@@ -23,5 +23,6 @@
   "include": [
     "src/**/*",
     "test/**/*"
-  ]
+  ],
+  "exclude": ["node_modules"]
 }

@@ -1,14 +1,16 @@
 import * as fs from "fs";
 // @ts-ignore
 import request from "request-promise";
+import DocsCache, {Documentation} from "../docs/docs";
 import {Property, PropertyInfo, Specification, Typed} from "./model";
 
 export type NameLocationContent = [string, string, string];
 
 (async () => {
   const spec: Specification = await request({ gzip: true, uri: 'https://dnwj8swjjbsbt.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json', json: true});
-  const resources = Object.keys(spec.ResourceTypes).map(resourceKey => buildType(spec.ResourceTypes[resourceKey], true, resourceKey));
-  const properties = Object.keys(spec.PropertyTypes).map(resourceKey => buildType(spec.PropertyTypes[resourceKey], false, resourceKey));
+  const docsCache: DocsCache = new DocsCache();
+  const resources = await Promise.all(Object.keys(spec.ResourceTypes).map(async resourceKey => await buildType(spec.ResourceTypes[resourceKey], true, resourceKey, docsCache)));
+  const properties = await Promise.all(Object.keys(spec.PropertyTypes).map(async resourceKey => await buildType(spec.PropertyTypes[resourceKey], false, resourceKey, docsCache)));
   const all = [...resources, ...properties];
   buildAwsType(resources);
   all.filter(it => it[0] != '').forEach(([name, location, body]) => {
@@ -32,18 +34,18 @@ function buildAwsType(resources: NameLocationContent[]) {
   fs.writeFileSync('src/kloudformation/aws.ts', parent);
 }
 
-function buildType(from: PropertyInfo, resource: boolean, name: string): NameLocationContent {
+async function buildType(from: PropertyInfo, resource: boolean, name: string, docsCache: DocsCache): Promise<NameLocationContent> {
   const split = name.split('::');
   const nameParts = [...split.slice(0, -1).map(s => s.toLowerCase()), ...(resource ? [] : split[split.length-1].split('.').slice(0,-1).map(it => it.toLowerCase()))];
   const location = name === 'Tag' ? 'aws' : nameParts.join('.');
   const lastPart = split[split.length - 1].split('.');
   const prop = lastPart[lastPart.length - 1];
   const lowerName = prop.substring(0,1).toLowerCase() + prop.substring(1);
-  const functionName = lowerName === 'function' ? 'lambdaFunction': lowerName;
+  const functionName = lowerName === 'function' ? 'lambdaFunction' : lowerName;
   let excess = '';
   if(resource) {
     if(from.Attributes) {
-      function attName(name: string) { return name.replace(/\./g, '')}
+      function attName(name: string) { return name.replace(/\./g, '_')}
       const attributes = Object.keys(from.Attributes).map(attribute => `${attName(attribute)}: Attribute<${stringFor(getType(from.Attributes![attribute], attribute, location, false))}>`).join(';');
       const attributeNames = Object.keys(from.Attributes).map(attribute => `${attName(attribute)}: '${attribute}'`).join(',');
       excess = `export type ${prop}Attributes = { ${attributes} }
@@ -60,6 +62,7 @@ export function ${functionName}(${lowerName}Props: ${prop}): ${prop} & {attribut
     if(prop.Type) return { ...prop, Type: prop.Type + 'Props' };
     return prop;
   }
+  const documentation = await docsCache.get(from.Documentation);
   if(from.Properties) {
     const props: PropertyInfo['Properties']  = Object.keys(from.Properties!).reduce((prev, cur) => ({...prev, [cur]: rename(from.Properties![cur])}), {});
     const properties: [string, TypeInfo][] = Object.keys(props).map(k => [k, getType(props![k], k, location + (resource ? ('.' + lowerName) : ''), true)]);
@@ -71,8 +74,14 @@ export function ${functionName}(${lowerName}Props: ${prop}): ${prop} & {attribut
     const importString = importsForProperties(all.map(([_,b]) => b), location, interfaceName, resource);
     const result: NameLocationContent = [interfaceName, location, `${importString}
 ${excess}
+/**
+  ${documentation.description || ''}
+  For full documentation go to <a href="${from.Documentation || ''}">the AWS Docs</a>
+*/
 export interface ${interfaceName} ${resource ? 'extends KloudResource ' : ''}{
-  ${properties.map(it => `${it[0].substring(0,1).toLowerCase()}${it[0].substring(1)}${it[1].required ? '': '?'}: ${stringFor(it[1])}`).join('\n  ')}
+  ${properties.map(it => `
+  /** ${docForProperty(it[0], documentation)} */
+  ${it[0].substring(0,1).toLowerCase()}${it[0].substring(1)}${it[1].required ? '': '?'}: ${stringFor(it[1])}`).join('\n  ')}
 }`];
     return result;
   }
@@ -80,6 +89,18 @@ export interface ${interfaceName} ${resource ? 'extends KloudResource ' : ''}{
   const type = getType(rename(from), prop, location, true);
   const imports = importsForProperties([type], location, interfaceName, resource);
   return [interfaceName,location,`${imports}\nexport type ${interfaceName} = ${stringFor(type)};`];
+}
+
+function docForProperty(name: string, documentation: Documentation): string {
+  if(documentation && documentation.properties && documentation.properties.hasOwnProperty(name)) {
+    const subprops = documentation.properties[name];
+     return subprops.Description + Object.keys(subprops)
+     .filter(it => it !== 'Description' && it !== 'Type')
+     .reduce((str, current) => {
+      return `${str}\n${current}: ${subprops[current]}`
+      }, '')
+  }
+  return '';
 }
 
 function importsForProperties(properties: TypeInfo[], currentLocation: string, name: string, resource: boolean): string {
@@ -165,23 +186,3 @@ function primitiveType(from: string, required: boolean, propertyName: string): T
     default: return { name: 'any', required };
   }
 }
-
-// private fun getType(types: Set<String>, proxies: Map<String, TypeName>, classTypeName: String, primitiveType: String?, primitiveItemType: String?, itemType: String? = null, type: String? = null, wrapped: Boolean = true) = when {
-//   !primitiveType.isNullOrEmpty() -> {
-//     if (wrapped) Value::class ofType primitiveTypeName(primitiveType)
-//   else primitiveTypeName(primitiveType)
-//   }
-//   !primitiveItemType.isNullOrEmpty() -> {
-//     if (type.equals("Map")) Map::class.ofTypes(String::class.asTypeName(), valueTypeName(primitiveItemType, wrapped))
-//   else {
-//       val arrayOfValueOfType = List::class ofType valueTypeName(primitiveItemType, true)
-//       if (wrapped) Value::class ofType arrayOfValueOfType else arrayOfValueOfType
-//     }
-//   }
-//   !itemType.isNullOrEmpty() -> {
-//     if (itemType == "Json") List::class ofType valueTypeName(itemType, true)
-//   else List::class ofType (findProxy(proxies, classTypeName, itemType) ?: ClassName.bestGuess(getPackageName(false, getTypeName(types, classTypeName, itemType.toString())) + "." + itemType))
-//   }
-//   type == null -> String::class.asTypeName()
-// else -> findProxy(proxies, classTypeName, type.toString()) ?: ClassName.bestGuess(getPackageName(false, getTypeName(types, classTypeName, type.toString())) + "." + type)
-// }
