@@ -33,7 +33,7 @@ function buildAwsType(resources: NameLocationContent[]) {
     }).join(',\n') + '\n};';
   fs.writeFileSync('src/kloudformation/aws.ts', parent);
 }
-
+function attName(name: string) { return name.replace(/\./g, '_')}
 async function buildType(from: PropertyInfo, resource: boolean, name: string, docsCache: DocsCache): Promise<NameLocationContent> {
   const split = name.split('::');
   const nameParts = [...split.slice(0, -1).map(s => s.toLowerCase()), ...(resource ? [] : split[split.length-1].split('.').slice(0,-1).map(it => it.toLowerCase()))];
@@ -50,7 +50,6 @@ async function buildType(from: PropertyInfo, resource: boolean, name: string, do
 */`;
   if(resource) {
     if(from.Attributes) {
-      function attName(name: string) { return name.replace(/\./g, '_')}
       const attributes = Object.keys(from.Attributes).map(attribute => `${attName(attribute)}: Attribute<${stringFor(getType(from.Attributes![attribute], attribute, location, false))}>`).join(';');
       const attributeNames = Object.keys(from.Attributes).map(attribute => `${attName(attribute)}: '${attribute}'`).join(',');
       excess = `export type ${prop}Attributes = { ${attributes} }
@@ -162,8 +161,6 @@ interface TypeInfo {
 function valueOfType(type: TypeInfo): TypeInfo {
   return { name: 'Value', locations: ['kloudformation'], subtypes: [type], required: type.required };
 }
-
-
 
 function getType(from: Typed, name: string, location: string, wrapped: boolean): TypeInfo {
   let type: TypeInfo = { name: 'string', required: !!from.Required };
