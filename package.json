@@ -92,14 +92,14 @@
     "request-promise": "^4.2.5",
     "rimraf": "^3.0.2",
     "ts-jest": "^25.3.0",
-    "ts-loader": "^6.2.1",
-    "typescript": "3.7.3"
+    "ts-loader": "^6.2.1"
   },
   "dependencies": {
     "aws-sdk": "^2.738.0",
     "chalk": "^4.1.0",
     "commander": "^6.0.0",
     "ts-node": "^8.8.1",
+    "typescript": "3.7.3",
     "path": "^0.12.7"
   }
 }
