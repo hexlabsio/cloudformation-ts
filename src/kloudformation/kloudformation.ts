@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import {PathLike} from "fs";
 import {KloudResource} from "./KloudResource";
-import {aws as AWS} from "./aws";
+import {aws, AWS} from "./aws";
 import {transform, Value} from "./Value";
 
 interface KloudFormationTemplate {
@@ -47,7 +47,7 @@ export class Template {
         throw Error(`Logical Name ${logicalName} for resource type ${resource._logicalType} is already being used, try updating it to something else.`);
       }
       const { attributes } = resource as any;
-      const result  = {...resource, _logicalName: logicalName, attributes: Object.keys(attributes || []).reduce((prev, attribute) => ({...prev, [attribute]: {'Fn:GetAtt': [logicalName, attributes[attribute].replace(/_/g,'.')]}}), {})};
+      const result  = {...resource, _logicalName: logicalName, attributes: Object.keys(attributes || []).reduce((prev, attribute) => ({...prev, [attribute]: {'Fn::GetAtt': [logicalName, attributes[attribute].replace(/_/g,'.')]}}), {})};
       this.resources.push(result);
       return result
     }) as unknown as T;
@@ -64,9 +64,9 @@ export class Template {
     return props;
   }
   
-  static create(builder: (aws: typeof AWS) => void, file?: PathLike): KloudFormationTemplate {
+  static create(builder: (aws: AWS) => void, file: PathLike = "template.json"): KloudFormationTemplate {
     const template = new Template();
-    builder(Object.keys(AWS).reduce((prev, key) => Object.assign(prev, {[key]: template.modify((AWS as any)[key])}), {} as typeof AWS));
+    builder(Object.keys(aws).reduce((prev, key) => Object.assign(prev, {[key]: template.modify((aws as any)[key])}), {} as AWS));
     const output = {
       Resources: (template.resources as any[]).reduce((prev, {_logicalName, _logicalType, attributes, ...properties}) => ({
         ...prev,

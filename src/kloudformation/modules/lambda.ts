@@ -1,5 +1,5 @@
 import {Role} from "../../aws/iam/Role";
-import {Function as LambdaFunction, FunctionAttributes} from "../../aws/lambda/Function";
+import {Function as LambdaFunction} from "../../aws/lambda/Function";
 import {CodeProps} from "../../aws/lambda/function/CodeProps";
 import {Permission} from "../../aws/lambda/Permission";
 import {LogGroup} from "../../aws/logs/LogGroup";
@@ -7,35 +7,18 @@ import {Subscription} from "../../aws/sns/Subscription";
 import {AWS} from "../aws";
 import {iamPolicy} from "../iam/PolicyDocument";
 import {normalize} from "../kloudformation";
-import {Value} from "../Value";
-
-export enum LambdaRuntime {
-  NODE_JS_12 = "nodejs12.x",
-  NODE_JS_10 = "nodejs10.x",
-  PYTHON_3_8 = "python3.8",
-  PYTHON_3_7 = "python3.7",
-  PYTHON_3_6 = "python3.6",
-  PYTHON_2_7 = "python2.7",
-  RUBY_2_7 = "ruby2.7",
-  RUBY_2_5 = "ruby2.5",
-  JAVA_11 = "java11",
-  JAVA_8 = "java8",
-  GO_1 = "go1.x",
-  NET_CORE_3_1 = "dotnetcore3.1",
-  NET_CORE_2_1 = "dotnetcore2.1",
-  CUSTOM = "provided"
-}
+import {join, Value} from "../Value";
 
 export class Lambda {
   private readonly aws: AWS;
   role: Role;
   logGroup: LogGroup;
-  lambda: LambdaFunction & { attributes: FunctionAttributes };
+  lambda: LambdaFunction;
   permissions: Permission[];
   subscriptions: Subscription[];
   name: string;
   
-  constructor(aws: AWS, name: string, role: Role, logGroup: LogGroup, lambda: LambdaFunction  & { attributes: FunctionAttributes }) {
+  constructor(aws: AWS, name: string, role: Role, logGroup: LogGroup, lambda: LambdaFunction) {
     this.aws = aws;
     this.name = name;
     this.role = role;
@@ -79,36 +62,17 @@ export class Lambda {
     return [permission, subscription];
   }
   
-  static node(aws: AWS, name: string, code: CodeProps, handler: Value<string>, extra?: Partial<LambdaFunction>): Lambda {
-    return Lambda.create(aws, name, code, handler, LambdaRuntime.NODE_JS_12, extra);
-  }
-  static python(aws: AWS, name: string, code: CodeProps, handler: Value<string>, extra?: Partial<LambdaFunction>): Lambda {
-    return Lambda.create(aws, name, code, handler, LambdaRuntime.PYTHON_3_8, extra);
-  }
-  static ruby(aws: AWS, name: string, code: CodeProps, handler: Value<string>, extra?: Partial<LambdaFunction>): Lambda {
-    return Lambda.create(aws, name, code, handler, LambdaRuntime.RUBY_2_7, extra);
-  }
-  static java(aws: AWS, name: string, code: CodeProps, handler: Value<string>, extra?: Partial<LambdaFunction>): Lambda {
-    return Lambda.create(aws, name, code, handler, LambdaRuntime.JAVA_11, extra);
-  }
-  static go(aws: AWS, name: string, code: CodeProps, handler: Value<string>, extra?: Partial<LambdaFunction>): Lambda {
-    return Lambda.create(aws, name, code, handler, LambdaRuntime.GO_1, extra);
-  }
-  static dotNet(aws: AWS, name: string, code: CodeProps, handler: Value<string>, extra?: Partial<LambdaFunction>): Lambda {
-    return Lambda.create(aws, name, code, handler, LambdaRuntime.NET_CORE_3_1, extra);
-  }
-  
-  static create(aws: AWS, name: string, code: CodeProps, handler: Value<string>, runtime: LambdaRuntime | Value<string>, extra?: Partial<LambdaFunction>): Lambda {
+  static create(aws: AWS, name: string, code: CodeProps, handler: Value<string>, runtime: LambdaFunction['runtime'], extra?: Partial<LambdaFunction>): Lambda {
     const normalName = normalize(name);
-    const logGroup = aws.logsLogGroup({
-      _logicalName: `${normalName}LogGroup`,
-      logGroupName: `aws/lambda/${name}`
-    });
     const role = aws.iamRole({
       _logicalName: `${normalName}Role`,
       assumeRolePolicyDocument: iamPolicy({statement: [{action: 'sts:AssumeRole', effect: 'Allow', principal: { Service: ['lambda.amazonaws.com'] }}]})
     });
-    const lambda = aws.lambdaFunction({ _logicalName: `${normalName}Function`, ...extra, code, handler, role, runtime, functionName: name });
+    const lambda = aws.lambdaFunction({ _logicalName: `${normalName}Function`, ...extra, code, handler, role: role.attributes.Arn, runtime, functionName: name });
+    const logGroup = aws.logsLogGroup({
+      _logicalName: `${normalName}LogGroup`,
+      logGroupName: join('aws/lambda/', lambda)
+    });
     return new Lambda(aws, normalName, role, logGroup, lambda);
   }
 }

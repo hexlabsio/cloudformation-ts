@@ -34,6 +34,28 @@ function buildAwsType(resources: NameLocationContent[]) {
   fs.writeFileSync('src/kloudformation/aws.ts', parent);
 }
 function attName(name: string) { return name.replace(/\./g, '_')}
+
+function attributeCode(attributes: PropertyInfo['Attributes'], prop: string, name: string, location: string, descriptionString: string, functionName: string, lowerName: string): string {
+  const atts = Object.keys(attributes!).map(attribute => {
+    const attributeType = getType(rename(attributes![attribute]), attribute, location, false);
+    return `${attName(attribute)}: Attribute<${stringFor(attributeType)}>`
+  }).join(';');
+  const attributeNames = Object.keys(attributes!).map(attribute => `${attName(attribute)}: '${attribute}'`).join(',');
+  return `export type ${prop}Attributes = { ${atts} }
+export type ${prop} = ${prop}Properties & {attributes: ${prop}Attributes}
+${descriptionString}
+export function ${functionName}(${lowerName}Props: ${prop}Properties): ${prop}  { return ({ ...${lowerName}Props, _logicalType: '${name}', attributes: { ${attributeNames} } }) }
+   `;
+}
+
+function rename(prop: Typed): Typed {
+  if(prop.Type === 'Json' || prop.ItemType === 'Json' || prop.Type === 'Tag' || prop.ItemType === 'Tag') return prop;
+  if(prop.ItemType) return { ...prop, ItemType: prop.ItemType + 'Props' };
+  if(prop.PrimitiveType) return prop;
+  if(prop.Type) return { ...prop, Type: prop.Type + 'Props' };
+  return prop;
+}
+
 async function buildType(from: PropertyInfo, resource: boolean, name: string, docsCache: DocsCache): Promise<NameLocationContent> {
   const split = name.split('::');
   const nameParts = [...split.slice(0, -1).map(s => s.toLowerCase()), ...(resource ? [] : split[split.length-1].split('.').slice(0,-1).map(it => it.toLowerCase()))];
@@ -42,36 +64,21 @@ async function buildType(from: PropertyInfo, resource: boolean, name: string, do
   const prop = lastPart[lastPart.length - 1];
   const lowerName = prop.substring(0,1).toLowerCase() + prop.substring(1);
   const functionName = lowerName === 'function' ? 'lambdaFunction' : lowerName;
-  let excess = '';
   const documentation = await docsCache.get(from.Documentation);
   const descriptionString = `/**
   ${documentation.description || ''}
   For full documentation go to <a href="${from.Documentation || ''}">the AWS Docs</a>
 */`;
-  if(resource) {
-    if(from.Attributes) {
-      const attributes = Object.keys(from.Attributes).map(attribute => `${attName(attribute)}: Attribute<${stringFor(getType(from.Attributes![attribute], attribute, location, false))}>`).join(';');
-      const attributeNames = Object.keys(from.Attributes).map(attribute => `${attName(attribute)}: '${attribute}'`).join(',');
-      excess = `export type ${prop}Attributes = { ${attributes} }
-${descriptionString}
-export function ${functionName}(${lowerName}Props: ${prop}): ${prop} & {attributes: ${prop}Attributes} { return ({ ...${lowerName}Props, _logicalType: '${name}', attributes: { ${attributeNames} } }) }
-   `;
-    } else {
-      excess = `${descriptionString}
-export function ${functionName}(${lowerName}Props: ${prop}): ${prop} { return ({ ...${lowerName}Props, _logicalType: '' }) }
-  `;
-    }
-  }
-  function rename(prop: Property): Property {
-    if(prop.Type === 'Json' || prop.ItemType === 'Json' || prop.Type === 'Tag' || prop.ItemType === 'Tag') return prop;
-    if(prop.ItemType) return { ...prop, ItemType: prop.ItemType + 'Props' };
-    if(prop.Type) return { ...prop, Type: prop.Type + 'Props' };
-    return prop;
-  }
+    const excess = resource ? (from.Attributes ? attributeCode(from.Attributes, prop, name, location, descriptionString, functionName, lowerName) :
+      `${descriptionString}
+export type ${prop} = ${prop}Properties
+export function ${functionName}(${lowerName}Props: ${prop}Properties): ${prop} { return ({ ...${lowerName}Props, _logicalType: '' }) }
+  `) : '';
+  
   if(from.Properties) {
     const props: PropertyInfo['Properties']  = Object.keys(from.Properties!).reduce((prev, cur) => ({...prev, [cur]: rename(from.Properties![cur])}), {});
     const properties: [string, TypeInfo][] = Object.keys(props).map(k => [k, getType(props![k], k, location + (resource ? ('.' + lowerName) : ''), true)]);
-    const attributes: [string, TypeInfo][] = Object.keys(from.Attributes || {}).map(k => [k, getType(from.Attributes![k], k, location, false)]);
+    const attributes: [string, TypeInfo][] = Object.keys(from.Attributes || {}).map(k => [k, getType(rename(from.Attributes![k]), k, location + (resource ? ('.' + lowerName) : ''), false)]);
     const attImport: [string, TypeInfo][] = from.Attributes ? [["Attribute", { name: 'Attribute', locations: ['kloudformation'] }as TypeInfo]]: [];
     const resourceImport: [string, TypeInfo][] = resource ? [["KloudResource", { name: 'KloudResource', locations: ['kloudformation'] }as TypeInfo]]: [];
     const all: [string, TypeInfo][] = [...properties, ...attributes, ...attImport, ...resourceImport];
@@ -80,7 +87,7 @@ export function ${functionName}(${lowerName}Props: ${prop}): ${prop} { return ({
     const result: NameLocationContent = [interfaceName, location, `${importString}
 ${excess}
 ${descriptionString}
-export interface ${interfaceName} ${resource ? 'extends KloudResource ' : ''}{
+export interface ${interfaceName}${resource ? 'Properties extends KloudResource ' : ''}{
   ${properties.map(it => `
   /** ${docForProperty(it[0], documentation)} */
   ${it[0].substring(0,1).toLowerCase()}${it[0].substring(1)}${it[1].required ? '': '?'}: ${updateType(stringFor(it[1]), it[0], documentation)}`).join('\n  ')}
@@ -176,7 +183,12 @@ function getType(from: Typed, name: string, location: string, wrapped: boolean):
     if(from.ItemType === 'FindingsFilterListItem' || from.ItemType === 'ParameterValuesProps') {
       subtype = { name: 'array', subtypes: [{ name: 'any', required:!!from.Required }], required: !!from.Required };
     }
-    if(from.Type === 'Map'){ return { name: 'map', subtypes: [{ name: 'string', required: !!from.Required }, subtype ], required: !!from.Required}; }
+    if(from.Type === 'Map'){
+      if(from.ItemType === 'ListProps') {
+        return { name: 'map', subtypes: [{ name: 'string', required: !!from.Required },  { name: 'array', subtypes: [{ name: 'string', required: !!from.Required }], required: !!from.Required } ], required: !!from.Required};
+      }
+      return { name: 'map', subtypes: [{ name: 'string', required: !!from.Required }, subtype ], required: !!from.Required};
+    }
     else { return { name: 'array', subtypes: [subtype], required: !!from.Required }; }
   }
   else if(from.Type){

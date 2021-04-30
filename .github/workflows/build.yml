@@ -2,10 +2,7 @@ name: Build
 
 on:
   push:
-    branches:
-      - master
-  schedule:
-    - cron: "0 0 * * *"
+    branches: [ master ]
 
 jobs:
   build:
@@ -14,21 +11,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2.0.0
 
-      - name: Generate build number
-        id: buildnumber
-        uses: einaregilsson/build-number@v2
-        with:
-          token: ${{ secrets.github_token }}
-          prefix: ${{ github.ref }}
-
       - name: Set Version
-        run: npm --no-git-tag-version version 1.0.${{ steps.buildnumber.outputs.build_number }}
+        run: npm --no-git-tag-version version 1.1.${{ github.run_number }}
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -36,21 +26,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install
-        run: npm install
-
-#      - name: Lint
-#        run: npm run lint
+        run: npm ci
 
 #      - name: Test
 #        run: npm test
-#        env: { CI: true }
-
-      - name: Generation
-        run: npm run generate
 
       - name: Production Build
         run: npm run build
-        env: { CI: true }
 
       - name: Package
         run: npm pack
