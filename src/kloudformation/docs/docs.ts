@@ -1,6 +1,5 @@
 import * as commonmark from "commonmark";
 import request from "request-promise";
-import JSDOM from "beautiful-dom";
 
 export default class DocsCache {
   private docs: { [url: string]: Documentation } = {};

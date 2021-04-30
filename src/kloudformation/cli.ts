@@ -3,7 +3,6 @@ import {Stack, StackEvent} from "aws-sdk/clients/cloudformation";
 import { CloudFormation } from "aws-sdk";
 import * as fs from 'fs';
 const chalk = require('chalk');
-const path = require('path');
 require('ts-node').register();
 
 const { Command } = require('commander');

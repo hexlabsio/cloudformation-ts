@@ -2,7 +2,7 @@ import * as fs from "fs";
 // @ts-ignore
 import request from "request-promise";
 import DocsCache, {Documentation} from "../docs/docs";
-import {Property, PropertyInfo, Specification, Typed} from "./model";
+import {PropertyInfo, Specification, Typed} from "./model";
 
 export type NameLocationContent = [string, string, string];
 
