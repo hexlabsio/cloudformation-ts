@@ -57,8 +57,10 @@ export class Template {
     function caps(key: string): string { return key.substring(0,1).toUpperCase() + key.substring(1) }
     if(typeof props === 'object') {
       if(Array.isArray(props)){
+        // @ts-ignore
         return props.map(Template.capitalize);
       }
+      // @ts-ignore
       return transform(Object.keys(props).reduce((prev, key) => ({...prev, [caps(key)]: Template.capitalize(props[key])}), {} as T))
     }
     return props;

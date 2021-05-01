@@ -77,6 +77,7 @@
   },
   "homepage": "https://github.com/hexlabsio/kloudformation-ts#readme",
   "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
     "@types/commonmark": "^0.27.4",
     "@types/jest": "^24.9.1",
     "@types/node": "^12.12.14",
