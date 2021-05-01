@@ -1,7 +1,9 @@
 
 import {Template} from "../src/kloudformation/kloudformation";
 
-Template.create(aws => {
+Template.createWithParams({
+  TestParam: { type: 'String' }
+}, (aws, params) => {
   
-  aws.snsTopic({});
+  aws.snsTopic({topicName: params.TestParam()});
 })

@@ -5,6 +5,14 @@ import {aws, AWS} from "./aws";
 import {transform, Value} from "./Value";
 
 interface KloudFormationTemplate {
+  Parameters: {
+    [parameter: string]: {
+      Type: string;
+      Default?: string;
+      AllowedValues? : string[];
+      Description? : string;
+    }
+  },
   Resources: {
     [logicalName: string]: {
       Type: string;
@@ -12,6 +20,15 @@ interface KloudFormationTemplate {
     };
   };
 }
+
+interface Parameter {
+  type : string;
+  default?: string;
+  allowedValues? : string[];
+  description? : string;
+}
+
+type Params<T> = { [K in keyof T]: <R = string>() => Value<R> }
 
 
 export function normalize(name: string) {
@@ -66,10 +83,29 @@ export class Template {
     return props;
   }
   
+  
   static create(builder: (aws: AWS) => void, file: PathLike = "template.json"): KloudFormationTemplate {
+    return Template.createWithParams({}, builder, file);
+  }
+  
+  static createWithParams<T extends {[param: string]: Parameter}>(parameters: T, builder: (aws: AWS, parameters: Params<T>) => void, file: PathLike = "template.json"): KloudFormationTemplate {
     const template = new Template();
-    builder(Object.keys(aws).reduce((prev, key) => Object.assign(prev, {[key]: template.modify((aws as any)[key])}), {} as AWS));
-    const output = {
+    const builderAws = Object.keys(aws).reduce((prev, key) => Object.assign(prev, {[key]: template.modify((aws as any)[key])}), {} as AWS);
+    const parameterFunctions = Object.keys(parameters).reduce((prev, parameter) => ({...prev, [parameter]: () => ({'Ref': parameter})}), {} as Params<T>)
+    builder(builderAws, parameterFunctions);
+    const output: KloudFormationTemplate = {
+      Parameters: Object.keys(parameters).reduce((prev, param) => {
+        const parameter = parameters[param];
+        return {
+          ...prev,
+          [param]: {
+            Type: parameter.type,
+            Default: parameter.default,
+            AllowedValues: parameter.allowedValues,
+            Description: parameter.description
+          }
+        }
+      }, {} as KloudFormationTemplate['Parameters']),
       Resources: (template.resources as any[]).reduce((prev, {_logicalName, _logicalType, attributes, ...properties}) => ({
         ...prev,
         [_logicalName!]: {
