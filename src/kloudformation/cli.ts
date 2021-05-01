@@ -70,17 +70,21 @@ async function deleteStack(stackName: string, command: any) {
     }
   }
 }
+
+function generateStack(stackName: string, templateLocation: string) {
+  if (templateLocation.endsWith(".ts")) {
+    console.log(chalk.green(`Translating template at ${templateLocation}}`))
+    require(templateLocation);
+  }
+}
+
 async function deployStack(stackName: string, templateLocation: string, fileLocation: string, command: any) {
   try {
     if(command.testrun) {
-      console.log(`Translating template at ${templateLocation} to ${fileLocation ?? 'template.json'}`)
-      if (templateLocation.endsWith(".ts")) {
-        require(templateLocation);
-      }
+      generateStack(stackName, templateLocation)
     } else {
-      console.log(`Deploying ${stackName}`)
       if (templateLocation.endsWith(".ts")) {
-        require(templateLocation);
+        generateStack(stackName, templateLocation)
         await deploy(command.region, stackName, fileLocation, command.capabilities, command.file, command.prefix, command.bucket);
       } else {
         await deploy(command.region, stackName, templateLocation, command.capabilities, command.file, command.prefix, command.bucket);
@@ -92,7 +96,7 @@ async function deployStack(stackName: string, templateLocation: string, fileLoca
 }
 
 async function upload(files: string[], prefix: string, bucket: string): Promise<string[]> {
-  console.log('Uploading to S3')
+  console.log(chalk.green('Uploading to S3'))
   const client = new S3();
   const dateTime = new Date().toISOString();
   const randomPart =  Math.floor(Math.random()*10000000);
@@ -113,10 +117,12 @@ async function deploy(region: string, stackName: string, template: string, capab
   const cf = new CloudFormation({region});
   const stack = await stackExists(cf, stackName);
   let start = new Date().toISOString();
+  console.log(chalk.green(`Deploying ${stackName}`))
   const parameters: CloudFormation.Parameter[] = (files && bucket) ? [
     { ParameterKey: 'CodeBucket', ParameterValue: bucket },
     ...locations.map((location, index) => ({ ParameterKey: 'CodeLocation' + (index > 0 ? index : ''), ParameterValue: location } ))
   ] : []
+  console.log(chalk.green(`Passing the following parameters ${parameters.join(', ')}`))
   if(stack) {
     if(successStatuses.includes(stack.StackStatus)) {
       try {
