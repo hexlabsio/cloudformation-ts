@@ -51,7 +51,7 @@ export function ${functionName}(${lowerName}Props: ${prop}Properties): ${prop}  
 function rename(prop: Typed): Typed {
   if(prop.Type === 'Json' || prop.ItemType === 'Json' || prop.Type === 'Tag' || prop.ItemType === 'Tag') return prop;
   if(prop.ItemType) return { ...prop, ItemType: prop.ItemType + 'Props' };
-  if(prop.PrimitiveType) return prop;
+  if(prop.PrimitiveType || prop.PrimitiveItemType) return prop;
   if(prop.Type) return { ...prop, Type: prop.Type + 'Props' };
   return prop;
 }
