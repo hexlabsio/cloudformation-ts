@@ -46,7 +46,7 @@ export class Path {
     return this;
   }
   
-  private options(name: string, origin: '*', headers: string[], credentials: boolean): Path {
+  options(name: string, origin: '*', headers: string[], credentials: boolean): Path {
     const corsOrigin = 'method.response.header.Access-Control-Allow-Origin'
     const corsHeaders = 'method.response.header.Access-Control-Allow-Headers'
     const corsMethods = 'method.response.header.Access-Control-Allow-Methods'
