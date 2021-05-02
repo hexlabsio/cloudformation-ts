@@ -91,6 +91,7 @@ export class Path {
               {
                 statusCode: '200',
                 responseParameters: {
+                  _nocaps: '',
                   [corsOrigin]: `'${origin}'`,
                   [corsHeaders]: `'${headers.join() || '*'}'`,
                   [corsMethods]: `'${methods}'`,
