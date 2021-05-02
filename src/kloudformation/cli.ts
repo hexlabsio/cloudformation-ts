@@ -71,7 +71,9 @@ async function deleteStack(stackName: string, command: any) {
        if (result.$response.error) {
          console.log(chalk.red(result.$response.error));
        } else {
-         await followStackEvents(cf, stackName, deleteSuccessStatuses, start);
+         if(!await followStackEvents(cf, stackName, deleteSuccessStatuses, start)) {
+           process.exit(1);
+         }
        }
     }
     console.log(chalk.yellow(`No stacks named ${stackName} in ${region} to delete`));
@@ -183,7 +185,7 @@ async function deploy(region: string, stackName: string, template: string, capab
         const result = await cf.updateStack({ StackName: stackName, Capabilities: capabilities, TemplateBody: templateContent.toString(), Parameters: parameters }).promise();
         if (result.$response.error) {
           console.log(chalk.red(result.$response.error));
-          return;
+          process.exit(1);
         }
       } catch(e) {
         if(e.message.includes('No updates are to be performed')){
@@ -191,22 +193,24 @@ async function deploy(region: string, stackName: string, template: string, capab
           return;
         } else {
           console.log(chalk.red(e.message))
-          return;
+          process.exit(1);
         }
       }
     } else {
       console.log(chalk.yellow(`The stack named ${stackName} is in state ${stack.StackStatus} and cannot be updated at this time. You may need to delete it before continuing.`));
-      return;
+      process.exit(1);
     }
   } else {
     console.log(chalk.green(`Creating stack in region ${region} named ${stackName}`));
     const result = await cf.createStack({ StackName: stackName, Capabilities: capabilities, TemplateBody: templateContent.toString(), Parameters: parameters }).promise();
     if (result.$response.error) {
       console.log(chalk.red(result.$response.error));
-      return
+      process.exit(1);
     }
   }
-  await followStackEvents(cf, stackName, successStatuses, start);
+  if(!await followStackEvents(cf, stackName, successStatuses, start)) {
+    process.exit(1);
+  }
 }
 
 async function wait(milliseconds: number = 300): Promise<void> {
@@ -237,7 +241,6 @@ async function followStackEvents(cf: CloudFormation, name: string, success: stri
     events.forEach(display);
     if(events.find(it => it.ResourceType === 'AWS::CloudFormation::Stack' && terminalStatuses.includes(it.ResourceStatus!))){
       return !!events.find(it => it.ResourceType === 'AWS::CloudFormation::Stack' && success.includes(it.ResourceStatus!));
-      
     }
     await wait(5000);
     if(events.length > 0) start = events.pop()!.Timestamp.toISOString();
