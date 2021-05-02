@@ -21,13 +21,21 @@ function deployCommand(): any {
     .option( '-f, --file <files...>', 'A space separated list of files to upload to s3')
     .option( '-b, --bucket <bucket>', 'The s3 bucket in which to upload files')
     .option( '-p, --prefix <prefix>', 'The s3 object key prefix in which to upload files')
-    .option( '-t, --testrun', 'Just translate file, no deploy')
+    .option('-s, --stack-info <stacks...>', 'A space separated list of stacks to get outputs as environment variables')
     .action(deployStack)
 }
 
+function translateCommand(): any {
+  return program.command('translate <templateLocation>')
+  .option('-r, --region <region>', 'The region to delete stack from', 'eu-west-1')
+  .option('-s, --stack-info <stacks...>', 'A space separated list of stacks to get outputs as environment variables')
+  .action(generateStack)
+}
+
 (async () => {
-  deleteCommand();
+  translateCommand();
   deployCommand();
+  deleteCommand();
   await program.parseAsync(process.argv);
 })();
 
@@ -71,24 +79,43 @@ async function deleteStack(stackName: string, command: any) {
   }
 }
 
-function generateStack(stackName: string, templateLocation: string) {
+
+async function setEnvsForStacks(stacks: string[], region: string) {
+  const client = new CloudFormation({region});
+  const cfStacks = await client.describeStacks().promise();
+  const envs = stacks.reduce((envs, stack) => {
+    console.log(chalk.green('Searching for stacks matching ' + stack));
+    const matchedStack = (cfStacks.Stacks ?? []).find(it => !!it.StackName.match(stack) || !!it.StackId?.match(stack));
+    if(matchedStack) {
+      console.log(chalk.green('Matched ' + matchedStack.StackId));
+      return (matchedStack.Outputs ?? []).reduce((envsWithOutputs, output) => ({
+        ...envsWithOutputs,
+        [output.OutputKey!]: output.OutputValue
+      }), envs);
+    } else {
+      console.log(chalk.red('No stacks matched pattern ' + stack));
+    }
+    return envs;
+  }, {})
+  process.env = {...process.env, ...envs};
+}
+
+async function generateStack(templateLocation: string, command: any) {
   if (templateLocation.endsWith(".ts")) {
-    console.log(chalk.green(`Translating template at ${templateLocation}}`))
+    console.log(chalk.green(`Translating template at ${templateLocation}`))
+    const stacks: string[] = command.stackInfo ?? [];
+    await setEnvsForStacks(stacks, command.region);
     require(templateLocation);
   }
 }
 
 async function deployStack(stackName: string, templateLocation: string, fileLocation: string, command: any) {
   try {
-    if(command.testrun) {
-      generateStack(stackName, templateLocation)
+    if (templateLocation.endsWith(".ts")) {
+      await generateStack(templateLocation, command)
+      await deploy(command.region, stackName, fileLocation, command.capabilities, command.file, command.prefix, command.bucket);
     } else {
-      if (templateLocation.endsWith(".ts")) {
-        generateStack(stackName, templateLocation)
-        await deploy(command.region, stackName, fileLocation, command.capabilities, command.file, command.prefix, command.bucket);
-      } else {
-        await deploy(command.region, stackName, templateLocation, command.capabilities, command.file, command.prefix, command.bucket);
-      }
+      await deploy(command.region, stackName, templateLocation, command.capabilities, command.file, command.prefix, command.bucket);
     }
   } catch(e) {
     console.error(chalk.red(e));
