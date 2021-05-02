@@ -1,6 +1,10 @@
 import {Template} from "../src/kloudformation/kloudformation";
 
-console.log(process.env);
-Template.create(aws => {
-  aws.snsTopic({topicName: process.env.XYZ})
-});
+Template.createWithParams({
+  CodeBucket: { type: 'String' },
+  CodeLocation: { type: 'String' } }, (aws, params) =>
+{
+  console.log(params.CodeLocation());
+  aws.snsTopic({topicName: params.CodeLocation()})
+}
+);

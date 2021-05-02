@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { CloudFormation, S3 } from "aws-sdk";
 import * as fs from 'fs';
+const archiver = require('archiver');
 const chalk = require('chalk');
 require('ts-node').register();
 
@@ -126,6 +127,19 @@ async function deployStack(stackName: string, templateLocation: string, fileLoca
   }
 }
 
+function zipDirectory(source: string, target: string): Promise<void> {
+  const archive = archiver('zip', { zlib: { level: 9 }});
+  const stream = fs.createWriteStream(target);
+  return new Promise((resolve, reject) => {
+    archive
+    .directory(source, false)
+    .on('error', err => reject(err))
+    .pipe(stream);
+    stream.on('close', () => resolve());
+    archive.finalize().then(resolve).catch(reject);
+  });
+}
+
 async function upload(files: string[], prefix: string, bucket: string): Promise<string[]> {
   console.log(chalk.green('Uploading to S3'))
   const client = new S3();
@@ -135,9 +149,17 @@ async function upload(files: string[], prefix: string, bucket: string): Promise<
   return await Promise.all(files.map(async file => {
     const fileName = file.includes('/') ? file.substring(file.lastIndexOf('/') + 1): file;
     const keyName = `${key}${fileName}`;
-    console.log(chalk.green(`Uploading ${keyName} to S3 bucket named ${bucket}`));
-    await client.upload({Bucket: bucket, Key: keyName, Body: fs.readFileSync(file)}).promise();
-    return keyName;
+    if(fs.lstatSync(fileName).isDirectory()) {
+      console.log(chalk.green(`Zipping directory ${fileName}`));
+      await zipDirectory(file, `${fileName}.zip`);
+      console.log(chalk.green(`Uploading ${keyName}.zip to S3 bucket named ${bucket}`));
+      await client.upload({Bucket: bucket, Key: keyName + '.zip', Body: fs.readFileSync(`${fileName}.zip`)}).promise();
+      return keyName + '.zip';
+    } else {
+      console.log(chalk.green(`Uploading ${keyName} to S3 bucket named ${bucket}`));
+      await client.upload({Bucket: bucket, Key: keyName, Body: fs.readFileSync(file)}).promise();
+      return keyName;
+    }
   }));
 }
 
@@ -153,7 +175,7 @@ async function deploy(region: string, stackName: string, template: string, capab
     { ParameterKey: 'CodeBucket', ParameterValue: bucket },
     ...locations.map((location, index) => ({ ParameterKey: 'CodeLocation' + (index > 0 ? index : ''), ParameterValue: location } ))
   ] : []
-  console.log(chalk.green(`Passing the following parameters ${parameters.join(', ')}`))
+  console.log(chalk.green(`Passing the following parameters ${parameters.map(it => `${it.ParameterKey}:${it.ParameterValue}`).join(', ')}`))
   if(stack) {
     if(successStatuses.includes(stack.StackStatus)) {
       try {
