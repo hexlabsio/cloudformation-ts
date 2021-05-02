@@ -72,7 +72,7 @@ async function buildType(from: PropertyInfo, resource: boolean, name: string, do
     const excess = resource ? (from.Attributes ? attributeCode(from.Attributes, prop, name, location, descriptionString, functionName, lowerName) :
       `${descriptionString}
 export type ${prop} = ${prop}Properties
-export function ${functionName}(${lowerName}Props: ${prop}Properties): ${prop} { return ({ ...${lowerName}Props, _logicalType: '' }) }
+export function ${functionName}(${lowerName}Props: ${prop}Properties): ${prop} { return ({ ...${lowerName}Props, _logicalType: '${name}' }) }
   `) : '';
   
   if(from.Properties) {

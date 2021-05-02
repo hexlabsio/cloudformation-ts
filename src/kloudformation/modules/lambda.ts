@@ -10,7 +10,6 @@ import {normalize} from "../kloudformation";
 import {join, Value} from "../Value";
 
 export class Lambda {
-  private readonly aws: AWS;
   role: Role;
   logGroup: LogGroup;
   lambda: LambdaFunction;
@@ -18,7 +17,7 @@ export class Lambda {
   subscriptions: Subscription[];
   name: string;
   
-  constructor(aws: AWS, name: string, role: Role, logGroup: LogGroup, lambda: LambdaFunction) {
+  constructor(private readonly aws: AWS, name: string, role: Role, logGroup: LogGroup, lambda: LambdaFunction) {
     this.aws = aws;
     this.name = name;
     this.role = role;
