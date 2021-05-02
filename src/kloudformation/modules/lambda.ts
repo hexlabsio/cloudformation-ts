@@ -2,26 +2,23 @@ import {Role} from "../../aws/iam/Role";
 import {Function as LambdaFunction} from "../../aws/lambda/Function";
 import {CodeProps} from "../../aws/lambda/function/CodeProps";
 import {Permission} from "../../aws/lambda/Permission";
-import {LogGroup} from "../../aws/logs/LogGroup";
 import {Subscription} from "../../aws/sns/Subscription";
 import {AWS} from "../aws";
 import {iamPolicy} from "../iam/PolicyDocument";
 import {normalize} from "../kloudformation";
-import {join, Value} from "../Value";
+import {Value} from "../Value";
 
 export class Lambda {
   role: Role;
-  logGroup: LogGroup;
   lambda: LambdaFunction;
   permissions: Permission[];
   subscriptions: Subscription[];
   name: string;
   
-  constructor(private readonly aws: AWS, name: string, role: Role, logGroup: LogGroup, lambda: LambdaFunction) {
+  constructor(private readonly aws: AWS, name: string, role: Role, lambda: LambdaFunction) {
     this.aws = aws;
     this.name = name;
     this.role = role;
-    this.logGroup = logGroup;
     this.lambda = lambda;
     this.permissions = [];
     this.subscriptions = [];
@@ -72,10 +69,6 @@ export class Lambda {
       })
     });
     const lambda = aws.lambdaFunction({ _logicalName: `${normalName}Function`, ...extra, code, handler, role: role.attributes.Arn, runtime, functionName: name });
-    const logGroup = aws.logsLogGroup({
-      _logicalName: `${normalName}LogGroup`,
-      logGroupName: join('aws/lambda/', lambda)
-    });
-    return new Lambda(aws, normalName, role, logGroup, lambda);
+    return new Lambda(aws, normalName, role, lambda);
   }
 }
