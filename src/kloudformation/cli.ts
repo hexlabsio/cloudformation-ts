@@ -138,7 +138,7 @@ function zipDirectory(source: string, target: string): Promise<void> {
     .on('error', err => reject(err))
     .pipe(stream);
     stream.on('close', () => resolve());
-    archive.finalize().then(resolve).catch(reject);
+    archive.finalize();
   });
 }
 
@@ -155,7 +155,13 @@ async function upload(files: string[], prefix: string, bucket: string): Promise<
       console.log(chalk.green(`Zipping directory ${fileName}`));
       await zipDirectory(file, `${fileName}.zip`);
       console.log(chalk.green(`Uploading ${keyName}.zip to S3 bucket named ${bucket}`));
-      await client.upload({Bucket: bucket, Key: keyName + '.zip', Body: fs.readFileSync(`${fileName}.zip`)}).promise();
+      await client.upload({
+        ContentType: 'application/zip',
+        Bucket: bucket,
+        Key: keyName + '.zip',
+        Body: fs.readFileSync(`${fileName}.zip`),
+        ServerSideEncryption: 'AES256',
+      }).promise();
       return keyName + '.zip';
     } else {
       console.log(chalk.green(`Uploading ${keyName} to S3 bucket named ${bucket}`));
