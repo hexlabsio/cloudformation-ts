@@ -33,10 +33,14 @@ function translateCommand(): any {
 }
 
 (async () => {
-  translateCommand();
-  deployCommand();
-  deleteCommand();
-  await program.parseAsync(process.argv);
+  try {
+    translateCommand();
+    deployCommand();
+    deleteCommand();
+    await program.parseAsync(process.argv);
+  } catch(e) {
+    process.exit(1)
+  }
 })();
 
 
