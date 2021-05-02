@@ -77,6 +77,10 @@ export class Template {
         // @ts-ignore
         return props.map(Template.capitalize);
       }
+      if(props['_nocaps'] !== undefined) {
+        const {_nocaps, ...rest} = props as any;
+        return rest;
+      }
       // @ts-ignore
       return transform(Object.keys(props).reduce((prev, key) => ({...prev, [caps(key)]: Template.capitalize(props[key])}), {} as T))
     }

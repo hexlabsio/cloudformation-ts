@@ -58,6 +58,7 @@ export class Path {
       const methods = this.methods.map(it => it.httpMethod).join();
       if (this.optionsMethod) {
         this.optionsMethod.integration!.integrationResponses![0].responseParameters = {
+          __nocaps: '',
           [corsOrigin]: `'${origin}'`,
           [corsHeaders]: `'${headers.join() || '*'}'`,
           [corsMethods]: `'${methods}'`,
@@ -74,6 +75,7 @@ export class Path {
             statusCode: '200',
             responseModels: {},
             responseParameters: {
+              __nocaps: '',
               [corsOrigin]: true,
               [corsHeaders]: true,
               [corsMethods]: true,
