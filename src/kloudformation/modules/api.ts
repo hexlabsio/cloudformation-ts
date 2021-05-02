@@ -49,7 +49,7 @@ export class Path {
     return this;
   }
   
-  options(name: string, origin: '*', headers: string[], credentials: boolean): Path {
+  options(origin: '*', headers: string[], credentials: boolean): Path {
     if(this.methods.length > 0) {
       const corsOrigin = 'method.response.header.Access-Control-Allow-Origin'
       const corsHeaders = 'method.response.header.Access-Control-Allow-Headers'
@@ -65,10 +65,11 @@ export class Path {
         }
       } else {
         this.optionsMethod = this.aws.apigatewayMethod({
-          _logicalName: `${name}Options`,
+          _logicalName: `${this.resources.map(it => 'Method' + it.pathPart.toString().replace(/[\{\}]/g, ''))}Options`,
           httpMethod: 'OPTIONS',
           resourceId: this.resources[this.resources.length - 1],
           restApiId: this.api.restApi,
+          authorizationType: 'NONE',
           methodResponses: [{
             statusCode: '200',
             responseModels: {},
@@ -126,7 +127,7 @@ export class Path {
   
   static resource(aws: AWS, api: Api, path: string): Path {
     const resources = Path.resources(aws, api, path, api.restApi.attributes.RootResourceId);
-    return new Path(aws, api, resources).options(path.replace(/[\{\}/]/g, ''), '*', [], true)
+    return new Path(aws, api, resources).options('*', [], true)
   }
 }
 
