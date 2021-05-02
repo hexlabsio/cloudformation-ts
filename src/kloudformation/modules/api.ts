@@ -58,10 +58,10 @@ export class Path {
       const methods = this.methods.map(it => it.httpMethod).join();
       if (this.optionsMethod) {
         this.optionsMethod.integration!.integrationResponses![0].responseParameters = {
-          [corsOrigin]: origin,
-          [corsHeaders]: headers.join() || '*',
-          [corsMethods]: methods,
-          [corsCredentials]: `${credentials}`
+          [corsOrigin]: `'${origin}'`,
+          [corsHeaders]: `'${headers.join() || '*'}'`,
+          [corsMethods]: `'${methods}'`,
+          [corsCredentials]: `'${credentials}'`
         }
       } else {
         this.optionsMethod = this.aws.apigatewayMethod({
@@ -89,10 +89,10 @@ export class Path {
               {
                 statusCode: '200',
                 responseParameters: {
-                  [corsOrigin]: origin,
-                  [corsHeaders]: headers.join(),
-                  [corsMethods]: methods,
-                  [corsCredentials]: `${credentials}`
+                  [corsOrigin]: `'${origin}'`,
+                  [corsHeaders]: `'${headers.join() || '*'}'`,
+                  [corsMethods]: `'${methods}'`,
+                  [corsCredentials]: `'${credentials}'`
                 },
                 responseTemplates: {
                   'application/json': '#set($origin = $input.params("Origin"))\n#if($origin == "") #set($origin = $input.params("origin")) #end\n#if($origin == "*") #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end'
