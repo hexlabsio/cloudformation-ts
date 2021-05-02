@@ -5,7 +5,7 @@ export type Ref = {
   'Ref': string;
 }
 export type Join = {
-  'Fn:Join': [string, Value<string>[]];
+  'Fn::Join': [string, Value<string>[]];
 }
 
 export type Value<T> = T | Ref | Attribute<T> | Join | KloudResource;
@@ -29,7 +29,7 @@ export function join(...parts: Value<string>[]): Join {
 export function joinWith(separator: string, ...parts: Value<string>[]): Join {
   const bits = parts.map(transform);
   return {
-    'Fn:Join': [separator, bits]
+    'Fn::Join': [separator, bits]
   }
 }
 
