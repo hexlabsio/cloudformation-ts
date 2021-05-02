@@ -25,7 +25,10 @@ export class Path {
   }
   
   method(method: string): Path {
+    const lastResource = this.resources[this.resources.length - 1];
+    const pathName = lastResource.pathPart.toString().replace(/[\{\}/]/g, '')
     const apiMethod = this.aws.apigatewayMethod({
+      _logicalName: `Method${pathName}${method}`,
       httpMethod: method,
       resourceId: this.resources[this.resources.length - 1],
       restApiId: this.api.restApi,
@@ -47,55 +50,57 @@ export class Path {
   }
   
   options(name: string, origin: '*', headers: string[], credentials: boolean): Path {
-    const corsOrigin = 'method.response.header.Access-Control-Allow-Origin'
-    const corsHeaders = 'method.response.header.Access-Control-Allow-Headers'
-    const corsMethods = 'method.response.header.Access-Control-Allow-Methods'
-    const corsCredentials = 'method.response.header.Access-Control-Allow-Credentials'
-    const methods = this.methods.map(it => it.httpMethod).join();
-    if(this.optionsMethod) {
-     this.optionsMethod.integration!.integrationResponses![0].responseParameters = {
-       [corsOrigin]: origin,
-       [corsHeaders]: headers.join(),
-       [corsMethods]: methods,
-       [corsCredentials]: `${credentials}`
-     }
-    } else {
-      this.optionsMethod = this.aws.apigatewayMethod({
-        _logicalName: `${name}Options`,
-        httpMethod: 'OPTIONS',
-        resourceId: this.resources[this.resources.length - 1],
-        restApiId: this.api.restApi,
-        methodResponses: [{
-          statusCode: '200',
-          responseModels: {},
-          responseParameters: {
-            [corsOrigin]: true,
-            [corsHeaders]: true,
-            [corsMethods]: true,
-            [corsCredentials]: true
-          }
-        }],
-        requestParameters: {},
-        integration: {
-          type: 'MOCK',
-          requestTemplates: { ['application/json']: '{statusCode:200}' },
-          contentHandling: 'CONVERT_TO_TEXT',
-          integrationResponses: [
-            {
-              statusCode: '200',
-              responseParameters: {
-                [corsOrigin]: origin,
-                [corsHeaders]: headers.join(),
-                [corsMethods]: methods,
-                [corsCredentials]: `${credentials}`
-              },
-              responseTemplates: {
-                'application/json': '#set($origin = $input.params("Origin"))\n#if($origin == "") #set($origin = $input.params("origin")) #end\n#if($origin == "*") #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end'
-              }
-            }
-          ]
+    if(this.methods.length > 0) {
+      const corsOrigin = 'method.response.header.Access-Control-Allow-Origin'
+      const corsHeaders = 'method.response.header.Access-Control-Allow-Headers'
+      const corsMethods = 'method.response.header.Access-Control-Allow-Methods'
+      const corsCredentials = 'method.response.header.Access-Control-Allow-Credentials'
+      const methods = this.methods.map(it => it.httpMethod).join();
+      if (this.optionsMethod) {
+        this.optionsMethod.integration!.integrationResponses![0].responseParameters = {
+          [corsOrigin]: origin,
+          [corsHeaders]: headers.join() || '*',
+          [corsMethods]: methods,
+          [corsCredentials]: `${credentials}`
         }
-      })
+      } else {
+        this.optionsMethod = this.aws.apigatewayMethod({
+          _logicalName: `${name}Options`,
+          httpMethod: 'OPTIONS',
+          resourceId: this.resources[this.resources.length - 1],
+          restApiId: this.api.restApi,
+          methodResponses: [{
+            statusCode: '200',
+            responseModels: {},
+            responseParameters: {
+              [corsOrigin]: true,
+              [corsHeaders]: true,
+              [corsMethods]: true,
+              [corsCredentials]: true
+            }
+          }],
+          requestParameters: {},
+          integration: {
+            type: 'MOCK',
+            requestTemplates: {['application/json']: '{statusCode:200}'},
+            contentHandling: 'CONVERT_TO_TEXT',
+            integrationResponses: [
+              {
+                statusCode: '200',
+                responseParameters: {
+                  [corsOrigin]: origin,
+                  [corsHeaders]: headers.join(),
+                  [corsMethods]: methods,
+                  [corsCredentials]: `${credentials}`
+                },
+                responseTemplates: {
+                  'application/json': '#set($origin = $input.params("Origin"))\n#if($origin == "") #set($origin = $input.params("origin")) #end\n#if($origin == "*") #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end'
+                }
+              }
+            ]
+          }
+        })
+      }
     }
     return this;
   }

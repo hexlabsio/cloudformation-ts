@@ -65,7 +65,11 @@ export class Lambda {
     const normalName = normalize(name);
     const role = aws.iamRole({
       _logicalName: `${normalName}Role`,
-      assumeRolePolicyDocument: iamPolicy({statement: [{action: 'sts:AssumeRole', effect: 'Allow', principal: { Service: ['lambda.amazonaws.com'] }}]})
+      path: '/',
+      assumeRolePolicyDocument: iamPolicy({
+        statement: [{action: 'sts:AssumeRole', effect: 'Allow', principal: { Service: ['lambda.amazonaws.com'] }}],
+        version: '2012-10-17',
+      })
     });
     const lambda = aws.lambdaFunction({ _logicalName: `${normalName}Function`, ...extra, code, handler, role: role.attributes.Arn, runtime, functionName: name });
     const logGroup = aws.logsLogGroup({
