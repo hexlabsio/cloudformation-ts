@@ -22,7 +22,7 @@ export class Path {
   
   path(path: string): Path {
     const resources = Path.resources(this.aws, this.api, path, this.resources[this.resources.length - 1]);
-    return new Path(this.aws, this.api, resources, this);
+    return new Path(this.aws, this.api, resources, this).options('*', [], true);
   }
   
   method(method: string): Path {
