@@ -1,4 +1,5 @@
 import {Authorizer} from "../../aws/apigateway/Authorizer";
+import {BasePathMapping} from "../../aws/apigateway/BasePathMapping";
 import {Deployment} from "../../aws/apigateway/Deployment";
 import {Method} from "../../aws/apigateway/Method";
 import {Resource} from "../../aws/apigateway/Resource";
@@ -142,16 +143,25 @@ export class Api {
     public deployment: Deployment,
     public authorizer?: Authorizer,
     public lambdaArn?: Value<string>,
-    public lambdaPermission?: Permission
-  ) {
-  }
+    public lambdaPermission?: Permission,
+    public basePathMapping?: BasePathMapping
+  ) {}
   
   /**
-   *
    * @param path Can include variables in { } like a/b/{c}
    */
   path(path: string): Path {
     return Path.resource(this.aws, this, path);
+  }
+  
+  mapTo(basePath: Value<string>, domainName: Value<string>): this {
+    this.basePathMapping = this.aws.apigatewayBasePathMapping({
+      restApiId: this.restApi,
+      stage: this.deployment.stageName,
+      basePath,
+      domainName
+    });
+    return this;
   }
   
   
