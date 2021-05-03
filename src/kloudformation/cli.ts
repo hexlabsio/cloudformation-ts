@@ -59,19 +59,18 @@ async function stackExists(cf: CloudFormation, name: string): Promise<CloudForma
 
 async function deleteStack(stackName: string, command: any) {
   const region = command.region;
-  const cf = new CloudFormation({region});
-  let start = new Date().toISOString();
-  
+  const client = new CloudFormation({region});
+  const start = new Date().toISOString();
   try {
-    const stack = await stackExists(cf, stackName);
+    const stack = await stackExists(client, stackName);
      if(stack) {
-       const deletion = cf.deleteStack({StackName: stackName.toString()}).promise();
+       const deletion = client.deleteStack({StackName: stackName.toString()}).promise();
        console.log(chalk.green(`Deleting stack named ${stackName} from ${region}`));
        const result = await deletion;
        if (result.$response.error) {
          console.log(chalk.red(result.$response.error));
        } else {
-         if(!await followStackEvents(cf, stackName, deleteSuccessStatuses, start)) {
+         if(!await followStackEvents(client, stackName, deleteSuccessStatuses, start)) {
            process.exit(1);
          }
        }

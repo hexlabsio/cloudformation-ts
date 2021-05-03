@@ -51,7 +51,6 @@ export class Path {
   }
   
   options(origin: '*', headers: string[], credentials: boolean): Path {
-    if(this.methods.length > 0) {
       const corsOrigin = 'method.response.header.Access-Control-Allow-Origin'
       const corsHeaders = 'method.response.header.Access-Control-Allow-Headers'
       const corsMethods = 'method.response.header.Access-Control-Allow-Methods'
@@ -86,7 +85,10 @@ export class Path {
           requestParameters: {},
           integration: {
             type: 'MOCK',
-            requestTemplates: {['application/json']: '{statusCode:200}'},
+            requestTemplates: {
+              _nocaps: '',
+              'application/json': '{statusCode:200}'
+            },
             contentHandling: 'CONVERT_TO_TEXT',
             integrationResponses: [
               {
@@ -99,6 +101,7 @@ export class Path {
                   [corsCredentials]: `'${credentials}'`
                 },
                 responseTemplates: {
+                  _nocaps: '',
                   'application/json': '#set($origin = $input.params("Origin"))\n#if($origin == "") #set($origin = $input.params("origin")) #end\n#if($origin == "*") #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end'
                 }
               }
@@ -106,7 +109,6 @@ export class Path {
           }
         })
       }
-    }
     return this;
   }
   
