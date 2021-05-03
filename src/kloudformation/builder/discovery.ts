@@ -6,8 +6,152 @@ import {PropertyInfo, Specification, Typed} from "./model";
 
 export type NameLocationContent = [string, string, string];
 
+const missingResources: Partial<Specification> = {
+  ResourceTypes: {
+    'AWS::ApiGatewayV2::ApiGatewayManagedOverrides': {
+      Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-apigatewaymanagedoverrides.html',
+      Properties: {
+        ApiId: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-apigatewaymanagedoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-apiid',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        Integration: {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-apigatewaymanagedoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-integration',
+          Type: 'IntegrationOverrides',
+          UpdateType: 'Mutable'
+        },
+        Route: {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-apigatewaymanagedoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-route',
+          Type: 'RouteOverrides',
+          UpdateType: 'Mutable'
+        },
+        Stage: {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-apigatewaymanagedoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-stage',
+          Type: 'StageOverrides',
+          UpdateType: 'Mutable'
+        }
+      }
+    }
+  },
+  PropertyTypes: {
+    'AWS::ApiGatewayV2::ApiGatewayManagedOverrides.IntegrationOverrides': {
+      Properties: {
+        Description : {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigatewayv2-apigatewaymanagedoverrides-integrationoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-integrationoverrides-description',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        IntegrationMethod: {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigatewayv2-apigatewaymanagedoverrides-integrationoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-integrationoverrides-integrationmethod',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        PayloadFormatVersion: {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigatewayv2-apigatewaymanagedoverrides-integrationoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-integrationoverrides-payloadformatversion',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        TimeoutInMillis : {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigatewayv2-apigatewaymanagedoverrides-integrationoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-integrationoverrides-timeoutinmillis',
+          PrimitiveType: 'Integer',
+          UpdateType: 'Mutable'
+        }
+      }
+    },
+    'AWS::ApiGatewayV2::ApiGatewayManagedOverrides.RouteOverrides': {
+      Properties: {
+        AuthorizationScopes : {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigatewayv2-apigatewaymanagedoverrides-routeoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-routeoverrides-authorizationscopes',
+          Type: 'List',
+          PrimitiveItemType: 'String',
+          UpdateType: 'Mutable'
+        },
+        AuthorizationType: {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigatewayv2-apigatewaymanagedoverrides-routeoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-routeoverrides-authorizationtype',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        AuthorizerId: {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigatewayv2-apigatewaymanagedoverrides-routeoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-routeoverrides-authorizerid',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        OperationName : {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigatewayv2-apigatewaymanagedoverrides-routeoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-routeoverrides-operationname',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        Target : {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigatewayv2-apigatewaymanagedoverrides-routeoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-routeoverrides-target',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        }
+      }
+    },
+    'AWS::ApiGatewayV2::ApiGatewayManagedOverrides.StageOverrides': {
+      Properties: {
+        AccessLogSettings : {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigatewayv2-apigatewaymanagedoverrides-stageoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-stageoverrides-accesslogsettings',
+          PrimitiveType: 'Json',
+          UpdateType: 'Mutable'
+        },
+        AutoDeploy : {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigatewayv2-apigatewaymanagedoverrides-stageoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-stageoverrides-autodeploy',
+          PrimitiveType: 'Boolean',
+          UpdateType: 'Mutable'
+        },
+        DefaultRouteSettings : {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigatewayv2-apigatewaymanagedoverrides-stageoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-stageoverrides-defaultroutesettings',
+          PrimitiveType: 'Json',
+          UpdateType: 'Mutable'
+        },
+        Description : {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigatewayv2-apigatewaymanagedoverrides-stageoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-stageoverrides-description',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        RouteSettings : {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigatewayv2-apigatewaymanagedoverrides-stageoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-stageoverrides-routesettings',
+          PrimitiveType: 'Json',
+          UpdateType: 'Mutable'
+        },
+        StageVariables : {
+          Required: false,
+          Documentation: 'StageVariables',
+          PrimitiveType: 'Json',
+          UpdateType: 'Mutable'
+        }
+      }
+    }
+  }
+};
+
 (async () => {
-  const spec: Specification = await request({ gzip: true, uri: 'https://dnwj8swjjbsbt.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json', json: true});
+  const original: Specification = await request({ gzip: true, uri: 'https://dnwj8swjjbsbt.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json', json: true});
+  const spec: Specification =  {
+    ...original,
+    ResourceTypes: {...original.ResourceTypes, ...missingResources.ResourceTypes},
+    PropertyTypes: {...original.PropertyTypes, ...missingResources.PropertyTypes}
+  };
   const docsCache: DocsCache = new DocsCache();
   const resources = await Promise.all(Object.keys(spec.ResourceTypes).map(async resourceKey => await buildType(spec.ResourceTypes[resourceKey], true, resourceKey, docsCache)));
   const properties = await Promise.all(Object.keys(spec.PropertyTypes).map(async resourceKey => await buildType(spec.PropertyTypes[resourceKey], false, resourceKey, docsCache)));
@@ -64,7 +208,7 @@ async function buildType(from: PropertyInfo, resource: boolean, name: string, do
   const prop = lastPart[lastPart.length - 1];
   const lowerName = prop.substring(0,1).toLowerCase() + prop.substring(1);
   const functionName = lowerName === 'function' ? 'lambdaFunction' : lowerName;
-  const documentation = await docsCache.get(from.Documentation);
+  const documentation = await docsCache.get(from.Documentation!);
   const descriptionString = `/**
   ${documentation.description || ''}
   For full documentation go to <a href="${from.Documentation || ''}">the AWS Docs</a>

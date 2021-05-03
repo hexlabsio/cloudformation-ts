@@ -166,7 +166,6 @@ export class Api {
     return this;
   }
   
-  
   static create(aws: AWS, name: string, stage: string, providerArns?: Value<string>[], lambdaArn?: Value<string>): Api {
     const restApi = aws.apigatewayRestApi({ name });
     const authorizer = providerArns && aws.apigatewayAuthorizer({

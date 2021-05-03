@@ -20,8 +20,8 @@ export interface Typed {
 }
 
 export interface Property extends Typed {
-  Documentation: string;
-  UpdateType: string;
+  Documentation?: string;
+  UpdateType?: string;
 }
 
 export interface Attribute extends Typed{
