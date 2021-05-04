@@ -4,14 +4,19 @@ import {Lambda} from "../src/kloudformation/modules/lambda";
 describe('j', () => {
   it('should', () => {
     const output = Template.create(aws => {
-      const lambda = Lambda.create(aws,'test', {zipFile: 'console.log("hi")'}, 'index', "nodejs12.x");
-      aws.cloudfrontDistribution({
+      Lambda.create(aws,'test', {zipFile: 'console.log("hi")'}, 'index', "nodejs12.x");
+      const a = aws.cloudfrontDistribution({
         distributionConfig: {
           enabled: true,
           aliases: [ 'www.dev.klouds.io', 'dev.klouds.io' ],
           customErrorResponses: [{errorCode: 404}]
         }
-      })
+      });
+      return {
+        'OUTPUT1': {
+          value: { Ref: a._logicalName }
+        }
+      }
     }, undefined);
     
     console.log(JSON.stringify(output, null, 2));

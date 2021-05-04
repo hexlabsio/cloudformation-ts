@@ -18,7 +18,14 @@ interface KloudFormationTemplate {
       Type: string;
       Properties?: any;
     };
-  };
+  },
+  Outputs?: {
+    [logicalId: string]: {
+      Description?: string;
+      Value: any;
+      Export?: { Name: string; };
+    }
+  }
 }
 
 interface Parameter {
@@ -29,6 +36,17 @@ interface Parameter {
 }
 
 type Params<T> = { [K in keyof T]: <R = string>() => Value<R> }
+
+export interface Outputs {
+  [logicalId: string] : {
+    description? : string;
+    value: Value<any>;
+    export?: { name : string; };
+  }
+}
+
+type Builder = (aws: AWS) => void | Outputs
+type BuilderWith<ParamType> = (aws: AWS, parameters: Params<ParamType>) => void | Outputs
 
 
 export function normalize(name: string) {
@@ -88,15 +106,16 @@ export class Template {
   }
   
   
-  static create(builder: (aws: AWS) => void, file: PathLike = "template.json"): KloudFormationTemplate {
+  static create(builder: Builder, file: PathLike = "template.json"): KloudFormationTemplate {
     return Template.createWithParams({}, builder, file);
   }
   
-  static createWithParams<T extends {[param: string]: Parameter}>(parameters: T, builder: (aws: AWS, parameters: Params<T>) => void, file: PathLike = "template.json"): KloudFormationTemplate {
+  
+  static createWithParams<T extends {[param: string]: Parameter}>(parameters: T, builder: BuilderWith<T>, file: PathLike = "template.json"): KloudFormationTemplate {
     const template = new Template();
     const builderAws = Object.keys(aws).reduce((prev, key) => Object.assign(prev, {[key]: template.modify((aws as any)[key])}), {} as AWS);
     const parameterFunctions = Object.keys(parameters).reduce((prev, parameter) => ({...prev, [parameter]: () => ({'Ref': parameter})}), {} as Params<T>)
-    builder(builderAws, parameterFunctions);
+    const outputs = builder(builderAws, parameterFunctions);
     const output: KloudFormationTemplate = {
       Parameters: Object.keys(parameters).reduce((prev, param) => {
         const parameter = parameters[param];
@@ -117,7 +136,15 @@ export class Template {
           ...(_dependsOn ? {DependsOn: _dependsOn.map(it => typeof it === 'object' ? it['_logicalName'] : it)}: {}),
           ...(Object.keys(properties).length === 0 ? {} : { Properties: Template.capitalize(properties) })
         }
-      }), {} as KloudFormationTemplate['Resources'])
+      }), {} as KloudFormationTemplate['Resources']),
+      Outputs: outputs ? Object.keys(outputs).reduce((prev, logicalId) => ({
+        ...prev,
+        [logicalId]: {
+          Description: outputs[logicalId].description,
+          Value: outputs[logicalId].value,
+          Export: outputs[logicalId].export ? { Name: outputs[logicalId].export!.name } : undefined
+        }
+      }), {} as KloudFormationTemplate['Outputs']) : undefined
     };
     if(file) {
       fs.writeFileSync(file, JSON.stringify(output, null, 2));
