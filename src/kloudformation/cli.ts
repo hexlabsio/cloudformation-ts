@@ -144,6 +144,9 @@ async function generateStack(templateLocation: string, command: any) {
 function functionFor(method: string, path: string, codeLocation: string, handler: string): RequestHandler {
   return (req, res) => {
     const headers = req.headers;
+    const authHeader = req.header('Authorization');
+    const claims = (authHeader && authHeader.includes('Bearer ')) ? new Buffer(authHeader.substring(7).split('.')[1], 'base64').toString('ascii') : undefined;
+    const requestContext = claims ? { authorizer: { claims: JSON.parse(claims) } } : undefined;
     const params = req.params;
     const event: APIGatewayProxyEvent = {
       headers: headers as APIGatewayProxyEvent['headers'],
@@ -151,14 +154,15 @@ function functionFor(method: string, path: string, codeLocation: string, handler
       body: req.body,
       httpMethod: method,
       pathParameters: params,
-      path: req.path
+      path: req.path,
+      requestContext
     } as unknown as APIGatewayProxyEvent;
     delete require.cache[require.resolve(codeLocation)]
     require(codeLocation)[handler](event).then(response => {
-      console.log(chalk.green(method + ' ' + req.path + ' responded with ' + response.statusCode));
+      console.log(chalk.green('API - ' + method + ' ' + req.path + ' responded with ' + response.statusCode));
       res.status(response.statusCode).set(response.headers).send(response.body);
     }).catch(error => {
-      console.log(chalk.red(method + ' ' + req.path + ' threw ' + error));
+      console.log(chalk.red('API - ' + method + ' ' + req.path + ' threw ' + error));
       res.status(500).send(error.message);
     })
   }

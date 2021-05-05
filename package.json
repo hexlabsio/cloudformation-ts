@@ -15,7 +15,8 @@
     "generate": "ts-node --project tsconfig.json src/kloudformation/builder/discovery.ts",
     "build": "tsc",
     "test": "jest --ci --runInBand --coverage --reporters=default --reporters=jest-junit",
-    "lint": "eslint **/*.ts"
+    "lint": "eslint **/*.ts",
+    "lambda": "dist/kloudformation/cli.js run $(pwd)/test/deploy-test.ts handler $(pwd)/test/fakeLambda.js"
   },
   "files": [
     "dist"

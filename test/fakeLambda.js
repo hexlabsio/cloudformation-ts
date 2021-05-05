@@ -1,7 +1,7 @@
 export async function handler(event) {
-    throw new Error('ahhh')
+    console.log(event);
     return {
         statusCode: 200,
-        body: 'Hello from Lambda3'
+        body: 'Hello from Lambda4'
     }
 }
