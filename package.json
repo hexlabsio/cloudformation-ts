@@ -16,7 +16,8 @@
     "build": "tsc",
     "test": "jest --ci --runInBand --coverage --reporters=default --reporters=jest-junit",
     "lint": "eslint **/*.ts",
-    "lambda": "dist/kloudformation/cli.js run $(pwd)/test/deploy-test.ts handler $(pwd)/test/fakeLambda.js"
+    "lambda": "dist/kloudformation/cli.js run $(pwd)/test/deploy-test.ts handler $(pwd)/test/fakeLambda.js",
+    "stack": "ts-node test/deploy-test.ts"
   },
   "files": [
     "dist"

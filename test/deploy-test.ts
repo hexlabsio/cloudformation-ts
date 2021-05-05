@@ -5,10 +5,21 @@ export default Template.createWithParams({
   CodeBucket: { type: 'String' },
   CodeLocation: { type: 'String' } }, (aws, params) =>
 {
-  const api = Api.create(aws, 'test-api', 'dev')
-  .path('/account').method('GET')
-    .path('/{accountId}').method('GET')
-    .api;
+  // const api = Api.create(aws, 'test-api', 'dev')
+  // .path('/account').method('GET')
+  //   .path('/{accountId}').method('GET')
+  //   .api;
+  
+  const api = Api.create(aws, 'test-api', 'dev').apiFrom({
+    '/account': {
+      methods: ['GET'],
+      paths: {
+        '/{accountId}': {
+          methods: ['GET']
+        }
+      }
+    }
+  })
   return {
     apis: [api.definition()],
   }

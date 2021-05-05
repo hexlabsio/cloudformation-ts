@@ -33,11 +33,32 @@ export class Path {
     return p;
   }
   
+  private longPath(parts: string[], info: PathInfo): Path {
+    if(parts.length === 0) {
+      (info.methods ?? []).forEach(this.method.bind(this));
+      if(info.paths) {
+        Object.keys(info.paths).map(path => this.paths.push(Path.longPath(this.aws, this.api, path, info.paths![path], this)));
+      }
+      return this;
+    } else {
+      const nextPart = Path.longPath(this.aws, this.api, '/' + parts.join('/'), info, this);
+      this.paths.push(nextPart);
+      return nextPart;
+    }
+  }
+  
+  private pathLogicalNames(): string {
+    const resources = this.resources.map(it => it.pathPart.toString().startsWith('{') ? (it.pathPart.toString().substring(1, it.pathPart.toString().length-1) + 'Var') : it.pathPart.toString()).join('');
+    return (this.parent?.pathLogicalNames() ?? '') + resources;
+  }
+  
+  private logicalName(): string {
+    return this.api.name.replace(/[^\w]+/g, '') + this.pathLogicalNames();
+  }
+  
   method(method: string): Path {
-    const lastResource = this.resources[this.resources.length - 1];
-    const pathName = lastResource.pathPart.toString().replace(/[\{\}/]/g, '')
     const apiMethod = this.aws.apigatewayMethod({
-      _logicalName: `Method${pathName}${method}`,
+      _logicalName: `Method${this.logicalName()}${method}`,
       httpMethod: method,
       resourceId: this.resources[this.resources.length - 1],
       restApiId: this.api.restApi,
@@ -74,7 +95,7 @@ export class Path {
         }
       } else {
         this.optionsMethod = this.aws.apigatewayMethod({
-          _logicalName: `${this.resources.map(it => 'Method' + it.pathPart.toString().replace(/[\{\}]/g, ''))}Options`,
+          _logicalName: `Method${this.logicalName()}Options`,
           httpMethod: 'OPTIONS',
           resourceId: this.resources[this.resources.length - 1],
           restApiId: this.api.restApi,
@@ -120,23 +141,31 @@ export class Path {
     return this;
   }
   
-  private static resources(aws: AWS, api: Api, path: string, parent: Value<string>): Resource[] {
+  private static resources(aws: AWS, api: Api, path: string, parent: Value<string>, parentLogicalName?: string): Resource[] {
     const parts = path.startsWith('/') ? path.substring(1).split('/') : path.split('/');
     let previous = parent;
     let pathName = '';
     const resources: Resource[] = [];
     for(const part of parts) {
-      pathName += part.replace(/[\{\}]/g, '')
+      pathName += part.startsWith('{') ? (part.substring(1, part.length-1) + 'Var') : part;
       const resource = aws.apigatewayResource({
         parentId: previous,
         restApiId: api.restApi,
         pathPart: part,
-        _logicalName: `ApiGatewayResource${pathName}`
+        _logicalName: `Api${api.name.replace(/[^\w]+/g, '')}${parentLogicalName ?? ''}${pathName}`
       });
       resources.push(resource);
       previous = resource
     }
     return resources;
+  }
+  
+  static longPath(aws: AWS, api: Api, path: string, info: PathInfo, parent?: Path): Path {
+    const parentLogicalName = parent?.pathLogicalNames();
+    const newPathResources = Path.resources(aws, api, path, parent?.resources?.[parent.resources.length-1] ?? api.restApi.attributes.RootResourceId, parentLogicalName)
+    const newPath = new Path(aws, api, newPathResources, parent).options('*', [], true).longPath([], info);
+    newPath.parent = parent;
+    return newPath;
   }
   
   static resource(aws: AWS, api: Api, path: string): Path {
@@ -149,10 +178,13 @@ export interface ApiDefinition {
   resources: Array<{path: string, method: string}>;
 }
 
+export interface PathInfo { paths?: { [key: string]: PathInfo }, methods?: string[] }
+
 export class Api{
   
   constructor(
     private readonly aws: AWS,
+    public readonly name: string,
     public restApi: RestApi,
     public deployment: Deployment,
     public authorizer?: Authorizer,
@@ -191,6 +223,11 @@ export class Api{
     return this;
   }
   
+  apiFrom(pathInfo: { [key: string]: PathInfo }): this {
+    this.paths = Object.keys(pathInfo).map(path => Path.longPath(this.aws, this, path, pathInfo[path]));
+    return this;
+  }
+  
   static create(aws: AWS, name: string, stage: string, providerArns?: Value<string>[], lambdaArn?: Value<string>): Api {
     const restApi = aws.apigatewayRestApi({ name });
     const authorizer = providerArns && aws.apigatewayAuthorizer({
@@ -212,6 +249,6 @@ export class Api{
       _logicalName: 'ApiDeployment' + Math.floor(Math.random() * 100000000),
       stageName: stage
     })
-    return new Api(aws, restApi, deployment, authorizer, lambdaArn, permission);
+    return new Api(aws, name, restApi, deployment, authorizer, lambdaArn, permission);
   }
 }
