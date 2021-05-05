@@ -2,9 +2,10 @@ import * as fs from "fs";
 import {PathLike} from "fs";
 import {KloudResource} from "./KloudResource";
 import {aws, AWS} from "./aws";
+import {ApiDefinition} from "./modules/api";
 import {transform, Value} from "./Value";
 
-interface KloudFormationTemplate {
+export interface KloudFormationTemplate {
   Parameters: {
     [parameter: string]: {
       Type: string;
@@ -37,12 +38,14 @@ interface Parameter {
 
 type Params<T> = { [K in keyof T]: <R = string>() => Value<R> }
 
+
 export interface Outputs {
-  [logicalId: string] : {
+  apis?: ApiDefinition[],
+  outputs?: { [logicalId: string] : {
     description? : string;
     value: Value<any>;
     export?: { name : string; };
-  }
+  } }
 }
 
 type Builder = (aws: AWS) => void | Outputs
@@ -106,12 +109,12 @@ export class Template {
   }
   
   
-  static create(builder: Builder, file: PathLike = "template.json"): KloudFormationTemplate {
+  static create(builder: Builder, file: PathLike = "template.json"): {template: KloudFormationTemplate, outputs?: Outputs} {
     return Template.createWithParams({}, builder, file);
   }
   
   
-  static createWithParams<T extends {[param: string]: Parameter}>(parameters: T, builder: BuilderWith<T>, file: PathLike = "template.json"): KloudFormationTemplate {
+  static createWithParams<T extends {[param: string]: Parameter}>(parameters: T, builder: BuilderWith<T>, file: PathLike = "template.json"): {template: KloudFormationTemplate, outputs?: Outputs} {
     const template = new Template();
     const builderAws = Object.keys(aws).reduce((prev, key) => Object.assign(prev, {[key]: template.modify((aws as any)[key])}), {} as AWS);
     const parameterFunctions = Object.keys(parameters).reduce((prev, parameter) => ({...prev, [parameter]: () => ({'Ref': parameter})}), {} as Params<T>)
@@ -137,7 +140,7 @@ export class Template {
           ...(Object.keys(properties).length === 0 ? {} : { Properties: Template.capitalize(properties) })
         }
       }), {} as KloudFormationTemplate['Resources']),
-      Outputs: outputs ? Object.keys(outputs).reduce((prev, logicalId) => ({
+      Outputs: (outputs && outputs.outputs) ? Object.keys(outputs.outputs).reduce((prev, logicalId) => ({
         ...prev,
         [logicalId]: {
           Description: outputs[logicalId].description,
@@ -149,6 +152,6 @@ export class Template {
     if(file) {
       fs.writeFileSync(file, JSON.stringify(output, null, 2));
     }
-    return output;
+    return {template: output, outputs: outputs || undefined};
   }
 }

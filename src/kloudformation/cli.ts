@@ -1,9 +1,12 @@
 #!/usr/bin/env node
+import {APIGatewayProxyEvent} from "aws-lambda";
 import { CloudFormation, S3 } from "aws-sdk";
 import * as fs from 'fs';
+import {ApiDefinition} from "./modules/api";
 const archiver = require('archiver');
 const chalk = require('chalk');
 require('ts-node').register();
+import express, {RequestHandler} from 'express';
 
 const { Command } = require('commander');
 
@@ -28,15 +31,23 @@ function deployCommand(): any {
 
 function translateCommand(): any {
   return program.command('translate <templateLocation>')
-  .option('-r, --region <region>', 'The region to delete stack from', 'eu-west-1')
   .option('-s, --stack-info <stacks...>', 'A space separated list of stacks to get outputs as environment variables')
+  .option('-r, --region <region>', 'The region to gather stack outputs from', 'eu-west-1')
   .action(generateStack)
+}
+
+function runCommand(): any {
+  return program.command('run <templateLocation> <handler> <codeLocation>')
+  .option('-s, --stack-info <stacks...>', 'A space separated list of stacks to get outputs as environment variables')
+  .option('-r, --region <region>', 'The region to gather stack outputs from', 'eu-west-1')
+  .action(runApi)
 }
 
 (async () => {
   try {
     translateCommand();
     deployCommand();
+    runCommand();
     deleteCommand();
     await program.parseAsync(process.argv);
   } catch(e) {
@@ -87,23 +98,38 @@ async function deleteStack(stackName: string, command: any) {
 
 
 async function setEnvsForStacks(stacks: string[], region: string) {
-  const client = new CloudFormation({region});
-  const cfStacks = await client.describeStacks().promise();
-  const envs = stacks.reduce((envs, stack) => {
-    console.log(chalk.green('Searching for stacks matching ' + stack));
-    const matchedStack = (cfStacks.Stacks ?? []).find(it => !!it.StackName.match(stack) || !!it.StackId?.match(stack));
-    if(matchedStack) {
-      console.log(chalk.green('Matched ' + matchedStack.StackId));
-      return (matchedStack.Outputs ?? []).reduce((envsWithOutputs, output) => ({
-        ...envsWithOutputs,
-        [output.OutputKey!]: output.OutputValue
-      }), envs);
-    } else {
-      console.log(chalk.red('No stacks matched pattern ' + stack));
-    }
-    return envs;
-  }, {})
-  process.env = {...process.env, ...envs};
+  try {
+    const client = new CloudFormation({region});
+    const cfStacks = await client.describeStacks().promise();
+    const envs = stacks.reduce((envs, stack) => {
+      console.log(chalk.green('Searching for stacks matching ' + stack));
+      const matchedStack = (cfStacks.Stacks ?? []).find(it => !!it.StackName.match(stack) || !!it.StackId?.match(stack));
+      if (matchedStack) {
+        console.log(chalk.green('Matched ' + matchedStack.StackId));
+        return (matchedStack.Outputs ?? []).reduce((envsWithOutputs, output) => ({
+          ...envsWithOutputs,
+          [output.OutputKey!]: output.OutputValue
+        }), envs);
+      } else {
+        console.log(chalk.red('No stacks matched pattern ' + stack));
+      }
+      return envs;
+    }, {})
+    process.env = {...process.env, ...envs};
+  } catch(e) {
+    console.log(chalk.red(e))
+    process.exit(1);
+  }
+}
+
+function requireTemplate(location: string): any {
+  try {
+    return require(location);
+  } catch(e) {
+    console.log(chalk.red('Failed to require stack file'))
+    console.log(chalk.red(e))
+    process.exit(1);
+  }
 }
 
 async function generateStack(templateLocation: string, command: any) {
@@ -111,7 +137,63 @@ async function generateStack(templateLocation: string, command: any) {
     console.log(chalk.green(`Translating template at ${templateLocation}`))
     const stacks: string[] = command.stackInfo ?? [];
     await setEnvsForStacks(stacks, command.region);
-    require(templateLocation);
+    requireTemplate(templateLocation);
+  }
+}
+
+function functionFor(method: string, path: string, codeLocation: string, handler: string): RequestHandler {
+  return (req, res) => {
+    const headers = req.headers;
+    const params = req.params;
+    const event: APIGatewayProxyEvent = {
+      headers: headers as APIGatewayProxyEvent['headers'],
+      resource: path,
+      body: req.body,
+      httpMethod: method,
+      pathParameters: params,
+      path: req.path
+    } as unknown as APIGatewayProxyEvent;
+    delete require.cache[require.resolve(codeLocation)]
+    require(codeLocation)[handler](event).then(response => {
+      console.log(chalk.green(method + ' ' + req.path + ' responded with ' + response.statusCode));
+      res.status(response.statusCode).set(response.headers).send(response.body);
+    }).catch(error => {
+      console.log(chalk.red(method + ' ' + req.path + ' threw ' + error));
+      res.status(500).send(error.message);
+    })
+  }
+}
+
+async function runApi(templateLocation: string, handler: string, codeLocation: string, command: any) {
+  try {
+    console.log(chalk.green(`Running apis from template at ${templateLocation}`))
+    const lambda = require(codeLocation);
+    if(lambda && lambda[handler]) {
+      const stacks: string[] = command.stackInfo ?? [];
+      await setEnvsForStacks(stacks, command.region);
+      const definition: any = requireTemplate(templateLocation);
+      if (definition && definition.default && definition.default.outputs && definition.default.outputs.apis) {
+        const apis: ApiDefinition[] = definition.default.outputs.apis;
+        const app = express();
+        const PORT = process.env.PORT || 3000;
+        apis.forEach(api => {
+          api.resources.forEach(resource => {
+            const path = '/' + resource.path.replace(/{([^/{}]+)}/g, ':$1')
+            app[resource.method.toLowerCase()](path, functionFor(resource.method,'/' + resource.path, codeLocation, handler));
+            console.log(chalk.green(`${resource.method} http://localhost:${PORT}${path}`))
+          })
+        })
+        app.listen(PORT, () => console.log(`⚡Server is running here 👉 http://localhost:${PORT}`));
+      } else {
+        console.log(chalk.red('No API definitions exported please check docs on usage'));
+        process.exit(1);
+      }
+    } else {
+      throw new Error('Handler not found in code file')
+    }
+  } catch(e) {
+    console.log(chalk.red(e));
+    process.exit(1);
   }
 }
 

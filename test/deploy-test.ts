@@ -1,10 +1,16 @@
+import {Api} from "../src/kloudformation/modules/api";
 import {Template} from "../src/kloudformation/kloudformation";
-import {ApiV2} from "../src/kloudformation/modules/apiv2";
 
-Template.createWithParams({
+export default Template.createWithParams({
   CodeBucket: { type: 'String' },
   CodeLocation: { type: 'String' } }, (aws, params) =>
 {
-  ApiV2.create(aws, 'test-api', 'dev', 'test', 'client', 'lambdaarn');
+  const api = Api.create(aws, 'test-api', 'dev')
+  .path('/account').method('GET')
+    .path('/{accountId}').method('GET')
+    .api;
+  return {
+    apis: [api.definition()],
+  }
 }
 );

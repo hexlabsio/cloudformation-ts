@@ -17,12 +17,20 @@ export class Path {
     public resources: Resource[],
     public parent?: Path,
     public methods: Method[] = [],
-    public optionsMethod?: Method
+    public optionsMethod?: Method,
+    public paths: Path[] = []
   ) {}
+  
+  route(): string {
+    const parentPath = this.parent ? (this.parent.route() + '/') : ''
+    return parentPath + this.resources.map(it => it.pathPart).join('/')
+  }
   
   path(path: string): Path {
     const resources = Path.resources(this.aws, this.api, path, this.resources[this.resources.length - 1]);
-    return new Path(this.aws, this.api, resources, this).options('*', [], true);
+    const p = new Path(this.aws, this.api, resources, this).options('*', [], true);
+    this.paths.push(p);
+    return p;
   }
   
   method(method: string): Path {
@@ -113,7 +121,7 @@ export class Path {
   }
   
   private static resources(aws: AWS, api: Api, path: string, parent: Value<string>): Resource[] {
-    const parts = path.split('/');
+    const parts = path.startsWith('/') ? path.substring(1).split('/') : path.split('/');
     let previous = parent;
     let pathName = '';
     const resources: Resource[] = [];
@@ -137,7 +145,11 @@ export class Path {
   }
 }
 
-export class Api {
+export interface ApiDefinition {
+  resources: Array<{path: string, method: string}>;
+}
+
+export class Api{
   
   constructor(
     private readonly aws: AWS,
@@ -146,14 +158,27 @@ export class Api {
     public authorizer?: Authorizer,
     public lambdaArn?: Value<string>,
     public lambdaPermission?: Permission,
-    public basePathMapping?: BasePathMapping
+    public basePathMapping?: BasePathMapping,
+    private paths: Path[] = []
   ) {}
+  
+  pathMethodsFrom(path: Path): Array<{path: string, method: string}> {
+    const mainRoutes = path.methods.map(method => ({path: path.route(), method: method.httpMethod.toString()}));
+    const subRoutes = path.paths.flatMap(this.pathMethodsFrom.bind(this));
+    return [...mainRoutes, ...subRoutes] as Array<{path: string, method: string}>;
+  }
+  
+  definition(): ApiDefinition {
+    return { resources: this.paths.flatMap(this.pathMethodsFrom.bind(this)) };
+  }
   
   /**
    * @param path Can include variables in { } like a/b/{c}
    */
   path(path: string): Path {
-    return Path.resource(this.aws, this, path);
+    const p = Path.resource(this.aws, this, path);
+    this.paths.push(p);
+    return p;
   }
   
   mapTo(basePath: Value<string>, domainName: Value<string>): this {
