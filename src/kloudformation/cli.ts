@@ -152,7 +152,7 @@ function functionFor(method: string, path: string, codeLocation: string, handler
       headers: headers as APIGatewayProxyEvent['headers'],
       resource: path,
       body: req.body,
-      httpMethod: method,
+      httpMethod: method.toUpperCase(),
       pathParameters: params,
       path: req.path,
       requestContext
