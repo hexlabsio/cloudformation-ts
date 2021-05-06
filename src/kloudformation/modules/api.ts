@@ -39,6 +39,10 @@ export class Path {
       if(info.paths) {
         Object.keys(info.paths).map(path => this.paths.push(Path.longPath(this.aws, this.api, path, info.paths![path], this)));
       }
+      if(info.options && info.methods && info.methods.length > 0) {
+        const {origin, headers, credentials} = info.options
+        this.options(origin, headers, credentials)
+      }
       return this;
     } else {
       const nextPart = Path.longPath(this.aws, this.api, '/' + parts.join('/'), info, this);
@@ -79,7 +83,7 @@ export class Path {
     return this;
   }
   
-  options(origin = '*', headers: string[] = [], credentials: boolean = true): Path {
+  options(origin: string, headers: string[], credentials: boolean): Path {
       const corsOrigin = 'method.response.header.Access-Control-Allow-Origin'
       const corsHeaders = 'method.response.header.Access-Control-Allow-Headers'
       const corsMethods = 'method.response.header.Access-Control-Allow-Methods'
@@ -163,7 +167,10 @@ export class Path {
   static longPath(aws: AWS, api: Api, path: string, info: PathInfo, parent?: Path): Path {
     const parentLogicalName = parent?.pathLogicalNames();
     const newPathResources = Path.resources(aws, api, path, parent?.resources?.[parent.resources.length-1] ?? api.restApi.attributes.RootResourceId, parentLogicalName)
-    const newPath = new Path(aws, api, newPathResources, parent).options().longPath([], info);
+    const infoOptions = info?.options
+    const newPath = new Path(aws, api, newPathResources, parent)
+    .options(infoOptions?.origin ?? '*', infoOptions?.headers ?? [], infoOptions?.credentials ?? true)
+    .longPath([], info);
     newPath.parent = parent;
     return newPath;
   }
@@ -178,7 +185,11 @@ export interface ApiDefinition {
   resources: Array<{path: string, method: string}>;
 }
 
-export interface PathInfo { paths?: { [key: string]: PathInfo }, methods?: string[] }
+export interface PathInfo { 
+  paths?: { [key: string]: PathInfo }, 
+  methods?: string[], 
+  options?: { origin: string, headers: string[], credentials: boolean }
+}
 
 export class Api{
   
