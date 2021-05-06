@@ -15,7 +15,7 @@ export default Template.createWithParams({
       methods: ['GET'],
       paths: {
         '/{accountId}': {
-          methods: ['GET']
+          methods: ['GET', 'POST']
         }
       }
     }

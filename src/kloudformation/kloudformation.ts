@@ -62,17 +62,18 @@ export class Template {
   resources: KloudResource[] = [];
   
   private logicalName(prefix: string): string {
-    const prefixed = this.logicalNames.filter(it => it.startsWith(prefix));
+    const _prefix = prefix.substring(0, 60)
+    const prefixed = this.logicalNames.filter(it => it.startsWith(_prefix));
     if(prefixed.length === 0){
-      this.logicalNames.push(prefix);
+      this.logicalNames.push(_prefix);
       return prefix;
     } else {
       let index = prefixed.length + 1;
-      while(this.logicalNames.find(it => it === prefix + index)) {
+      while(this.logicalNames.find(it => it === _prefix + index)) {
         index ++;
       }
-      this.logicalNames.push(prefix + index);
-      return prefix + index;
+      this.logicalNames.push(_prefix + index);
+      return _prefix + index;
     }
   }
   
@@ -116,7 +117,10 @@ export class Template {
   
   static createWithParams<T extends {[param: string]: Parameter}>(parameters: T, builder: BuilderWith<T>, file: PathLike = "template.json"): {template: KloudFormationTemplate, outputs?: Outputs} {
     const template = new Template();
-    const builderAws = Object.keys(aws).reduce((prev, key) => Object.assign(prev, {[key]: template.modify((aws as any)[key])}), {} as AWS);
+    const logicalNameFunction = (prefix: string) => template.logicalName(prefix);
+    const builderAws = Object.keys(aws)
+      .filter(name => name !== 'logicalName')
+      .reduce((prev, key) => Object.assign(prev, {[key]: template.modify((aws as any)[key])}), { logicalName: logicalNameFunction } as AWS);
     const parameterFunctions = Object.keys(parameters).reduce((prev, parameter) => ({...prev, [parameter]: () => ({'Ref': parameter})}), {} as Params<T>)
     const outputs = builder(builderAws, parameterFunctions);
     const output: KloudFormationTemplate = {

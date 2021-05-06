@@ -28,14 +28,14 @@ export class Path {
   
   path(path: string): Path {
     const resources = Path.resources(this.aws, this.api, path, this.resources[this.resources.length - 1]);
-    const p = new Path(this.aws, this.api, resources, this).options('*', [], true);
+    const p = new Path(this.aws, this.api, resources, this).options();
     this.paths.push(p);
     return p;
   }
   
   private longPath(parts: string[], info: PathInfo): Path {
     if(parts.length === 0) {
-      (info.methods ?? []).forEach(this.method.bind(this));
+      (info.methods ?? []).forEach(method => this.method(method).options());
       if(info.paths) {
         Object.keys(info.paths).map(path => this.paths.push(Path.longPath(this.aws, this.api, path, info.paths![path], this)));
       }
@@ -58,7 +58,7 @@ export class Path {
   
   method(method: string): Path {
     const apiMethod = this.aws.apigatewayMethod({
-      _logicalName: `Method${this.logicalName()}${method}`,
+      _logicalName: this.aws.logicalName(`Method${this.logicalName()}${method}`),
       httpMethod: method,
       resourceId: this.resources[this.resources.length - 1],
       restApiId: this.api.restApi,
@@ -79,7 +79,7 @@ export class Path {
     return this;
   }
   
-  options(origin: '*', headers: string[], credentials: boolean): Path {
+  options(origin = '*', headers: string[] = [], credentials: boolean = true): Path {
       const corsOrigin = 'method.response.header.Access-Control-Allow-Origin'
       const corsHeaders = 'method.response.header.Access-Control-Allow-Headers'
       const corsMethods = 'method.response.header.Access-Control-Allow-Methods'
@@ -95,7 +95,7 @@ export class Path {
         }
       } else {
         this.optionsMethod = this.aws.apigatewayMethod({
-          _logicalName: `Method${this.logicalName()}Options`,
+          _logicalName: this.aws.logicalName(`Method${this.logicalName()}Options`),
           httpMethod: 'OPTIONS',
           resourceId: this.resources[this.resources.length - 1],
           restApiId: this.api.restApi,
@@ -152,7 +152,7 @@ export class Path {
         parentId: previous,
         restApiId: api.restApi,
         pathPart: part,
-        _logicalName: `Api${api.name.replace(/[^\w]+/g, '')}${parentLogicalName ?? ''}${pathName}`
+        _logicalName: aws.logicalName(`Api${api.name.replace(/[^\w]+/g, '')}${parentLogicalName ?? ''}${pathName}`)
       });
       resources.push(resource);
       previous = resource
@@ -163,14 +163,14 @@ export class Path {
   static longPath(aws: AWS, api: Api, path: string, info: PathInfo, parent?: Path): Path {
     const parentLogicalName = parent?.pathLogicalNames();
     const newPathResources = Path.resources(aws, api, path, parent?.resources?.[parent.resources.length-1] ?? api.restApi.attributes.RootResourceId, parentLogicalName)
-    const newPath = new Path(aws, api, newPathResources, parent).options('*', [], true).longPath([], info);
+    const newPath = new Path(aws, api, newPathResources, parent).options().longPath([], info);
     newPath.parent = parent;
     return newPath;
   }
   
   static resource(aws: AWS, api: Api, path: string): Path {
     const resources = Path.resources(aws, api, path, api.restApi.attributes.RootResourceId);
-    return new Path(aws, api, resources).options('*', [], true)
+    return new Path(aws, api, resources).options()
   }
 }
 
@@ -246,7 +246,7 @@ export class Api{
     }): undefined;
     const deployment = aws.apigatewayDeployment({
       restApiId: restApi,
-      _logicalName: 'ApiDeployment' + Math.floor(Math.random() * 100000000),
+      _logicalName: aws.logicalName('ApiDeployment' + Math.floor(Math.random() * 100000000)),
       stageName: stage
     })
     return new Api(aws, name, restApi, deployment, authorizer, lambdaArn, permission);
