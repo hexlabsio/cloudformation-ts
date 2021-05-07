@@ -12,7 +12,7 @@ export default Template.createWithParams({
   
   const api = Api.create(aws, 'test-api', 'dev').apiFrom({
     '/account': {
-      methods: ['GET'],
+      methods: ['GET', 'POST'],
       paths: {
         '/{accountId}': {
           methods: ['GET', 'POST']

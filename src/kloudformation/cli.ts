@@ -141,6 +141,17 @@ async function generateStack(templateLocation: string, command: any) {
   }
 }
 
+function rawBody(req, res, next) {
+  req.setEncoding('utf8');
+  req.rawBody = '';
+  req.on('data', function(chunk) {
+    req.rawBody += chunk;
+  });
+  req.on('end', function(){
+    next();
+  });
+}
+
 function functionFor(method: string, path: string, codeLocation: string, handler: string): RequestHandler {
   return (req, res) => {
     const headers = req.headers;
@@ -148,10 +159,11 @@ function functionFor(method: string, path: string, codeLocation: string, handler
     const claims = (authHeader && authHeader.includes('Bearer ')) ? new Buffer(authHeader.substring(7).split('.')[1], 'base64').toString('ascii') : undefined;
     const requestContext = claims ? { authorizer: { claims: JSON.parse(claims) } } : undefined;
     const params = req.params;
+    console.log('Got body:', req.body);
     const event: APIGatewayProxyEvent = {
       headers: headers as APIGatewayProxyEvent['headers'],
       resource: path,
-      body: req.body,
+      body: (req as any).rawBody,
       httpMethod: method.toUpperCase(),
       pathParameters: params,
       path: req.path,
@@ -179,6 +191,7 @@ async function runApi(templateLocation: string, handler: string, codeLocation: s
       if (definition && definition.default && definition.default.outputs && definition.default.outputs.apis) {
         const apis: ApiDefinition[] = definition.default.outputs.apis;
         const app = express();
+        app.use(rawBody);
         const PORT = process.env.PORT || 3000;
         apis.forEach(api => {
           api.resources.forEach(resource => {
