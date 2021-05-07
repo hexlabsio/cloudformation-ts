@@ -152,6 +152,13 @@ function rawBody(req, res, next) {
   });
 }
 
+
+function clearRequireCache() {
+  Object.keys(require.cache).forEach(function(key) {
+    delete require.cache[key];
+  });
+}
+
 function functionFor(method: string, path: string, codeLocation: string, handler: string): RequestHandler {
   return (req, res) => {
     const headers = req.headers;
@@ -168,7 +175,7 @@ function functionFor(method: string, path: string, codeLocation: string, handler
       path: req.path,
       requestContext
     } as unknown as APIGatewayProxyEvent;
-    delete require.cache[require.resolve(codeLocation)]
+    clearRequireCache();
     require(codeLocation)[handler](event).then(response => {
       console.log(chalk.green('API - ' + method + ' ' + req.path + ' responded with ' + response.statusCode));
       res.status(response.statusCode).set(response.headers).send(response.body);
