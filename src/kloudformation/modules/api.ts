@@ -226,6 +226,7 @@ export class Api{
   
   mapTo(basePath: Value<string>, domainName: Value<string>): this {
     this.basePathMapping = this.aws.apigatewayBasePathMapping({
+      _dependsOn: [this.deployment],
       restApiId: this.restApi,
       stage: this.deployment.stageName,
       basePath,
