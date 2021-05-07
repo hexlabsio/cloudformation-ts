@@ -159,7 +159,6 @@ function functionFor(method: string, path: string, codeLocation: string, handler
     const claims = (authHeader && authHeader.includes('Bearer ')) ? new Buffer(authHeader.substring(7).split('.')[1], 'base64').toString('ascii') : undefined;
     const requestContext = claims ? { authorizer: { claims: JSON.parse(claims) } } : undefined;
     const params = req.params;
-    console.log('Got body:', req.body);
     const event: APIGatewayProxyEvent = {
       headers: headers as APIGatewayProxyEvent['headers'],
       resource: path,
