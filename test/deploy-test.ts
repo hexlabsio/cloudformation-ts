@@ -1,6 +1,7 @@
 import {Api} from "../src/kloudformation/modules/api";
 import {Template} from "../src/kloudformation/kloudformation";
 
+console.log(JSON.stringify(process.env, null, 2));
 export default Template.createWithParams({
   CodeBucket: { type: 'String' },
   CodeLocation: { type: 'String' } }, (aws, params) =>
