@@ -24,16 +24,16 @@ export class Lambda {
     this.subscriptions = [];
   }
   
-  grantInvoke(toArn: Value<string>, sourceAccount?: Value<string>): Lambda{
-    this.permissions.push(Lambda.grantInvoke(this.aws, this.lambda.functionName!, toArn, sourceAccount));
+  grantInvoke(toArn: Value<string>, principal: Value<string>, sourceAccount?: Value<string>): Lambda{
+    this.permissions.push(Lambda.grantInvoke(this.aws, this.lambda.functionName!, toArn, principal, sourceAccount));
     return this;
   }
   
-  static grantInvoke(aws: AWS, lambdaName: Value<string>,  toArn: Value<string>, sourceAccount?: Value<string>): Permission {
+  static grantInvoke(aws: AWS, lambdaName: Value<string>,  toArn: Value<string>, principal: Value<string>, sourceAccount?: Value<string>): Permission {
     return aws.lambdaPermission({
       action: 'lambda:InvokeFunction',
       functionName: lambdaName,
-      principal: 'sns.amazonaws.com',
+      principal,
       sourceArn: toArn,
       sourceAccount
     });
@@ -49,7 +49,7 @@ export class Lambda {
   }
   
   static snsTrigger(aws: AWS, lambdaArn: Value<string>, lambdaName: Value<string>, topicArn: Value<string>, sourceAccount?: Value<string>): [Permission, Subscription] {
-    const permission = Lambda.grantInvoke(aws, lambdaName, topicArn, sourceAccount);
+    const permission = Lambda.grantInvoke(aws, lambdaName, topicArn, 'sns.amazonaws.com', sourceAccount);
     const subscription = aws.snsSubscription({
       protocol: 'lambda',
       topicArn: topicArn,
