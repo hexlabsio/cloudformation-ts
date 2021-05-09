@@ -19,9 +19,19 @@ export default Template.createWithParams({
         }
       }
     }
-  })
+  });
+  const hostedZone = aws.route53HostedZone({
+    _logicalName: 'HostedZoneName',
+    name: 'klouds.io'
+  });
   return {
     apis: [api.definition()],
+    outputs: {
+      KloudsIOHostedZoneId: {
+        description: 'Hosted Zone Id',
+        value: { Ref: hostedZone._logicalName }
+      }
+    }
   }
 }
 );

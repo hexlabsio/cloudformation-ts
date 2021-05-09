@@ -42,10 +42,10 @@ type Params<T> = { [K in keyof T]: <R = string>() => Value<R> }
 export interface Outputs {
   apis?: ApiDefinition[],
   outputs?: { [logicalId: string] : {
-    description? : string;
-    value: Value<any>;
-    export?: { name : string; };
-  } }
+      description? : string;
+      value: Value<any>;
+      export?: { name : string; };
+    } }
 }
 
 type Builder = (aws: AWS) => void | Outputs
@@ -119,8 +119,8 @@ export class Template {
     const template = new Template();
     const logicalNameFunction = (prefix: string) => template.logicalName(prefix);
     const builderAws = Object.keys(aws)
-      .filter(name => name !== 'logicalName')
-      .reduce((prev, key) => Object.assign(prev, {[key]: template.modify((aws as any)[key])}), { logicalName: logicalNameFunction } as AWS);
+    .filter(name => name !== 'logicalName')
+    .reduce((prev, key) => Object.assign(prev, {[key]: template.modify((aws as any)[key])}), { logicalName: logicalNameFunction } as AWS);
     const parameterFunctions = Object.keys(parameters).reduce((prev, parameter) => ({...prev, [parameter]: () => ({'Ref': parameter})}), {} as Params<T>)
     const outputs = builder(builderAws, parameterFunctions);
     const output: KloudFormationTemplate = {
@@ -144,14 +144,17 @@ export class Template {
           ...(Object.keys(properties).length === 0 ? {} : { Properties: Template.capitalize(properties) })
         }
       }), {} as KloudFormationTemplate['Resources']),
-      Outputs: (outputs && outputs.outputs) ? Object.keys(outputs.outputs).reduce((prev, logicalId) => ({
-        ...prev,
-        [logicalId]: {
-          Description: outputs[logicalId].description,
-          Value: outputs[logicalId].value,
-          Export: outputs[logicalId].export ? { Name: outputs[logicalId].export!.name } : undefined
-        }
-      }), {} as KloudFormationTemplate['Outputs']) : undefined
+      Outputs: (outputs && outputs.outputs) ? Object.keys(outputs.outputs).reduce((prev, logicalId) => {
+        const output = (outputs.outputs as any)[logicalId];
+        return ({
+          ...prev,
+          [logicalId]: {
+            Description: output.description,
+            Value: output.value,
+            Export: output.export ? { Name: output.export!.name } : undefined
+          }
+        })
+      }, {} as KloudFormationTemplate['Outputs']) : undefined
     };
     if(file) {
       fs.writeFileSync(file, JSON.stringify(output, null, 2));
