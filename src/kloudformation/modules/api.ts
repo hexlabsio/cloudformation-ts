@@ -60,7 +60,7 @@ export class Path {
     return this.api.name.replace(/[^\w]+/g, '') + this.pathLogicalNames();
   }
   
-  method(method: string): Path {
+  method(method: httpMethod): Path {
     const apiMethod = this.aws.apigatewayMethod({
       _logicalName: this.aws.logicalName(`Method${this.logicalName()}${method}`),
       httpMethod: method,
@@ -184,10 +184,11 @@ export class Path {
 export interface ApiDefinition {
   resources: Array<{path: string, method: string}>;
 }
+export type httpMethod = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "CONNECT" | "OPTIONS" | "TRACE" | "PATCH"
 
 export interface PathInfo { 
   paths?: { [key: string]: PathInfo }, 
-  methods?: string[], 
+  methods?: httpMethod[], 
   options?: { origin: string, headers: string[], credentials: boolean }
 }
 
