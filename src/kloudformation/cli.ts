@@ -26,6 +26,7 @@ function deployCommand(): any {
     .option( '-b, --bucket <bucket>', 'The s3 bucket in which to upload files')
     .option( '-p, --prefix <prefix>', 'The s3 object key prefix in which to upload files')
     .option('-s, --stack-info <stacks...>', 'A space separated list of stacks to get outputs as environment variables')
+    .option('-o, --output-file <fileName>', 'A file to output key-value pairs from stack-info')
     .action(deployStack)
 }
 
@@ -97,7 +98,7 @@ async function deleteStack(stackName: string, command: any) {
 }
 
 
-async function setEnvsForStacks(stacks: string[], region: string) {
+async function setEnvsForStacks(stacks: string[], region: string): Promise<{[key: string]: string}> {
   try {
     const envs: Array<{key: string, value: string}[]> = await Promise.all(stacks.map(async (stack) => {
       const hasRegion = stack.match(/^(\w+-\w+-\d+):(.*)/);
@@ -116,6 +117,7 @@ async function setEnvsForStacks(stacks: string[], region: string) {
     }))
     const envVars = envs.flat().reduce((all, {key, value}) => ({...all, [key]: value}), {});
     process.env = {...process.env, ...envVars};
+    return envVars;
   } catch(e) {
     console.log(chalk.red(e))
     process.exit(1);
@@ -132,13 +134,15 @@ function requireTemplate(location: string): any {
   }
 }
 
-async function generateStack(templateLocation: string, command: any) {
+async function generateStack(templateLocation: string, command: any): Promise<{[key: string]: string}> {
   if (templateLocation.endsWith(".ts")) {
     console.log(chalk.green(`Translating template at ${templateLocation}`))
     const stacks: string[] = command.stackInfo ?? [];
-    await setEnvsForStacks(stacks, command.region);
+    const envs = await setEnvsForStacks(stacks, command.region);
     requireTemplate(templateLocation);
+    return envs;
   }
+  return {};
 }
 
 function rawBody(req, res, next) {
@@ -223,8 +227,8 @@ async function runApi(templateLocation: string, handler: string, codeLocation: s
 async function deployStack(stackName: string, templateLocation: string, fileLocation: string, command: any) {
   try {
     if (templateLocation.endsWith(".ts")) {
-      await generateStack(templateLocation, command)
-      await deploy(command.region, stackName, fileLocation, command.capabilities, command.file, command.prefix, command.bucket);
+      const envs = await generateStack(templateLocation, command);
+      await deploy(command.region, stackName, fileLocation, command.capabilities, command.file, command.prefix, command.bucket, command.outputFile, envs);
     } else {
       await deploy(command.region, stackName, templateLocation, command.capabilities, command.file, command.prefix, command.bucket);
     }
@@ -275,7 +279,7 @@ async function upload(files: string[], prefix: string, bucket: string): Promise<
   }));
 }
 
-async function deploy(region: string, stackName: string, template: string, capabilities: string[], files: string[], prefix: string, bucket: string) {
+async function deploy(region: string, stackName: string, template: string, capabilities: string[], files: string[], prefix: string, bucket: string, outputFile?: string, envs?: {[key: string]: string}) {
   validateCapabilities(capabilities);
   const locations = (files && bucket) ? await upload(files, prefix ?? '', bucket) : [];
   const templateContent = fs.readFileSync(template ?? 'template.json');
@@ -321,6 +325,13 @@ async function deploy(region: string, stackName: string, template: string, capab
   if(!await followStackEvents(cf, stackName, successStatuses, start)) {
     process.exit(1);
   }
+  if(outputFile) {
+    const stackEnvs = await setEnvsForStacks([stackName], region);
+    const allEnvs = { ...envs, ...stackEnvs};
+    const lines = Object.keys(allEnvs).map(envKey => `${envKey}='${allEnvs[envKey]}'`).join('\n')
+    fs.writeFileSync(outputFile, lines);
+  }
+  
 }
 
 async function wait(milliseconds: number = 300): Promise<void> {
