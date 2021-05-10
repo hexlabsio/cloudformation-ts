@@ -304,6 +304,7 @@ async function deploy(region: string, stackName: string, template: string, capab
       } catch(e) {
         if(e.message.includes('No updates are to be performed')){
           console.log(chalk.yellow('No updates are to be performed'));
+          printEnvs(stackName, region, outputFile, envs);
           return;
         } else {
           console.log(chalk.red(e.message))
@@ -325,13 +326,17 @@ async function deploy(region: string, stackName: string, template: string, capab
   if(!await followStackEvents(cf, stackName, successStatuses, start)) {
     process.exit(1);
   }
+  printEnvs(stackName, region, outputFile, envs);
+}
+
+async function printEnvs(stackName: string, region: string, outputFile?: string, envs?: {[key: string]: string}){
   if(outputFile) {
     const stackEnvs = await setEnvsForStacks([stackName], region);
     const allEnvs = { ...envs, ...stackEnvs};
     const lines = Object.keys(allEnvs).map(envKey => `${envKey}='${allEnvs[envKey]}'`).join('\n')
+    console.log(chalk.green('Printing Stack outputs to ' + outputFile));
     fs.writeFileSync(outputFile, lines);
   }
-  
 }
 
 async function wait(milliseconds: number = 300): Promise<void> {
