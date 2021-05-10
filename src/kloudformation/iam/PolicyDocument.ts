@@ -25,7 +25,7 @@ export function iamPolicy(policyDocument: PolicyDocument): PolicyDocument { retu
 export class Policy {
   private constructor(readonly document: PolicyDocument = {statement: [], version: "2012-10-17"}) { }
   
-  grant(action: Action, effect: PolicyStatement['effect'], onResource: PolicyStatement['resource']): this {
+  grant(action: Action | Action[], effect: PolicyStatement['effect'], onResource: PolicyStatement['resource']): this {
     this.document.statement = [
       ...(this.document.statement ?? []),
       {  action, effect, resource: onResource }
@@ -33,19 +33,19 @@ export class Policy {
     return this;
   }
   
-  allow(action: Action, onResource: PolicyStatement['resource']): this {
+  allow(action: Action | Action[], onResource: PolicyStatement['resource']): this {
     return this.grant(action, 'Allow', onResource)
   }
   
-  deny(action: Action, onResource: PolicyStatement['resource']): this {
+  deny(action: Action | Action[], onResource: PolicyStatement['resource']): this {
     return this.grant(action, 'Deny', onResource)
   }
   
-  static allow(action: Action, onResource: PolicyStatement['resource']): Policy {
+  static allow(action: Action | Action[], onResource: PolicyStatement['resource']): Policy {
     return new Policy().allow(action, onResource);
   }
   
-  static deny(action: Action, onResource: PolicyStatement['resource']): Policy {
+  static deny(action: Action | Action[], onResource: PolicyStatement['resource']): Policy {
     return new Policy().deny(action, onResource);
   }
 }
