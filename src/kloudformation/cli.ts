@@ -239,16 +239,16 @@ async function runApi(templateLocation: string, handler: string, codeLocation: s
 }
 
 async function deployStack(stackName: string, templateLocation: string, fileLocation: string, command: any) {
-  if(command.tsProject) {
-    tsNode.register({project: command.tsProject});
-  } else {
-    tsNode.register();
-  }
   try {
     if (templateLocation.endsWith(".ts")) {
       const envs = await generateStack(templateLocation, command);
       await deploy(command.region, stackName, fileLocation, command.capabilities, command.file, command.prefix, command.bucket, command.outputFile, envs);
     } else {
+      if(command.tsProject) {
+        tsNode.register({project: command.tsProject});
+      } else {
+        tsNode.register();
+      }
       await deploy(command.region, stackName, templateLocation, command.capabilities, command.file, command.prefix, command.bucket);
     }
   } catch(e) {
