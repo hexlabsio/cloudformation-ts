@@ -255,7 +255,7 @@ async function upload(files: string[], prefix: string, bucket: string): Promise<
   return await Promise.all(files.map(async file => {
     const fileName = file.includes('/') ? file.substring(file.lastIndexOf('/') + 1): file;
     const keyName = `${key}${fileName}`;
-    if(fs.lstatSync(fileName).isDirectory()) {
+    if(fs.lstatSync(file).isDirectory()) {
       console.log(chalk.green(`Zipping directory ${fileName}`));
       await zipDirectory(file, `${fileName}.zip`);
       console.log(chalk.green(`Uploading ${keyName}.zip to S3 bucket named ${bucket}`));
