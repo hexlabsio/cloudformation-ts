@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import {ApiDefinition} from "./modules/api";
 const archiver = require('archiver');
 const chalk = require('chalk');
-require('ts-node').register();
+const tsNode = require('ts-node')
 import express, {RequestHandler} from 'express';
 
 const { Command } = require('commander');
@@ -27,6 +27,7 @@ function deployCommand(): any {
     .option( '-p, --prefix <prefix>', 'The s3 object key prefix in which to upload files')
     .option('-s, --stack-info <stacks...>', 'A space separated list of stacks to get outputs as environment variables')
     .option('-o, --output-file <fileName>', 'A file to output key-value pairs from stack-info')
+    .option('-t, --ts-project <fileName>', 'TS Config')
     .action(deployStack)
 }
 
@@ -225,6 +226,11 @@ async function runApi(templateLocation: string, handler: string, codeLocation: s
 }
 
 async function deployStack(stackName: string, templateLocation: string, fileLocation: string, command: any) {
+  if(command.tsProject) {
+    tsNode.register({project: command.tsProject});
+  } else {
+    tsNode.register();
+  }
   try {
     if (templateLocation.endsWith(".ts")) {
       const envs = await generateStack(templateLocation, command);
