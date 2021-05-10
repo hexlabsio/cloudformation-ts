@@ -35,6 +35,7 @@ function translateCommand(): any {
   return program.command('translate <templateLocation>')
   .option('-s, --stack-info <stacks...>', 'A space separated list of stacks to get outputs as environment variables')
   .option('-r, --region <region>', 'The region to gather stack outputs from', 'eu-west-1')
+  .option('-t, --ts-project <fileName>', 'TS Config')
   .action(generateStack)
 }
 
@@ -42,6 +43,7 @@ function runCommand(): any {
   return program.command('run <templateLocation> <handler> <codeLocation>')
   .option('-s, --stack-info <stacks...>', 'A space separated list of stacks to get outputs as environment variables')
   .option('-r, --region <region>', 'The region to gather stack outputs from', 'eu-west-1')
+  .option('-t, --ts-project <fileName>', 'TS Config')
   .action(runApi)
 }
 
@@ -137,6 +139,11 @@ function requireTemplate(location: string): any {
 }
 
 async function generateStack(templateLocation: string, command: any): Promise<{[key: string]: string}> {
+  if(command.tsProject) {
+    tsNode.register({project: command.tsProject});
+  } else {
+    tsNode.register();
+  }
   if (templateLocation.endsWith(".ts")) {
     console.log(chalk.green(`Translating template at ${templateLocation}`))
     const stacks: string[] = command.stackInfo ?? [];
@@ -194,6 +201,11 @@ function functionFor(method: string, path: string, codeLocation: string, handler
 
 async function runApi(templateLocation: string, handler: string, codeLocation: string, command: any) {
   try {
+    if(command.tsProject) {
+      tsNode.register({project: command.tsProject});
+    } else {
+      tsNode.register();
+    }
     console.log(chalk.green(`Running apis from template at ${templateLocation}`))
     const lambda = require(codeLocation);
     if(lambda && lambda[handler]) {
