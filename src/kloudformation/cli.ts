@@ -61,6 +61,7 @@ function runCommand(): any {
 const terminalStatuses = ['CREATE_COMPLETE', 'CREATE_FAILED', 'DELETE_COMPLETE', 'DELETE_FAILED', 'ROLLBACK_COMPLETE', 'ROLLBACK_FAILED', 'UPDATE_COMPLETE', 'UPDATE_ROLLBACK_COMPLETE', 'UPDATE_ROLLBACK_FAILED'];
 const badStatuses = ['CREATE_FAILED', 'DELETE_FAILED', 'ROLLBACK_COMPLETE', 'ROLLBACK_FAILED', 'UPDATE_ROLLBACK_COMPLETE', 'UPDATE_ROLLBACK_FAILED', 'UPDATE_ROLLBACK_IN_PROGRESS', 'DELETE_COMPLETE'];
 const successStatuses = ['CREATE_COMPLETE', 'UPDATE_COMPLETE'];
+const continuable = [...successStatuses, 'UPDATE_ROLLBACK_COMPLETE', 'ROLLBACK_COMPLETE', 'DELETE_COMPLETE'];
 const deleteSuccessStatuses = ['DELETE_COMPLETE'];
 
 async function stackExists(cf: CloudFormation, name: string): Promise<CloudFormation.Stack | undefined> {
@@ -299,7 +300,7 @@ async function deploy(region: string, stackName: string, template: string, capab
   ] : []
   console.log(chalk.green(`Passing the following parameters ${parameters.map(it => `${it.ParameterKey}:${it.ParameterValue}`).join(', ')}`))
   if(stack) {
-    if(successStatuses.includes(stack.StackStatus)) {
+    if(continuable.includes(stack.StackStatus)) {
       try {
         console.log(chalk.green(`Updating existing stack in region ${region} named ${stackName}`));
         const result = await cf.updateStack({ StackName: stackName, Capabilities: capabilities, TemplateBody: templateContent.toString(), Parameters: parameters }).promise();
