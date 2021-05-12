@@ -1,16 +1,7 @@
+import {Lambda} from "../src/kloudformation/modules/lambda";
 import {Template} from "../src/kloudformation/kloudformation";
 
-console.log(JSON.stringify(process.env, null, 2));
-export default Template.create(aws =>
-{
-  const topic = aws.snsTopic({});
-  return {
-    outputs: {
-      KloudsIOHostedZoneId: {
-        description: 'Hosted Zone Id',
-        value: { Ref: topic._logicalName }
-      }
-    }
+export default Template.create(aws => {
+    Lambda.create(aws, 'test-logs', {zipFile: 'export async function handler(event) { console.log(event); return { statusCode: 200, body: \'Hello from Lambda\' } }'}, 'index.handler', 'nodejs12.x');
   }
-}
 );

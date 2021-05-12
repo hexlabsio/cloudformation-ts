@@ -6,7 +6,7 @@ import {Subscription} from "../../aws/sns/Subscription";
 import {AWS} from "../aws";
 import {iamPolicy} from "../iam/PolicyDocument";
 import {normalize} from "../kloudformation";
-import {Value} from "../Value";
+import {join, joinWith, Value} from "../Value";
 
 export class Lambda {
   role: Role;
@@ -66,9 +66,19 @@ export class Lambda {
       assumeRolePolicyDocument: iamPolicy({
         statement: [{action: 'sts:AssumeRole', effect: 'Allow', principal: { Service: ['lambda.amazonaws.com'] }}],
         version: '2012-10-17',
-      })
+      }),
+      policies: [{
+        policyName: 'LogAccess',
+        policyDocument: iamPolicy({
+          version: '2012-10-17',
+          statement: [
+            {action: 'logs:CreateLogGroup', effect: 'Allow', resource: [joinWith(':', 'arn', {Ref: 'AWS::Partition'}, 'logs', {Ref: 'AWS::Region'}, {Ref: 'AWS::AccountId'}, '*')]},
+            {action: ['logs:CreateLogStream', 'logs:PutLogEvents'], effect: 'Allow', resource: [joinWith(':', 'arn', {Ref: 'AWS::Partition'}, 'logs', {Ref: 'AWS::Region'}, {Ref: 'AWS::AccountId'}, 'log-group', join('/aws/lambda/', name, ':*'))]}
+          ],
+        })
+      }]
     });
-    const lambda = aws.lambdaFunction({ _logicalName: `${normalName}Function`, ...extra, code, handler, role: role.attributes.Arn, runtime, functionName: name });
+    const lambda = aws.lambdaFunction({ _logicalName: `${normalName}Function`, ...extra, code, handler, role: role.attributes.Arn, runtime, functionName: name,  });
     return new Lambda(aws, normalName, role, lambda);
   }
 }
