@@ -9,7 +9,7 @@
     "kloudformation": "dist/kloudformation/cli.js"
   },
   "scripts": {
-    "run": "ts-node --project tsconfig.json src/index.ts",
+    "run": "ts-node --project tsconfig.json test/deploy-test.ts",
     "prebuild": "rimraf dist",
     "pregenerate": "rimraf src/kloudformation/aws.ts src/aws src/alexa",
     "generate": "ts-node --project tsconfig.json src/kloudformation/builder/discovery.ts",

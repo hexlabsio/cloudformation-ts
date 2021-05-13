@@ -53,7 +53,7 @@ type BuilderWith<ParamType> = (aws: AWS, parameters: Params<ParamType>) => void 
 
 
 export function normalize(name: string) {
-  return name.split(/[^a-zA-Z]/g).reduce((prev, current) => `${prev}${current.substring(0,1).toUpperCase()}${current.substring(1)}`, '');
+  return name.split(/[^a-zA-Z0-9]/g).reduce((prev, current) => `${prev}${current.substring(0,1).toUpperCase()}${current.substring(1)}`, '');
 }
 
 export class Template {
