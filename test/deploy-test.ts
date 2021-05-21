@@ -5,5 +5,4 @@ export default Template.create(aws => {
   const topic = aws.snsTopic({});
     Lambda.create(aws, 'test-logs-5', {zipFile: 'export async function handler(event) { console.log(event); return { statusCode: 200, body: \'Hello from Lambda\' } }'}, 'index.handler', 'nodejs12.x')
       .snsTrigger(topic)
-}
-);
+}, 'template.json', JSON.stringify);

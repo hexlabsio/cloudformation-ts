@@ -13,9 +13,9 @@ describe('j', () => {
         }
       });
       return {
-        'OUTPUT1': {
+        outputs: { 'OUTPUT1': {
           value: { Ref: a._logicalName }
-        }
+        } }
       }
     }, undefined);
     

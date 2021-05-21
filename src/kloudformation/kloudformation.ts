@@ -110,12 +110,21 @@ export class Template {
   }
   
   
-  static create(builder: Builder, file: PathLike = "template.json"): {template: KloudFormationTemplate, outputs?: Outputs} {
-    return Template.createWithParams({}, builder, file);
+  static create(
+    builder: Builder,
+    file: PathLike = "template.json",
+    transform: (template: KloudFormationTemplate) => string = template => JSON.stringify(template, null, 2)
+  ): {template: KloudFormationTemplate, outputs?: Outputs} {
+    return Template.createWithParams({}, builder, file, transform);
   }
   
   
-  static createWithParams<T extends {[param: string]: Parameter}>(parameters: T, builder: BuilderWith<T>, file: PathLike = "template.json"): {template: KloudFormationTemplate, outputs?: Outputs} {
+  static createWithParams<T extends {[param: string]: Parameter}>(
+    parameters: T,
+    builder: BuilderWith<T>,
+    file: PathLike = "template.json",
+    transform: (template: KloudFormationTemplate) => string = template => JSON.stringify(template, null, 2)
+  ): {template: KloudFormationTemplate, outputs?: Outputs} {
     const template = new Template();
     const logicalNameFunction = (prefix: string) => template.logicalName(prefix);
     const builderAws = Object.keys(aws)
@@ -157,7 +166,7 @@ export class Template {
       }, {} as KloudFormationTemplate['Outputs']) : undefined
     };
     if(file) {
-      fs.writeFileSync(file, JSON.stringify(output, null, 2));
+      fs.writeFileSync(file, transform(output));
     }
     return {template: output, outputs: outputs || undefined};
   }
