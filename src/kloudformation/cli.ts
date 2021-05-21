@@ -177,8 +177,8 @@ function queryParameters(expressQuery: { [key: string]: undefined | string | str
   return Object.keys(expressQuery).reduce((acc, elem) => {
     if (expressQuery[elem]) {
       return Array.isArray(expressQuery[elem])
-        ? { ...acc, multiValueQueryStringParameters: { ...acc.multiValueQueryStringParameters, elem: expressQuery[elem] } }
-        : { ...acc, queryStringParameters: { ...acc.queryStringParameters, elem: expressQuery[elem] } };
+        ? { ...acc, multiValueQueryStringParameters: { ...acc.multiValueQueryStringParameters, [elem]: expressQuery[elem] } }
+        : { ...acc, queryStringParameters: { ...acc.queryStringParameters, [elem]: expressQuery[elem] } };
     } else {
       return acc;
     }
