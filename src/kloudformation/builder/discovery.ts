@@ -167,7 +167,7 @@ const missingResources: Partial<Specification> = {
 function buildAwsType(resources: NameLocationContent[]) {
   const imports = resources.map(it => {
     const location = it[1].split('.').slice(1).map((it, index) => index > 0 ? (it.substring(0,1).toUpperCase() + it.substring(1)) : it).join('');
-    const asImport = it[0] === 'Function' ? 'lambdaFunction' : `${it[0].substring(0,1).toLowerCase() + it[0].substring(1)} as ${location}${it[0]}`;
+    const asImport = `${it[0] === 'Function' ? `_function` : `${it[0].substring(0,1).toLowerCase()}${it[0].substring(1)}`} as ${location}${it[0]}`;
     return `import { ${asImport} } from '../${it[1].replace(/\./g, '/')}/${it[0]}';`;
   }).join('\n');
   const parent = imports + '\n\nexport type AWS = typeof aws & { logicalName: (prefix: string) => string };' +
@@ -207,7 +207,7 @@ async function buildType(from: PropertyInfo, resource: boolean, name: string, do
   const lastPart = split[split.length - 1].split('.');
   const prop = lastPart[lastPart.length - 1];
   const lowerName = prop.substring(0,1).toLowerCase() + prop.substring(1);
-  const functionName = lowerName === 'function' ? 'lambdaFunction' : lowerName;
+  const functionName = lowerName === 'function' ? '_function' : lowerName;
   const documentation = await docsCache.get(from.Documentation!);
   const descriptionString = `/**
   ${documentation.description || ''}
