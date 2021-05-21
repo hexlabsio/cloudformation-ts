@@ -173,12 +173,18 @@ function clearRequireCache() {
 }
 
 function queryParameters(expressQuery: { [key: string]: undefined | string | string[]; }
-  ) {
+) {
   return Object.keys(expressQuery).reduce((acc, elem) => {
     if (expressQuery[elem]) {
       return Array.isArray(expressQuery[elem])
-        ? { ...acc, multiValueQueryStringParameters: { ...acc.multiValueQueryStringParameters, [elem]: expressQuery[elem] } }
-        : { ...acc, queryStringParameters: { ...acc.queryStringParameters, [elem]: expressQuery[elem] } };
+        ? {
+          queryStringParameters: { ...acc.queryStringParameters, [elem]: (expressQuery[elem] as string[])[0] },
+          multiValueQueryStringParameters: { ...acc.multiValueQueryStringParameters, [elem]: expressQuery[elem] }
+        }
+        : {
+          queryStringParameters: { ...acc.queryStringParameters, [elem]: expressQuery[elem] },
+          multiValueQueryStringParameters: { ...acc.multiValueQueryStringParameters, [elem]: [expressQuery[elem]] }
+        };
     } else {
       return acc;
     }
@@ -196,7 +202,7 @@ function functionFor(method: string, path: string, codeLocation: string, handler
     const claims = (authHeader && authHeader.includes('Bearer ')) ? new Buffer(authHeader.substring(7).split('.')[1], 'base64').toString('ascii') : undefined;
     const requestContext = claims ? { authorizer: { claims: JSON.parse(claims) } } : undefined;
     const params = req.params;
-    const queryParams = queryParameters((req.query ?? {}) as { [key: string]: undefined | string | string[]; })
+    const queryParams = queryParameters((req.query ?? {}) as { [key: string]: undefined | string | string[]; });
     const event: APIGatewayProxyEvent = {
       headers: headers as APIGatewayProxyEvent['headers'],
       resource: path,
@@ -214,8 +220,8 @@ function functionFor(method: string, path: string, codeLocation: string, handler
     }).catch(error => {
       console.log(chalk.red('API - ' + method + ' ' + req.path + ' threw ' + error));
       res.status(500).send(error.message);
-    })
-  }
+    });
+  };
 }
 
 async function runApi(templateLocation: string, handler: string, codeLocation: string, command: any) {
