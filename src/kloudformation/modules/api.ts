@@ -242,7 +242,7 @@ export class Api{
   
   static create(aws: AWS, name: string, stage: string, providerArns?: Value<string>[], lambdaArn?: Value<string>): Api {
     const restApi = aws.apigatewayRestApi({ name });
-    const authorizer = providerArns && aws.apigatewayAuthorizer({
+    const authorizer = providerArns && providerArns.length > 0 && aws.apigatewayAuthorizer({
       authorizerResultTtlInSeconds: 300,
       providerARNs: providerArns,
       identitySource: 'method.request.header.Authorization',
