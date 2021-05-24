@@ -67,7 +67,7 @@ export class Path {
       resourceId: this.resources[this.resources.length - 1],
       restApiId: this.api.restApi,
       apiKeyRequired: false,
-      ...(this.api.authorizer ? { authorizationType: 'COGNITO_USER_POOLS', authorizerId: this.api.authorizer}: {}),
+      ...(this.api.authorizer ? { authorizationType: 'COGNITO_USER_POOLS', authorizerId: this.api.authorizer}: { authorizationType: 'NONE' }),
       ...(this.api.lambdaArn ? { integration: {
           integrationHttpMethod: 'POST',
           type: 'AWS_PROXY',
