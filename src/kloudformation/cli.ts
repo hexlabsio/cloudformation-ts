@@ -4,7 +4,8 @@ import { CloudFormation, S3 } from "aws-sdk";
 import * as fs from 'fs';
 import { ApiDefinition } from "./modules/api";
 const archiver = require('archiver');
-const chalk = require('chalk');
+const _chalk = require('chalk');
+const chalk = new _chalk({level: 1});
 const tsNode = require('ts-node');
 import express, { RequestHandler } from 'express';
 
