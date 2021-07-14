@@ -29,6 +29,18 @@ export class Lambda {
     return this;
   }
   
+  enableTracing(): Lambda {
+    const managedPolicy = 'arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess';
+    const current = (this.role.managedPolicyArns as Value<string>[] ?? []);
+    if(!current.includes(managedPolicy)) {
+      this.role.managedPolicyArns = [...current, managedPolicy];
+    }
+    this.lambda.tracingConfig = {
+      mode: 'Active'
+    }
+    return this;
+  }
+  
   static grantInvoke(aws: AWS, lambdaName: Value<string>,  toArn: Value<string>, principal: Value<string>, sourceAccount?: Value<string>): Permission {
     return aws.lambdaPermission({
       action: 'lambda:InvokeFunction',
@@ -38,6 +50,7 @@ export class Lambda {
       sourceAccount
     });
   }
+  
   
   snsTrigger(topicArn: Value<string>, sourceAccount?: Value<string>): Lambda {
     const [permission, subscription] = Lambda.snsTrigger(this.aws, this.lambda.attributes.Arn, topicArn, sourceAccount);

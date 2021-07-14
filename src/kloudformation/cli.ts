@@ -172,8 +172,7 @@ function clearRequireCache() {
   });
 }
 
-function queryParameters(expressQuery: { [key: string]: undefined | string | string[]; }
-) {
+function queryParameters(expressQuery: { [key: string]: undefined | string | string[] }) {
   return Object.keys(expressQuery).reduce((acc, elem) => {
     if (expressQuery[elem]) {
       return Array.isArray(expressQuery[elem])
