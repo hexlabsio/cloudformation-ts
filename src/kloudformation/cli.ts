@@ -21,6 +21,7 @@ function deleteCommand(): any {
 function deployCommand(): any {
   return program.command('deploy <stackName> <templateLocation> [fileLocation]')
     .option('-r, --region <region>', 'The region to delete stack from', 'eu-west-1')
+    .option('-e, --endpoint-url <endpoint-url>')
     .option('-c, --capabilities <capability...>', 'A space separated list of any of CAPABILITY_IAM, CAPABILITY_NAMED_IAM or CAPABILITY_AUTO_EXPAND', ["CAPABILITY_NAMED_IAM"])
     .option('-f, --file <files...>', 'A space separated list of files to upload to s3')
     .option('-b, --bucket <bucket>', 'The s3 bucket in which to upload files')
@@ -266,14 +267,14 @@ async function deployStack(stackName: string, templateLocation: string, fileLoca
   try {
     if (templateLocation.endsWith(".ts")) {
       const envs = await generateStack(templateLocation, command);
-      await deploy(command.region, stackName, fileLocation, command.capabilities, command.file, command.prefix, command.bucket, command.outputFile, envs);
+      await deploy(command.region, command.endpointUrl, stackName, fileLocation, command.capabilities, command.file, command.prefix, command.bucket, command.outputFile, envs);
     } else {
       if (command.tsProject) {
         tsNode.register({ project: command.tsProject });
       } else {
         tsNode.register();
       }
-      await deploy(command.region, stackName, templateLocation, command.capabilities, command.file, command.prefix, command.bucket);
+      await deploy(command.region, command.endpointUrl,  stackName, templateLocation, command.capabilities, command.file, command.prefix, command.bucket);
     }
   } catch (e) {
     console.error(chalk.red(e));
@@ -322,11 +323,11 @@ async function upload(files: string[], prefix: string, bucket: string): Promise<
   }));
 }
 
-async function deploy(region: string, stackName: string, template: string, capabilities: string[], files: string[], prefix: string, bucket: string, outputFile?: string, envs?: { [key: string]: string; }) {
+async function deploy(region: string, endpoint: string,  stackName: string, template: string, capabilities: string[], files: string[], prefix: string, bucket: string, outputFile?: string, envs?: { [key: string]: string; }) {
   validateCapabilities(capabilities);
   const locations = (files && bucket) ? await upload(files, prefix ?? '', bucket) : [];
   const templateContent = fs.readFileSync(template ?? 'template.json');
-  const cf = new CloudFormation({ region });
+  const cf = new CloudFormation({ region, endpoint });
   const stack = await stackExists(cf, stackName);
   let start = new Date().toISOString();
   console.log(chalk.green(`Deploying ${stackName}`));
@@ -339,7 +340,7 @@ async function deploy(region: string, stackName: string, template: string, capab
     if (continuable.includes(stack.StackStatus)) {
       try {
         console.log(chalk.green(`Updating existing stack in region ${region} named ${stackName}`));
-        const result = await cf.updateStack({ StackName: stackName, Capabilities: capabilities, TemplateBody: templateContent.toString(), Parameters: parameters }).promise();
+        const result = await cf.updateStack({ StackName: stackName,  Capabilities: capabilities, TemplateBody: templateContent.toString(), Parameters: parameters }).promise();
         if (result.$response.error) {
           console.log(chalk.red(result.$response.error));
           process.exit(1);
