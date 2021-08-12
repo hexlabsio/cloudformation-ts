@@ -4,9 +4,15 @@ import {normalize} from "../kloudformation";
 
 export type DynamoType =
   | 'string'
+  | 'string set'
   | 'number'
+  | 'number set'
+  | 'binary set'
+  | 'binary'
   | 'boolean'
   | 'null'
+  | 'list'
+  | 'map'
   | DynamoEntryDefinition;
 export type DynamoEntryDefinition = { [key: string]: DynamoType };
 
@@ -44,12 +50,41 @@ export function dynamoTable<
     string,
     { hashKey: keyof D; rangeKey?: keyof D }
     > | null = null,
-  >(aws: AWS, definition: TableDefinition<D, H, R, G>, name: string | undefined, props: Omit<TableProperties, 'globalSecondaryIndexes' | 'keySchema' | 'tableName'>): Table {
+  >(aws: AWS, definition: TableDefinition<D, H, R, G>, name: string | undefined, props: Omit<TableProperties, 'globalSecondaryIndexes' | 'keySchema' | 'tableName' | 'attributeDefinitions'>): Table {
+  
+  const indexKeys = Object.keys(definition.indexes ?? {}).flatMap(key => [definition.indexes![key].hashKey as string, ...(definition.indexes![key].rangeKey ? [definition.indexes![key].rangeKey! as string] : [])]);
+  const keys: (keyof D)[] = [...new Set([definition.hashKey as string, ...(definition.rangeKey ? [definition.rangeKey! as string] : []), ...indexKeys])]
+  function typeFor(key: keyof D): string {
+    const type: DynamoType = definition.definition[key];
+      switch (type) {
+        case 'string':
+          return 'S';
+        case 'string set':
+          return 'SS';
+        case 'number':
+          return 'N';
+        case 'number set':
+          return 'NS';
+        case 'binary':
+          return 'B';
+        case 'binary set':
+          return 'BS';
+        case 'boolean':
+          return 'BOOL';
+        case 'null':
+          return 'NULL';
+        case 'list':
+          return 'L';
+        default:
+          return 'M';
+      }
+    }
   return aws.dynamodbTable({
   ...(name ? {_logicalName: normalize(name) }: {}),
     ...props,
     ...(name ? {tableName: name }: {}),
     keySchema: [{keyType: 'HASH', attributeName: definition.hashKey as string}, ...(definition.rangeKey ? [{keyType: 'RANGE', attributeName: definition.rangeKey as string}]: [])],
+    attributeDefinitions: keys.map(key => ({attributeName: key as string, attributeType: typeFor(key)})),
   ...((definition.indexes && Object.keys(definition.indexes as any).length > 0) ? {globalSecondaryIndexes: Object.keys(definition.indexes as any).map(key => {
       return {
         indexName: key,
