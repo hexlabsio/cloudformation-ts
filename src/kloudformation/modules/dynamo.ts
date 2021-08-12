@@ -1,6 +1,9 @@
 import {Table, TableProperties} from "../../aws/dynamodb/Table";
+import {Role} from "../../aws/iam/Role";
 import {AWS} from "../aws";
+import {Iam, Policy} from "../iam/PolicyDocument";
 import {normalize} from "../kloudformation";
+import {join} from "../Value";
 
 export type DynamoType =
   | 'string'
@@ -42,6 +45,11 @@ export type TableDefinition<
     > | null = null,
   > = { definition: D; hashKey: H; rangeKey?: R; indexes?: G }
 
+export function grantTableAccess(role: Role, policyName: string, tables: Table[]) {
+  const indexes = tables.flatMap(it => (it.globalSecondaryIndexes ?? []).map(gsi => join(it.attributes.Arn, '/index/', gsi.indexName)));
+  Iam.from(role).add(policyName, Policy.allow("dynamodb:*", [...tables.map(table => table.attributes.Arn), ...indexes]))
+}
+
 export function dynamoTable<
   D extends DynamoEntryDefinition,
   H extends keyof D,
@@ -56,7 +64,8 @@ export function dynamoTable<
   const keys: (keyof D)[] = [...new Set([definition.hashKey as string, ...(definition.rangeKey ? [definition.rangeKey! as string] : []), ...indexKeys])]
   function typeFor(key: keyof D): string {
     const type: DynamoType = definition.definition[key];
-      switch (type) {
+    const nonOptionalType = `${type}`.endsWith('?') ? type.toString().substring(0, type.toString().length - 2) : type;
+      switch (nonOptionalType) {
         case 'string':
           return 'S';
         case 'string set':
