@@ -1,3 +1,8 @@
+import {
+  DynamoObjectDefinition,
+  DynamoType,
+  TableEntryDefinition
+} from "@hexlabs/dynamo-ts";
 import {Table, TableProperties} from "../../aws/dynamodb/Table";
 import {Role} from "../../aws/iam/Role";
 import {AWS} from "../aws";
@@ -5,60 +10,20 @@ import {Iam, Policy} from "../iam/PolicyDocument";
 import {normalize} from "../kloudformation";
 import {join} from "../Value";
 
-export type DynamoType =
-  | 'string'
-  | 'string set'
-  | 'number'
-  | 'number set'
-  | 'binary set'
-  | 'binary'
-  | 'boolean'
-  | 'null'
-  | 'list'
-  | 'map'
-  | DynamoEntryDefinition;
-export type DynamoEntryDefinition = { [key: string]: DynamoType };
-
-export type TypeFor<T extends DynamoType> = T extends 'string'
-  ? string
-  : T extends 'number'
-    ? number
-    : T extends 'boolean'
-      ? boolean
-      : T extends 'null'
-        ? null
-        : T extends DynamoEntryDefinition
-          ? { [K in keyof T]: DynamoEntry<T>[K] }
-          : never;
-
-export type DynamoEntry<T extends DynamoEntryDefinition> = {
-  [K in keyof T]: TypeFor<T[K]>;
-};
-
-export type TableDefinition<
-  D extends DynamoEntryDefinition,
-  H extends keyof D,
-  R extends keyof D | null = null,
-  G extends Record<
-    string,
-    { hashKey: keyof D; rangeKey?: keyof D; }
-    > | null = null,
-  > = { definition: D; hashKey: H; rangeKey?: R; indexes?: G }
-
 export function grantTableAccess(role: Role, policyName: string, tables: Table[]) {
   const indexes = tables.flatMap(it => (it.globalSecondaryIndexes ?? []).map(gsi => join(it.attributes.Arn, '/index/', gsi.indexName)));
   Iam.from(role).add(policyName, Policy.allow("dynamodb:*", [...tables.map(table => table.attributes.Arn), ...indexes]))
 }
 
 export function dynamoTable<
-  D extends DynamoEntryDefinition,
+  D extends DynamoObjectDefinition['object'],
   H extends keyof D,
   R extends keyof D | null = null,
   G extends Record<
     string,
     { hashKey: keyof D; rangeKey?: keyof D }
     > | null = null,
-  >(aws: AWS, definition: TableDefinition<D, H, R, G>, name: string | undefined, props: Omit<TableProperties, 'globalSecondaryIndexes' | 'keySchema' | 'tableName' | 'attributeDefinitions'>): Table {
+  >(aws: AWS, definition: TableEntryDefinition<D, H, R, G>, name: string | undefined, props: Omit<TableProperties, 'globalSecondaryIndexes' | 'keySchema' | 'tableName' | 'attributeDefinitions'>): Table {
   
   const indexKeys = Object.keys(definition.indexes ?? {}).flatMap(key => [definition.indexes![key].hashKey as string, ...(definition.indexes![key].rangeKey ? [definition.indexes![key].rangeKey! as string] : [])]);
   const keys: (keyof D)[] = [...new Set([definition.hashKey as string, ...(definition.rangeKey ? [definition.rangeKey! as string] : []), ...indexKeys])]
