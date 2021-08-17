@@ -185,6 +185,8 @@ export interface ApiDefinition {
   resources: Array<{path: string, method: string}>;
 }
 
+export interface SnsDefinition { topicName: string, handler: string }
+
 export interface PathInfo { 
   paths?: { [key: string]: PathInfo }, 
   methods?: string[], 

@@ -1,13 +1,12 @@
 #!/usr/bin/env node
-import { APIGatewayProxyEvent } from "aws-lambda";
+import { APIGatewayProxyEvent, SNSEvent, SNSMessage } from "aws-lambda";
 import { CloudFormation, S3 } from "aws-sdk";
 import * as fs from 'fs';
-import { ApiDefinition } from "./modules/api";
+import { ApiDefinition, SnsDefinition } from "./modules/api";
 const archiver = require('archiver');
 const chalk = require('chalk');
 const tsNode = require('ts-node');
 import express, { RequestHandler } from 'express';
-
 const { Command } = require('commander');
 
 const program = new Command();
@@ -195,6 +194,33 @@ function queryParameters(expressQuery: { [key: string]: undefined | string | str
     });
 }
 
+function snsFunctionFor(topicName: string, codeLocation: string, handler: string): RequestHandler {
+  return (req, res) => {
+    const snsEvent: SNSEvent = {
+      Records:[
+      {
+        EventVersion: 'local-event-version',
+        EventSubscriptionArn: `${topicName}-local-event-arn`,
+        EventSource: `${topicName}-event-source`,
+        Sns: {
+          Message: JSON.stringify({
+            headers: req.headers,
+            body: req.body
+          })
+        } as SNSMessage
+    }]
+  }
+    clearRequireCache();
+    require(codeLocation)[handler](snsEvent).then(_ => {
+      console.log(chalk.green('SNS - TOPIC ' + topicName + 'processed message'));
+      res.status(200).send("done");
+    }).catch(error => {
+      console.log(chalk.red('SNS - TOPIC ' + topicName + ' threw ' + error));
+      res.status(500).send(error.message);
+    });
+  };
+}
+
 function functionFor(method: string, path: string, codeLocation: string, handler: string): RequestHandler {
   return (req, res) => {
     const headers = req.headers;
@@ -224,6 +250,24 @@ function functionFor(method: string, path: string, codeLocation: string, handler
   };
 }
 
+function attachApis(apis: ApiDefinition[], handler: string, codeLocation: string, port: string, app) {
+  apis.forEach(api => {
+    api.resources.forEach(resource => {
+      const path = '/' + resource.path.replace(/{([^/{}]+)}/g, ':$1');
+      app[resource.method.toLowerCase()](path, functionFor(resource.method, '/' + resource.path, codeLocation, handler));
+      console.log(chalk.green(`${resource.method} http://localhost:${port}${path}`));
+    });
+  });
+}
+
+function attachSnsApis(snsDefinitions: SnsDefinition[], codeLocation: string, port: string, app) {
+  snsDefinitions.forEach(snsDefinition => {
+      const path = '/sns/' + snsDefinition.topicName.replace(/{([^/{}]+)}/g, ':$1');
+      app['post'](path, snsFunctionFor(snsDefinition.topicName, codeLocation, snsDefinition.handler));
+      console.log(chalk.green(`TOPIC http://localhost:${port}${path}`));
+    });
+}
+
 async function runApi(templateLocation: string, handler: string, codeLocation: string, command: any) {
   try {
     if (command.tsProject) {
@@ -237,23 +281,18 @@ async function runApi(templateLocation: string, handler: string, codeLocation: s
       const stacks: string[] = command.stackInfo ?? [];
       await setEnvsForStacks(stacks, command.region);
       const definition: any = requireTemplate(templateLocation);
-      if (definition && definition.default && definition.default.outputs && definition.default.outputs.apis) {
-        const apis: ApiDefinition[] = definition.default.outputs.apis;
-        const app = express();
-        app.use(rawBody);
-        const PORT = process.env.PORT || 3000;
-        apis.forEach(api => {
-          api.resources.forEach(resource => {
-            const path = '/' + resource.path.replace(/{([^/{}]+)}/g, ':$1');
-            app[resource.method.toLowerCase()](path, functionFor(resource.method, '/' + resource.path, codeLocation, handler));
-            console.log(chalk.green(`${resource.method} http://localhost:${PORT}${path}`));
-          });
-        });
-        app.listen(PORT, () => console.log(`⚡Server is running here 👉 http://localhost:${PORT}`));
-      } else {
-        console.log(chalk.red('No API definitions exported please check docs on usage'));
+      const apis: ApiDefinition[] = definition?.default?.outputs?.apis ?? []
+      const localSNS: SnsDefinition[] = definition?.default?.outputs?.sns ?? []
+      if(apis.length + localSNS.length === 0) {
+        console.log(chalk.red('No API or SNS definitions exported please check docs on usage'));
         process.exit(1);
       }
+      const PORT = process.env.PORT || "3000";
+      const app = express();
+        app.use(rawBody);
+      attachApis(apis, handler, codeLocation, PORT, app);
+      attachSnsApis(localSNS, codeLocation, PORT, app);
+      app.listen(PORT, () => console.log(`⚡Server is running here 👉 http://localhost:${PORT}`));
     } else {
       throw new Error('Handler not found in code file');
     }
