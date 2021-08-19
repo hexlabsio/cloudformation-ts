@@ -3,7 +3,7 @@ import {
   APIGatewayProxyEvent,
   SNSEvent,
   SNSMessage,
-  SNSMessageAttributes,
+  // SNSMessageAttributes,
 } from "aws-lambda";
 import { CloudFormation, S3 } from "aws-sdk";
 import * as fs from "fs";
@@ -314,9 +314,9 @@ function queryParameters(expressQuery: {
     }
   );
 }
-function isArr<T>(arg: T | T[] | undefined): arg is T[] {
-  return !!arg && Array.isArray(arg);
-}
+// function isArr<T>(arg: T | T[] | undefined): arg is T[] {
+//   return !!arg && Array.isArray(arg);
+// }
 
 function snsFunctionFor(
   topicName: string,
@@ -324,6 +324,7 @@ function snsFunctionFor(
   handler: string
 ): RequestHandler {
   return (req, res) => {
+    const parsedReq = JSON.parse((req as any).rawBody)
     const snsEvent: SNSEvent = {
       Records: [
         {
@@ -331,19 +332,8 @@ function snsFunctionFor(
           EventSubscriptionArn: `${topicName}-local-event-arn`,
           EventSource: `${topicName}-event-source`,
           Sns: {
-            MessageAttributes: Object.keys(req.headers)
-              .filter((k) => k.toLowerCase().startsWith("x-"))
-              .reduce<SNSMessageAttributes>((acc, item) => {
-                const httpHeader = req.headers[item];
-                const headerVal = isArr(httpHeader)
-                  ? httpHeader.join(",")
-                  : httpHeader;
-                return {
-                  ...acc,
-                  [item]: { Type: "string", Value: headerVal ?? "" },
-                };
-              }, {}),
-            Message: (req as any).rawBody,
+            MessageAttributes: parsedReq.headers,
+            Message: parsedReq.body,
           } as SNSMessage,
         },
       ],
