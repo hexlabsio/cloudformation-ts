@@ -3,7 +3,8 @@ import {
   APIGatewayProxyEvent,
   SNSEvent,
   SNSMessage,
-  // SNSMessageAttributes,
+  SNSMessageAttribute,
+  SNSMessageAttributes,
 } from "aws-lambda";
 import { CloudFormation, S3 } from "aws-sdk";
 import * as fs from "fs";
@@ -12,6 +13,7 @@ const archiver = require("archiver");
 const chalk = require("chalk");
 const tsNode = require("ts-node");
 import express, { RequestHandler } from "express";
+import { MessageAttributeMap, MessageAttributeValue } from "aws-sdk/clients/sns";
 const { Command } = require("commander");
 
 const program = new Command();
@@ -314,9 +316,15 @@ function queryParameters(expressQuery: {
     }
   );
 }
-// function isArr<T>(arg: T | T[] | undefined): arg is T[] {
-//   return !!arg && Array.isArray(arg);
-// }
+
+function convertSnsPublisherHeader(publisherHeader: MessageAttributeValue): SNSMessageAttribute {
+  const {DataType, StringValue} = publisherHeader
+  return {Type: DataType, Value: StringValue ?? ""}
+}
+function convertSnsPublisherHeaders(publisherHeaders: MessageAttributeMap): SNSMessageAttributes {
+  return Object.keys(publisherHeaders)
+    .reduce<SNSMessageAttributes>((acc, item) => ({[item]: convertSnsPublisherHeader(publisherHeaders[item])}), {})
+}
 
 function snsFunctionFor(
   topicName: string,
@@ -324,7 +332,10 @@ function snsFunctionFor(
   handler: string
 ): RequestHandler {
   return (req, res) => {
-    const parsedReq = JSON.parse((req as any).rawBody)
+    const request = (req as any).rawBody
+    console.log(chalk.green(`request received : ${request}`))
+    const parsedReq = JSON.parse(request)
+    const publisherHeaders: MessageAttributeMap = parsedReq.headers
     const snsEvent: SNSEvent = {
       Records: [
         {
@@ -332,7 +343,7 @@ function snsFunctionFor(
           EventSubscriptionArn: `${topicName}-local-event-arn`,
           EventSource: `${topicName}-event-source`,
           Sns: {
-            MessageAttributes: parsedReq.headers,
+            MessageAttributes: convertSnsPublisherHeaders(publisherHeaders),
             Message: parsedReq.body,
           } as SNSMessage,
         },
