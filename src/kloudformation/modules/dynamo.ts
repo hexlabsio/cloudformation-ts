@@ -29,7 +29,7 @@ export function dynamoTable<
   const keys: (keyof D)[] = [...new Set([definition.hashKey as string, ...(definition.rangeKey ? [definition.rangeKey! as string] : []), ...indexKeys])]
   function typeFor(key: keyof D): string {
     const type: DynamoType = definition.definition[key];
-    const nonOptionalType = `${type}`.endsWith('?') ? type.toString().substring(0, type.toString().length - 2) : type;
+    const nonOptionalType = `${type}`.endsWith('?') ? type.toString().substring(0, type.toString().length - 1) : type;
       switch (nonOptionalType) {
         case 'string':
           return 'S';
