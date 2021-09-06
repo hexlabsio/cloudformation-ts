@@ -1,3 +1,4 @@
+import {Rule} from "../../aws/events/Rule";
 import {Role} from "../../aws/iam/Role";
 import {Function as LambdaFunction} from "../../aws/lambda/Function";
 import {CodeProps} from "../../aws/lambda/function/CodeProps";
@@ -13,6 +14,7 @@ export class Lambda {
   lambda: LambdaFunction;
   permissions: Permission[];
   subscriptions: Subscription[];
+  rules: Rule[];
   name: string;
   
   constructor(private readonly aws: AWS, name: string, role: Role, lambda: LambdaFunction) {
@@ -22,6 +24,22 @@ export class Lambda {
     this.lambda = lambda;
     this.permissions = [];
     this.subscriptions = [];
+    this.rules = [];
+  }
+  
+  schedule(scheduleExpression: string): Lambda {
+    const rule = this.aws.eventsRule({
+      scheduleExpression: scheduleExpression,
+      targets: [{arn: this.lambda.attributes.Arn, id: '1'}]
+    });
+    this.rules.push(rule);
+    this.permissions.push(this.aws.lambdaPermission({
+      action: 'lambda:InvokeFunction',
+      functionName: this.lambda.attributes.Arn,
+      principal: 'events.amazonaws.com',
+      sourceArn: rule.attributes.Arn
+    }))
+    return this;
   }
   
   grantInvoke(toArn: Value<string>, principal: Value<string>, sourceAccount?: Value<string>): Lambda{
