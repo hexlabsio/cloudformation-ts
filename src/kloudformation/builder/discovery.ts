@@ -170,8 +170,8 @@ function buildAwsType(resources: NameLocationContent[]) {
     const asImport = `${it[0] === 'Function' ? `_function` : `${it[0].substring(0,1).toLowerCase()}${it[0].substring(1)}`} as ${location}${it[0]}`;
     return `import { ${asImport} } from '../${it[1].replace(/\./g, '/')}/${it[0]}';`;
   }).join('\n');
-  const parent = imports + '\n\nexport type AWS = typeof aws & { logicalName: (prefix: string) => string };' +
-    '\n\nexport const aws = {\n' + resources.map(it => {
+  const parent = imports + '\nimport {customResource} from \'./modules/custom-resource\';\n\nexport type AWS = typeof aws & { logicalName: (prefix: string) => string };' +
+    '\n\nexport const aws = {\n    customResource,\n' + resources.map(it => {
       const location = it[1].split('.').slice(1).map((it, index) => index > 0 ? (it.substring(0,1).toUpperCase() + it.substring(1)) : it).join('');
       return '    ' + location + it[0];
     }).join(',\n') + '\n};';
