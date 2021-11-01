@@ -91,6 +91,7 @@ export class Lambda {
   
   static create(aws: AWS, name: string, code: CodeProps, handler: Value<string>, runtime: LambdaFunction['runtime'], extra?: Partial<LambdaFunction>): Lambda {
     const normalName = normalize(name);
+    const functionName = extra?.functionName ?? name;
     const role = aws.iamRole({
       _logicalName: `${normalName}Role`,
       path: '/',
@@ -104,12 +105,12 @@ export class Lambda {
           version: '2012-10-17',
           statement: [
             {action: 'logs:CreateLogGroup', effect: 'Allow', resource: [joinWith(':', 'arn', {Ref: 'AWS::Partition'}, 'logs', {Ref: 'AWS::Region'}, {Ref: 'AWS::AccountId'}, '*')]},
-            {action: ['logs:CreateLogStream', 'logs:PutLogEvents'], effect: 'Allow', resource: [joinWith(':', 'arn', {Ref: 'AWS::Partition'}, 'logs', {Ref: 'AWS::Region'}, {Ref: 'AWS::AccountId'}, 'log-group', join('/aws/lambda/', name, ':*'))]}
+            {action: ['logs:CreateLogStream', 'logs:PutLogEvents'], effect: 'Allow', resource: [joinWith(':', 'arn', {Ref: 'AWS::Partition'}, 'logs', {Ref: 'AWS::Region'}, {Ref: 'AWS::AccountId'}, 'log-group', join('/aws/lambda/', functionName, ':*'))]}
           ],
         })
       }]
     });
-    const lambda = aws.lambdaFunction({ _logicalName: `${normalName}Function`, ...extra, code, handler, role: role.attributes.Arn, runtime, functionName: name,  });
+    const lambda = aws.lambdaFunction({ _logicalName: `${normalName}Function`, functionName: name, code, handler, role: role.attributes.Arn, runtime, ...extra  });
     return new Lambda(aws, normalName, role, lambda);
   }
 }
