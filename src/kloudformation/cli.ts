@@ -61,6 +61,11 @@ function deployCommand(): any {
       "A file to output key-value pairs from stack-info"
     )
     .option("-t, --ts-project <fileName>", "TS Config")
+    .option(
+        "-v, --parameters <parametersFile>",
+        "The location of the parameters file",
+        "parameters.json"
+    )
     .action(deployStack);
 }
 
@@ -528,6 +533,7 @@ async function deployStack(
         command.endpointUrl,
         stackName,
         fileLocation,
+        command.parametersFile,
         command.capabilities,
         command.file,
         command.prefix,
@@ -546,6 +552,7 @@ async function deployStack(
         command.endpointUrl,
         stackName,
         templateLocation,
+        command.parametersFile,
         command.capabilities,
         command.file,
         command.prefix,
@@ -615,11 +622,22 @@ async function upload(
   );
 }
 
+function getParamtersFile(parameterFile: string): {[name: string]: {envName: string}}{
+  try {
+    const parametersContent = fs.readFileSync(parameterFile);
+    return JSON.parse(parametersContent.toString())
+  } catch(e) {
+    console.warn(e);
+    return {};
+  }
+}
+
 async function deploy(
   region: string,
   endpoint: string,
   stackName: string,
   template: string,
+  parameterFile: string,
   capabilities: string[],
   files: string[],
   prefix: string,
@@ -630,13 +648,20 @@ async function deploy(
   validateCapabilities(capabilities);
   const locations =
     files && bucket ? await upload(files, prefix ?? "", bucket) : [];
-  const templateContent = fs.readFileSync(template ?? "template.json");
+  const templateContent = fs.readFileSync(template);
+  const parametersInfo = getParamtersFile(parameterFile)
   const cf = new CloudFormation({ region, endpoint });
   const stack = await stackExists(cf, stackName);
-  let start = new Date().toISOString();
+  const start = new Date().toISOString();
   console.log(chalk.green(`Deploying ${stackName}`));
+  const envParams = Object.keys(parametersInfo).map(it => {
+    const info = parametersInfo[it];
+    const envName = info.envName;
+    if(!envName || !process.env[envName]) throw new Error(`Could not lookup parameter with name ${it}, or no env with name ${envName} was found`);
+    return { ParameterKey: it, ParameterValue: process.env[envName] }
+  });
   const parameters: CloudFormation.Parameter[] =
-    files && bucket
+      [...(files && bucket
       ? [
           { ParameterKey: "CodeBucket", ParameterValue: bucket },
           ...locations.map((location, index) => ({
@@ -644,7 +669,7 @@ async function deploy(
             ParameterValue: location,
           })),
         ]
-      : [];
+      : []), ...envParams];
   console.log(
     chalk.green(
       `Passing the following parameters ${parameters

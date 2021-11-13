@@ -21,9 +21,8 @@ export default class DocsCache {
       const content = await request({uri: githubUri});
       return Documentation.build(content);
     } catch(e) {
-      console.warn(url);
+      return undefined;
     }
-    return undefined;
   }
 }
 

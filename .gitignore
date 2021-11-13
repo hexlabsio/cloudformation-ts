@@ -7,3 +7,4 @@ src/alexa
 src/aws
 src/kloudformation/aws.ts
 template.json
+parameters.json

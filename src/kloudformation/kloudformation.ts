@@ -12,25 +12,29 @@ export interface KloudFormationTemplate {
       Default?: string;
       AllowedValues? : string[];
       Description? : string;
-    }
-  },
+    };
+  };
   Resources: {
     [logicalName: string]: {
       Type: string;
       Properties?: any;
     };
-  },
+  };
   Outputs?: {
     [logicalId: string]: {
       Description?: string;
       Value: any;
-      Export?: { Name: string; };
-    }
-  }
+      Export?: { Name: string };
+    };
+  };
 }
 
-interface Parameter {
-  type : string;
+type Parameter = ({
+  type: string;
+} | {
+  type: 'Future';
+  environmentName: string;
+}) & {
   default?: string;
   allowedValues? : string[];
   description? : string;
@@ -40,12 +44,12 @@ type Params<T> = { [K in keyof T]: <R = string>() => Value<R> }
 
 
 export interface Outputs {
-  apis?: ApiDefinition[],
-  outputs?: { [logicalId: string] : {
+  apis?: ApiDefinition[];
+  outputs?: { [logicalId: string]: {
       description? : string;
       value: Value<any>;
-      export?: { name : string; };
-    } }
+      export?: { name: string };
+    }; };
 }
 
 type Builder = (aws: AWS) => void | Outputs
@@ -54,6 +58,10 @@ type BuilderWith<ParamType> = (aws: AWS, parameters: Params<ParamType>) => void 
 
 export function normalize(name: string) {
   return name.split(/[^a-zA-Z0-9]/g).reduce((prev, current) => `${prev}${current.substring(0,1).toUpperCase()}${current.substring(1)}`, '');
+}
+
+export function fromEnv<S>(environmentName: S): {type: 'Future', environmentName: S} {
+  return {type: 'Future', environmentName};
 }
 
 export class Template {
@@ -96,15 +104,13 @@ export class Template {
     function caps(key: string): string { return key.substring(0,1).toUpperCase() + key.substring(1) }
     if(typeof props === 'object') {
       if(Array.isArray(props)){
-        // @ts-ignore
-        return props.map(Template.capitalize);
+        return props.map(Template.capitalize) as any;
       }
       if(props['_nocaps'] !== undefined) {
         const {_nocaps, ...rest} = props as any;
         return rest;
       }
-      // @ts-ignore
-      return transform(Object.keys(props).reduce((prev, key) => ({...prev, [caps(key)]: Template.capitalize(props[key])}), {} as T))
+      return transform(Object.keys(props as any).reduce((prev, key) => ({...prev, [caps(key)]: Template.capitalize(props[key])}), {} as any) as any)
     }
     return props;
   }
@@ -114,8 +120,8 @@ export class Template {
     builder: Builder,
     file: PathLike = "template.json",
     transform: (template: KloudFormationTemplate) => string = template => JSON.stringify(template, null, 2)
-  ): {template: KloudFormationTemplate, outputs?: Outputs} {
-    return Template.createWithParams({}, builder, file, transform);
+  ): {template: KloudFormationTemplate; outputs?: Outputs} {
+    return Template.createWithParams({}, builder, file, "parameters.json", transform);
   }
   
   
@@ -123,8 +129,9 @@ export class Template {
     parameters: T,
     builder: BuilderWith<T>,
     file: PathLike = "template.json",
+    paramsFile: PathLike = "parameters.json",
     transform: (template: KloudFormationTemplate) => string = template => JSON.stringify(template, null, 2)
-  ): {template: KloudFormationTemplate, outputs?: Outputs} {
+  ): {template: KloudFormationTemplate; outputs?: Outputs} {
     const template = new Template();
     const logicalNameFunction = (prefix: string) => template.logicalName(prefix);
     const builderAws = Object.keys(aws)
@@ -132,16 +139,22 @@ export class Template {
     .reduce((prev, key) => Object.assign(prev, {[key]: template.modify((aws as any)[key])}), { logicalName: logicalNameFunction } as AWS);
     const parameterFunctions = Object.keys(parameters).reduce((prev, parameter) => ({...prev, [parameter]: () => ({'Ref': parameter})}), {} as Params<T>)
     const outputs = builder(builderAws, parameterFunctions);
+    const envParams = Object.keys(parameters).reduce((prev, param) => {
+      const parameter = parameters[param] as any;
+      if(parameter.type === 'Future')
+        return {...prev, [param]: {envName: parameter.environmentName!}}
+      return prev;
+    },{});
     const output: KloudFormationTemplate = {
       Parameters: Object.keys(parameters).reduce((prev, param) => {
         const parameter = parameters[param];
         return {
           ...prev,
           [param]: {
-            Type: parameter.type,
-            Default: parameter.default,
-            AllowedValues: parameter.allowedValues,
-            Description: parameter.description
+            Type: parameter.type === 'Future' ? 'String' : parameter.type,
+            Default: parameter.default!,
+            AllowedValues: parameter.allowedValues!,
+            Description: parameter.description!
           }
         }
       }, {} as KloudFormationTemplate['Parameters']),
@@ -167,7 +180,42 @@ export class Template {
     };
     if(file) {
       fs.writeFileSync(file, transform(output));
+      fs.writeFileSync(paramsFile, JSON.stringify(envParams));
     }
     return {template: output, outputs: outputs || undefined};
+  }
+}
+
+
+export class TemplateBuilder<P extends {[param: string]: Parameter}> {
+  private parameters: {[param: string]: Parameter} = {};
+  private transform: (template: KloudFormationTemplate) => string = template => JSON.stringify(template, null, 2)
+  constructor(public outputFileName: string, public parameterFileName: string = "parameters.json") {}
+
+  params<P2 extends {[param: string]: Parameter}>(params: P2): TemplateBuilder<P & P2> {
+    this.parameters = {...this.parameters, ...params};
+    return this as TemplateBuilder<P & P2>;
+  }
+
+  envParams<P2 extends {[params: string]: string}>(params: P2): TemplateBuilder<P & {[K in keyof P2]: {type: 'Future'; environmentName: P2[K]}}> {
+    this.parameters = {...this.parameters, ...Object.keys(params).reduce((prev, key) => ({...prev, [key]: {type: 'Future', environmentName: params[key]}}), {})};
+    return this as TemplateBuilder<P & {[K in keyof P2]: {type: 'Future'; environmentName: P2[K]}}>;
+  }
+
+  transformTemplate(transform: (template: KloudFormationTemplate) => string = template => JSON.stringify(template, null, 2)): this {
+    this.transform = transform;
+    return this;
+  }
+
+  build(builder: BuilderWith<P>): {template: KloudFormationTemplate; outputs?: Outputs} {
+    if(this.parameters && Object.keys(this.parameters).length > 0) {
+      return Template.createWithParams(this.parameters as any, builder, this.outputFileName, this.parameterFileName, this.transform)
+    }
+    return Template.create(aws => builder(aws, {} as any), this.outputFileName, this.transform)
+  }
+
+
+  static create(outputFileName = 'template.json'): TemplateBuilder<{}> {
+    return new TemplateBuilder(outputFileName);
   }
 }
