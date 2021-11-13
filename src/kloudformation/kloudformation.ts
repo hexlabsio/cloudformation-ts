@@ -189,6 +189,7 @@ export class Template {
 
 export class TemplateBuilder<P extends {[param: string]: Parameter}> {
   private parameters: {[param: string]: Parameter} = {};
+  private outputDir = '';
   private transform: (template: KloudFormationTemplate) => string = template => JSON.stringify(template, null, 2)
   constructor(public outputFileName: string, public parameterFileName: string = "parameters.json") {}
 
@@ -202,20 +203,32 @@ export class TemplateBuilder<P extends {[param: string]: Parameter}> {
     return this as TemplateBuilder<P & {[K in keyof P2]: {type: 'Future'; environmentName: P2[K]}}>;
   }
 
+  outputTo(directory: string): this {
+    this.outputDir = directory;
+    return this;
+  }
+
   transformTemplate(transform: (template: KloudFormationTemplate) => string = template => JSON.stringify(template, null, 2)): this {
     this.transform = transform;
     return this;
   }
 
+  private pathTo(file: string): string {
+    if(this.outputDir) {
+      fs.mkdirSync(this.outputDir, {recursive: true});
+    }
+    return (this.outputDir ? this.outputDir + '/' : '') + file;
+  }
+
   build(builder: BuilderWith<P>): {template: KloudFormationTemplate; outputs?: Outputs} {
     if(this.parameters && Object.keys(this.parameters).length > 0) {
-      return Template.createWithParams(this.parameters as any, builder, this.outputFileName, this.parameterFileName, this.transform)
+      return Template.createWithParams(this.parameters as any, builder, this.pathTo(this.outputFileName), this.pathTo(this.parameterFileName), this.transform)
     }
-    return Template.create(aws => builder(aws, {} as any), this.outputFileName, this.transform)
+    return Template.create(aws => builder(aws, {} as any), this.pathTo(this.outputFileName), this.transform)
   }
 
 
-  static create(outputFileName = 'template.json'): TemplateBuilder<{}> {
-    return new TemplateBuilder(outputFileName);
+  static create(outputFileName = 'template.json', parametersFileName='parameters.json'): TemplateBuilder<{}> {
+    return new TemplateBuilder(outputFileName, parametersFileName);
   }
 }
