@@ -533,7 +533,7 @@ async function deployStack(
         command.endpointUrl,
         stackName,
         fileLocation,
-        command.parametersFile,
+        command.parameters,
         command.capabilities,
         command.file,
         command.prefix,
@@ -552,7 +552,7 @@ async function deployStack(
         command.endpointUrl,
         stackName,
         templateLocation,
-        command.parametersFile,
+        command.parameters,
         command.capabilities,
         command.file,
         command.prefix,
@@ -622,14 +622,15 @@ async function upload(
   );
 }
 
-function getParamtersFile(parameterFile: string): {[name: string]: {envName: string}}{
-  try {
-    const parametersContent = fs.readFileSync(parameterFile);
-    return JSON.parse(parametersContent.toString())
-  } catch(e) {
-    console.warn(e);
-    return {};
-  }
+function getParametersFile(parameterFile: string): {[name: string]: {envName: string}}{
+  if(parameterFile) {
+    try {
+      const parametersContent = fs.readFileSync(parameterFile);
+      return JSON.parse(parametersContent.toString())
+    } catch (e) {
+      console.warn(e);
+    }
+  } return {};
 }
 
 async function deploy(
@@ -646,10 +647,9 @@ async function deploy(
   envs?: { [key: string]: string }
 ) {
   validateCapabilities(capabilities);
-  const locations =
-    files && bucket ? await upload(files, prefix ?? "", bucket) : [];
+  const locations = files && bucket ? await upload(files, prefix ?? "", bucket) : [];
   const templateContent = fs.readFileSync(template);
-  const parametersInfo = getParamtersFile(parameterFile)
+  const parametersInfo = getParametersFile(parameterFile)
   const cf = new CloudFormation({ region, endpoint });
   const stack = await stackExists(cf, stackName);
   const start = new Date().toISOString();
