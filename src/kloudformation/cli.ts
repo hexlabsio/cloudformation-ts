@@ -542,6 +542,8 @@ async function deployStack(
         envs
       );
     } else {
+      const stacks: string[] = command.stackInfo ?? [];
+      const envs = await setEnvsForStacks(stacks, command.region);
       if (command.tsProject) {
         tsNode.register({ project: command.tsProject });
       } else {
@@ -556,7 +558,9 @@ async function deployStack(
         command.capabilities,
         command.file,
         command.prefix,
-        command.bucket
+        command.bucket,
+        command.outputFile,
+        envs
       );
     }
   } catch (e) {
