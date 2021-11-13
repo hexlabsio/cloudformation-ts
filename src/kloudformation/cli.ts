@@ -744,12 +744,13 @@ async function printEnvs(
   outputFile?: string,
   envs?: { [key: string]: string }
 ) {
+  const stackEnvs = await setEnvsForStacks([stackName], region);
+  const allEnvs = { ...envs, ...stackEnvs };
+  const lines = Object.keys(allEnvs)
+    .map((envKey) => `${envKey}='${allEnvs[envKey]}'`)
+    .join("\n");
+  console.log(lines);
   if (outputFile) {
-    const stackEnvs = await setEnvsForStacks([stackName], region);
-    const allEnvs = { ...envs, ...stackEnvs };
-    const lines = Object.keys(allEnvs)
-      .map((envKey) => `${envKey}='${allEnvs[envKey]}'`)
-      .join("\n");
     console.log(chalk.green("Printing Stack outputs to " + outputFile));
     fs.writeFileSync(outputFile, lines);
   }
