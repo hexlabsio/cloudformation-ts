@@ -16,4 +16,5 @@ export default TemplateBuilder.create()
   const topic = aws.snsTopic({topicName: params.ABC()});
   Lambda.create(aws, 'test-logs-5', {zipFile: 'export async function handler(event) { console.log(event); return { statusCode: 200, body: \'Hello from Lambda\' } }'}, 'index.handler', 'nodejs12.x')
       .snsTrigger(topic).enableTracing().enableTracing()
+
 })

@@ -514,7 +514,8 @@ async function runApi(
       throw new Error("Handler not found in code file");
     }
   } catch (e) {
-    console.log(chalk.red(e));
+    console.log(chalk.red('The following error occurred'))
+    console.error(e);
     process.exit(1);
   }
 }
