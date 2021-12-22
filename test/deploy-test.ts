@@ -1,4 +1,3 @@
-import {Lambda} from "../src/kloudformation/modules/lambda";
 import {TemplateBuilder} from "../src/kloudformation/kloudformation";
 
 // export default Template.createWithParams({
@@ -11,10 +10,7 @@ import {TemplateBuilder} from "../src/kloudformation/kloudformation";
 
 
 export default TemplateBuilder.create()
-.envParams({ABC: 'GHJ'})
 .build((aws, params) => {
-  const topic = aws.snsTopic({topicName: params.ABC()});
-  Lambda.create(aws, 'test-logs-5', {zipFile: 'export async function handler(event) { console.log(event); return { statusCode: 200, body: \'Hello from Lambda\' } }'}, 'index.handler', 'nodejs12.x')
-      .snsTrigger(topic).enableTracing().enableTracing()
+  aws.snsTopic({});
 
 })

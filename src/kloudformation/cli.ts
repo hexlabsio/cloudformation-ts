@@ -243,7 +243,7 @@ function requireTemplate(location: string): any {
     return require(location);
   } catch (e) {
     console.log(chalk.red("Failed to require stack file"));
-    console.log(chalk.red(e));
+    console.log(e);
     process.exit(1);
   }
 }
@@ -491,6 +491,7 @@ async function runApi(
     if (lambda && lambda[handler]) {
       const stacks: string[] = command.stackInfo ?? [];
       await setEnvsForStacks(stacks, command.region);
+      console.log(chalk.green('Looking for template json from ' + templateLocation));
       const definition: any = requireTemplate(templateLocation);
       const apis: ApiDefinition[] = definition?.default?.outputs?.apis ?? [];
       const localSNS: SnsDefinition[] = definition?.default?.outputs?.sns ?? [];
@@ -565,7 +566,7 @@ async function deployStack(
       );
     }
   } catch (e) {
-    console.error(chalk.red(e));
+    console.error(e);
   }
 }
 
@@ -653,7 +654,9 @@ async function deploy(
 ) {
   validateCapabilities(capabilities);
   const locations = files && bucket ? await upload(files, prefix ?? "", bucket) : [];
-  const templateContent = fs.readFileSync(template);
+  const templateLocation = template ?? 'template.json';
+  console.log(chalk.green('Looking for template json from ' + templateLocation));
+  const templateContent = fs.readFileSync(templateLocation);
   const parametersInfo = getParametersFile(parameterFile)
   const cf = new CloudFormation({ region, endpoint });
   const stack = await stackExists(cf, stackName);

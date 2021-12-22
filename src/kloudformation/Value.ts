@@ -8,7 +8,16 @@ export type Join = {
   'Fn::Join': [string, Value<string>[]];
 }
 
-export type Value<T> = T | Ref | Attribute<T> | Join | KloudResource;
+export type Base64Fn = {
+  'Fn::Base64': Value<string>;
+}
+export type Cidr = {
+  'Fn::Cidr': [Value<string>, Value<number>, Value<number>]
+}
+
+export type Instrinsic<T, S extends string> = Record<S, T>
+
+export type Value<T> = T | Ref | Attribute<T> | Join | KloudResource | Base64Fn | Cidr | Instrinsic<T, any>;
 
 export function ref(logicalName: string): Ref {
   return {
