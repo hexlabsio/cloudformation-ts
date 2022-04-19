@@ -1,8 +1,10 @@
 import {
-  DynamoObjectDefinition,
+  DynamoEntry,
+  DynamoIndexes,
+  DynamoMapDefinition,
   DynamoType,
-  TableEntryDefinition
 } from "@hexlabs/dynamo-ts";
+import { DynamoDefinition } from "@hexlabs/dynamo-ts/dist/dynamo-client-config";
 import {Table, TableProperties} from "../../aws/dynamodb/Table";
 import {Role} from "../../aws/iam/Role";
 import {AWS} from "../aws";
@@ -16,17 +18,14 @@ export function grantTableAccess(role: Role, policyName: string, tables: Table[]
 }
 
 export function dynamoTable<
-  D extends DynamoObjectDefinition['object'],
-  H extends keyof D,
-  R extends keyof D | null = null,
-  G extends Record<
-    string,
-    { hashKey: keyof D; rangeKey?: keyof D }
-    > | null = null,
-  >(aws: AWS, definition: TableEntryDefinition<D, H, R, G>, name: string | undefined, props: Omit<TableProperties, 'globalSecondaryIndexes' | 'keySchema' | 'tableName' | 'attributeDefinitions'>): Table {
+  D extends DynamoMapDefinition,
+  H extends keyof DynamoEntry<D>,
+  R extends Omit<keyof DynamoEntry<D>, H> | null = null,
+  G extends DynamoIndexes<D> = null,
+  >(aws: AWS, definition: DynamoDefinition<D, H, R, G>, name: string | undefined, props: Omit<TableProperties, 'globalSecondaryIndexes' | 'keySchema' | 'tableName' | 'attributeDefinitions'>): Table {
   
   const indexKeys = Object.keys(definition.indexes ?? {}).flatMap(key => [definition.indexes![key].hashKey as string, ...(definition.indexes![key].rangeKey ? [definition.indexes![key].rangeKey! as string] : [])]);
-  const keys: (keyof D)[] = [...new Set([definition.hashKey as string, ...(definition.rangeKey ? [definition.rangeKey! as string] : []), ...indexKeys])]
+  const keys: (keyof D)[] = [...new Set([definition.hash as string, ...(definition.range ? [definition.range! as unknown as string] : []), ...indexKeys])]
   function typeFor(key: keyof D): string {
     const type: DynamoType = definition.definition[key];
     const nonOptionalType = `${type}`.endsWith('?') ? type.toString().substring(0, type.toString().length - 1) : type;
@@ -57,7 +56,7 @@ export function dynamoTable<
   ...(name ? {_logicalName: normalize(name) }: {}),
     ...props,
     ...(name ? {tableName: name }: {}),
-    keySchema: [{keyType: 'HASH', attributeName: definition.hashKey as string}, ...(definition.rangeKey ? [{keyType: 'RANGE', attributeName: definition.rangeKey as string}]: [])],
+    keySchema: [{keyType: 'HASH', attributeName: definition.hash as string}, ...(definition.range ? [{keyType: 'RANGE', attributeName: definition.range as unknown as string}]: [])],
     attributeDefinitions: keys.map(key => ({attributeName: key as string, attributeType: typeFor(key)})),
   ...((definition.indexes && Object.keys(definition.indexes as any).length > 0) ? {globalSecondaryIndexes: Object.keys(definition.indexes as any).map(key => {
       return {
