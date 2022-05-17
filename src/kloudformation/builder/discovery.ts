@@ -8,6 +8,11 @@ export type NameLocationContent = [string, string, string];
 
 const missingResources: Partial<Specification> = {
   ResourceTypes: {
+    'AWS::Rekognition::StreamProcessor': {
+      Properties: {
+
+      }
+    },
     'AWS::ApiGatewayV2::ApiGatewayManagedOverrides': {
       Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-apigatewaymanagedoverrides.html',
       Properties: {

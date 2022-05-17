@@ -53,6 +53,10 @@ function deployCommand(): any {
       "The s3 object key prefix in which to upload files"
     )
     .option(
+      "--stack-upload",
+      "Set if stack should be uploaded and referenced in s3"
+    )
+    .option(
       "-s, --stack-info <stacks...>",
       "A space separated list of stacks to get outputs as environment variables"
     )
@@ -530,6 +534,7 @@ async function deployStack(
   try {
     if (templateLocation.endsWith(".ts")) {
       const envs = await generateStack(templateLocation, command);
+
       await deploy(
         command.region,
         command.endpointUrl,
@@ -541,7 +546,8 @@ async function deployStack(
         command.prefix,
         command.bucket,
         command.outputFile,
-        envs
+        envs,
+        command.stackUpload
       );
     } else {
       const stacks: string[] = command.stackInfo ?? [];
@@ -562,7 +568,8 @@ async function deployStack(
         command.prefix,
         command.bucket,
         command.outputFile,
-        envs
+        envs,
+        command.stackUpload
       );
     }
   } catch (e) {
@@ -650,13 +657,30 @@ async function deploy(
   prefix: string,
   bucket: string,
   outputFile?: string,
-  envs?: { [key: string]: string }
+  envs?: { [key: string]: string },
+  shouldUpload?: boolean,
 ) {
+  if(shouldUpload && !bucket) {
+    console.log(chalk.red('Bucket is required for stack upload'));
+    process.exit(1);
+  }
   validateCapabilities(capabilities);
   const locations = files && bucket ? await upload(files, prefix ?? "", bucket) : [];
   const templateLocation = template ?? 'template.json';
-  console.log(chalk.green('Looking for template json from ' + templateLocation));
-  const templateContent = fs.readFileSync(templateLocation);
+
+  async function getFileContent(): Promise<string> {
+    if(shouldUpload) {
+      const files = await upload([templateLocation], prefix ?? "", bucket);
+      return files[0];
+    }
+    else {
+      console.log(chalk.green('Looking for template json from ' + templateLocation));
+      return fs.readFileSync(templateLocation).toString();
+    }
+  }
+
+  const content = await getFileContent();
+
   const parametersInfo = getParametersFile(parameterFile)
   const cf = new CloudFormation({ region, endpoint });
   const stack = await stackExists(cf, stackName);
@@ -697,8 +721,8 @@ async function deploy(
           .updateStack({
             StackName: stackName,
             Capabilities: capabilities,
-            TemplateBody: templateContent.toString(),
             Parameters: parameters,
+            ...(shouldUpload ? { TemplateURL: `https://${bucket}.s3.${region}.amazonaws.com/${content}` }: { TemplateBody: content })
           })
           .promise();
         if (result.$response.error) {
@@ -731,8 +755,8 @@ async function deploy(
       .createStack({
         StackName: stackName,
         Capabilities: capabilities,
-        TemplateBody: templateContent.toString(),
         Parameters: parameters,
+        ...(shouldUpload ? { TemplateURL: `https://${bucket}.s3.${region}.amazonaws.com/${content}` }: { TemplateBody: content })
       })
       .promise();
     if (result.$response.error) {

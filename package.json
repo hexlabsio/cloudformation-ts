@@ -19,7 +19,7 @@
     "lambda": "chmod +x dist/kloudformation/cli.js && node --trace-deprecation dist/kloudformation/cli.js run -t tsconfigtest.json $(pwd)/test/deploy-test.ts handler $(pwd)/test/fakeLambda.js",
     "stack": "ts-node test/deploy-test.ts",
     "start": "node --trace-deprecation dist/kloudformation/cli.js translate -t tsconfigtest.json $(pwd)/test/deploy-test.ts",
-    "deploy": "node --trace-deprecation dist/kloudformation/cli.js deploy -t tsconfigtest.json $(pwd)/test/deploy-test.ts"
+    "deploy": "node --trace-deprecation dist/kloudformation/cli.js deploy --stack-upload -b hexlabs-deployments -p kloudformation-test -t tsconfigtest.json test-stack $(pwd)/test/deploy-test.ts"
   },
   "files": [
     "dist"
