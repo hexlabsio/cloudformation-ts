@@ -13,6 +13,45 @@ const missingResources: Partial<Specification> = {
 
       }
     },
+    'AWS::AppStream::Entitlement': {
+      Documentation: 'http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html',
+      Properties: {
+        Description: {
+          Required: false,
+          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-description',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        Name: {
+          Required: true,
+          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-name',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        StackName: {
+          Required: true,
+          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-stackname',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        AppVisibility: {
+          Required: true,
+          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-appvisibility',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        EntitlementAttributes: {
+          Required: true,
+          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-attributes',
+          ItemType: 'Attribute',
+          UpdateType: 'Mutable'
+        },
+      },
+      Attributes: {
+        CreatedTime: {},
+        LastModifiedTime: {}
+      }
+    },
     'AWS::ApiGatewayV2::ApiGatewayManagedOverrides': {
       Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-apigatewaymanagedoverrides.html',
       Properties: {
