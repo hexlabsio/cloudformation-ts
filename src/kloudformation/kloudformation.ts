@@ -60,7 +60,7 @@ export function normalize(name: string) {
   return name.split(/[^a-zA-Z0-9]/g).reduce((prev, current) => `${prev}${current.substring(0,1).toUpperCase()}${current.substring(1)}`, '');
 }
 
-export function fromEnv<S>(environmentName: S): {type: 'Future', environmentName: S} {
+export function fromEnv<S>(environmentName: S): {type: 'Future'; environmentName: S} {
   return {type: 'Future', environmentName};
 }
 

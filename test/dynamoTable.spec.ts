@@ -14,7 +14,7 @@ describe("dynamoTable module", () => {
     "hash",
     "text",
     {
-      index: { hashKey: "hash", rangeKey: "jkl" },
+      index: { partitionKey: "hash", sortKey: "jkl" },
     }
   );
 
@@ -26,7 +26,9 @@ describe("dynamoTable module", () => {
       });
     }, undefined);
     expect(output).toEqual({
+      outputs: undefined,
       template: {
+        Outputs: undefined,
         Parameters: {},
         Resources: {
           DummyTable: {
