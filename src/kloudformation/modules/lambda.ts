@@ -108,7 +108,8 @@ export class Lambda {
             {action: ['logs:CreateLogStream', 'logs:PutLogEvents'], effect: 'Allow', resource: [joinWith(':', 'arn', {Ref: 'AWS::Partition'}, 'logs', {Ref: 'AWS::Region'}, {Ref: 'AWS::AccountId'}, 'log-group', join('/aws/lambda/', functionName, ':*'))]}
           ],
         })
-      }]
+      }],
+      tags: extra?.tags,
     });
     const lambda = aws.lambdaFunction({ _logicalName: `${normalName}Function`, functionName: name, code, handler, role: role.attributes.Arn, runtime, ...extra  });
     return new Lambda(aws, normalName, role, lambda);

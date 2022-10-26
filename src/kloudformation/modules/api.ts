@@ -7,6 +7,7 @@ import {RestApi} from "../../aws/apigateway/RestApi";
 import {Permission} from "../../aws/lambda/Permission";
 import {AWS} from "../aws";
 import {join, joinWith, Value} from "../Value";
+import {Tag} from '../../aws/Tag';
 
 
 export class Path {
@@ -242,15 +243,15 @@ export class Api{
     return this;
   }
   
-  static create(aws: AWS, name: string, stage: string, providerArns?: Value<string>[], lambdaArn?: Value<string>): Api {
-    const restApi = aws.apigatewayRestApi({ name });
+  static create(aws: AWS, name: string, stage: string, providerArns?: Value<string>[], lambdaArn?: Value<string>, tags?: Tag[]): Api {
+    const restApi = aws.apigatewayRestApi({ name, tags });
     const authorizer = providerArns && providerArns.length > 0 ? aws.apigatewayAuthorizer({
       authorizerResultTtlInSeconds: 300,
       providerARNs: providerArns,
       identitySource: 'method.request.header.Authorization',
       type: 'COGNITO_USER_POOLS',
       restApiId: restApi,
-      name: `api-auth-${name}`
+      name: `api-auth-${name}`,
     }) : undefined;
     const permission = lambdaArn ? aws.lambdaPermission({
       action: 'lambda:InvokeFunction',
@@ -263,6 +264,6 @@ export class Api{
       _logicalName: aws.logicalName('ApiDeployment' + Math.floor(Math.random() * 100000000)),
       stageName: stage
     })
-    return new Api(aws, name, restApi, deployment, authorizer, lambdaArn, permission);
+    return new Api(aws, name, restApi, deployment, authorizer, lambdaArn, permission, undefined);
   }
 }
