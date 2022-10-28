@@ -80,6 +80,85 @@ const missingResources: Partial<Specification> = {
           UpdateType: 'Mutable'
         }
       }
+    },
+    'AWS::CUR::ReportDefinition': {
+      Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-apigatewaymanagedoverrides.html',
+      Properties: {
+        AdditionalArtifacts: {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-additionalartifacts',
+          UpdateType: 'Mutable',
+          Type: "List",
+          PrimitiveItemType: "String"
+        },
+        AdditionalSchemaElements: {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-additionalschemaelements',
+          UpdateType: 'Mutable',
+          Type: "List",
+          PrimitiveItemType: "String"
+        },
+        BillingViewArn: {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-billingviewarn',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        Compression: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-compression',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        Format: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-format',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        RefreshClosedReports: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-refreshclosedreports',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        ReportName: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-reportname',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        ReportVersioning: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-reportversioning',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        S3Bucket: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-s3bucket',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        S3Prefix: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-s3prefix',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        S3Region: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-s3region',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        TimeUnit: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-timeunit',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        }
+      }
     }
   },
   PropertyTypes: {
@@ -262,7 +341,7 @@ async function buildType(from: PropertyInfo, resource: boolean, name: string, do
 export type ${prop} = ${prop}Properties
 export function ${functionName}(${lowerName}Props: ${prop}Properties): ${prop} { return ({ ...${lowerName}Props, _logicalType: '${name}' }) }
   `) : '';
-  
+
   if(from.Properties) {
     const props: PropertyInfo['Properties']  = Object.keys(from.Properties!).reduce((prev, cur) => ({...prev, [cur]: rename(from.Properties![cur])}), {});
     const properties: [string, TypeInfo][] = Object.keys(props).map(k => [k, getType(props![k], k, location + (resource ? ('.' + lowerName) : ''), true)]);
