@@ -119,7 +119,7 @@ const missingResources: Partial<Specification> = {
         RefreshClosedReports: {
           Required: true,
           Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-refreshclosedreports',
-          PrimitiveType: 'String',
+          PrimitiveType: 'Boolean',
           UpdateType: 'Mutable'
         },
         ReportName: {
