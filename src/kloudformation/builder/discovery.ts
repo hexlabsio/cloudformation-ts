@@ -332,7 +332,10 @@ function countMatching(a: any[], b: any[]): number {
   return index;
 }
 
+const excludes = ['Json', 'CredentialsMapProps', 'ProfilePropertiesProps', 'TokenUrlCustomPropertiesProps', 'CustomPropertiesProps']
+
 function importsFor(info: TypeInfo): TypeInfo[] {
+  if(excludes.includes(info.name)) return [];
   const imports: TypeInfo[] = info.locations ? [{name: info.name, locations: info.locations, required: info.required}] : [];
   return (info.subtypes || []).reduce((imports, subtype) => [...imports, ...importsFor(subtype)], imports);
 }
@@ -359,6 +362,9 @@ function valueOfType(type: TypeInfo): TypeInfo {
 
 function getType(from: Typed, name: string, location: string, wrapped: boolean): TypeInfo {
   let type: TypeInfo = { name: 'string', required: !!from.Required };
+  if(from.Type && excludes.includes(from.Type)) {
+    return primitiveType(from.Type, !!from.Required, name);
+  }
   if(from.PrimitiveType) {
     type = primitiveType(from.PrimitiveType, !!from.Required, name);
   } else if(from.PrimitiveItemType || from.ItemType === 'Json') {
