@@ -1,9 +1,10 @@
-import {Template} from "../src/kloudformation/kloudformation";
+import { TemplateBuilder } from '../src/kloudformation/kloudformation';
 import {Lambda} from "../src/kloudformation/modules/lambda";
 
 describe('j', () => {
   it('should', () => {
-    const output = Template.create(aws => {
+    TemplateBuilder.create().withCondition('TEST', { 'Fn::Equals': ['ABC', 'DEF']}).build((aws, params, conditional) => {
+      conditional('TEST', aws.snsTopic({}));
       Lambda.create(aws,'test', {zipFile: 'console.log("hi")'}, 'index', "nodejs12.x");
       const a = aws.cloudfrontDistribution({
         distributionConfig: {
@@ -18,8 +19,6 @@ describe('j', () => {
           value: { Ref: a._logicalName }
         } }
       }
-    }, undefined);
-    
-    console.log(JSON.stringify(output, null, 2));
+    });
   });
 });
