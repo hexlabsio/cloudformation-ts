@@ -171,10 +171,11 @@ export class Template {
           }
         }
       }, {} as KloudFormationTemplate['Parameters']),
-      Resources: (template.resources as any[]).reduce((prev, {_logicalName, _logicalType, _dependsOn, _condition, attributes, ...properties}) => ({
+      Resources: (template.resources as any[]).reduce((prev, {_logicalName, _logicalType, _dependsOn, _deletionPolicy, _condition, attributes, ...properties}) => ({
         ...prev,
         [_logicalName!]: {
           Type: _logicalType!,
+          ...(_deletionPolicy ? { 'DeletionPolicy': _deletionPolicy }: {}),
           ...(_condition ? { 'Condition': _condition }: {}),
           ...(_dependsOn ? {DependsOn: _dependsOn.map(it => typeof it === 'object' ? it['_logicalName'] : it)}: {}),
           ...(Object.keys(properties).length === 0 ? {} : { Properties: Template.capitalize(properties) })

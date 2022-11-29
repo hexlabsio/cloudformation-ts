@@ -5,4 +5,5 @@ export interface KloudResource {
   _logicalName?: string;
   _condition?: string;
   _dependsOn?: Value<string>[];
+  _deletionPolicy?: 'Delete' | 'Retain' | 'Snapshot';
 }
