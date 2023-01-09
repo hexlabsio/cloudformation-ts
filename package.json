@@ -81,7 +81,7 @@
   },
   "homepage": "https://github.com/hexlabsio/kloudformation-ts#readme",
   "devDependencies": {
-    "@hexlabs/dynamo-ts": "^3.0.119",
+    "@hexlabs/dynamo-ts": "^3.0.140",
     "@types/archiver": "^5.1.0",
     "@types/aws-lambda": "^8.10.76",
     "@types/aws-sdk": "^2.7.0",

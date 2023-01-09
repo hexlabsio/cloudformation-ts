@@ -25,7 +25,7 @@ describe("dynamoTable module", () => {
         billingMode: "PAY_PER_REQUEST",
       });
     }, undefined);
-    expect(output).toEqual({
+    expect(JSON.parse(JSON.stringify(output))).toEqual({
       outputs: undefined,
       template: {
         Outputs: undefined,
