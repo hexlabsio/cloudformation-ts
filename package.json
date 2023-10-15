@@ -7,7 +7,7 @@
   "types": "dist/kloudformation/kloudformation.d.ts",
   "type": "module",
   "bin": {
-    "kloudformation": "dist/kloudformation/cli.js"
+    "kloudformation": "src/kloudformation/cli.ts"
   },
   "scripts": {
     "run": "ts-node --project tsconfig.json test/deploy-test.ts",
@@ -19,11 +19,12 @@
     "lint": "eslint **/*.ts",
     "lambda": "chmod +x dist/kloudformation/cli.js && node --trace-deprecation dist/kloudformation/cli.js run -t tsconfigtest.json $(pwd)/test/deploy-test.ts handler $(pwd)/test/fakeLambda.js",
     "stack": "ts-node test/deploy-test.ts",
-    "start": "node --trace-deprecation dist/kloudformation/cli.js translate -t tsconfigtest.json $(pwd)/test/deploy-test.ts",
-    "deploy": "node --trace-deprecation dist/kloudformation/cli.js deploy --stack-upload -b hexlabs-deployments -p kloudformation-test -t tsconfigtest.json test-stack $(pwd)/test/deploy-test.ts"
+    "start": "src/kloudformation/cli.ts translate -t tsconfigtest.json $(pwd)/test/deploy-test.ts",
+    "deploy": "src/kloudformation/cli.ts deploy --stack-upload -b hexlabs-deployments -p kloudformation-test -t tsconfigtest.json test-stack $(pwd)/test/deploy-test.ts"
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "exclude": [
     "node_modules",
@@ -85,7 +86,6 @@
     "@hexlabs/dynamo-ts": "^3.0.140",
     "@types/archiver": "^5.1.0",
     "@types/aws-lambda": "^8.10.76",
-    "@types/aws-sdk": "^2.7.0",
     "@types/commonmark": "^0.27.4",
     "@types/jest": "^24.9.1",
     "@types/node": "^16.11.48",
@@ -104,15 +104,17 @@
     "ts-jest": "^25.3.0"
   },
   "dependencies": {
+    "@aws-sdk/client-cloudformation": "^3.428.0",
+    "@aws-sdk/client-s3": "^3.428.0",
     "archiver": "^5.3.0",
     "aws-sdk": "^2.1194.0",
     "body-parser": "^1.19.0",
-    "chalk": "^4.1.0",
+    "chalk": "^5.3.0",
     "commander": "^11.1.0",
     "express": "^4.17.1",
     "path": "^0.12.7",
-    "request-promise": "^4.2.5",
     "request": "^2.88.2",
+    "request-promise": "^4.2.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }

@@ -1,6 +1,8 @@
-#!/usr/bin/env node
+#!/usr/bin/env ts-node
 
-import { CloudFormation, S3 } from "aws-sdk";
+import { CloudFormation, Parameter, Stack, StackEvent } from "@aws-sdk/client-cloudformation";
+import { S3 } from "@aws-sdk/client-s3";
+
 import * as fs from "fs";
 import archiver from "archiver";
 import chalk from "chalk";
@@ -124,10 +126,10 @@ const deleteSuccessStatuses = ["DELETE_COMPLETE"];
 async function stackExists(
   cf: CloudFormation,
   name: string
-): Promise<CloudFormation.Stack | undefined> {
-  const stacks = await cf.describeStacks().promise();
-  if (stacks.Stacks) {
-    return stacks.Stacks.find((it) => it.StackName === name);
+): Promise<Stack | undefined> {
+  const stacks = await cf.describeStacks({StackName: name});
+  if (stacks.Stacks?.length) {
+    return stacks.Stacks[0];
   }
 }
 
@@ -139,25 +141,20 @@ async function deleteStack(stackName: string, command: any) {
     const stack = await stackExists(client, stackName);
     if (stack) {
       const deletion = client
-        .deleteStack({ StackName: stackName.toString() })
-        .promise();
+        .deleteStack({ StackName: stackName.toString() });
       console.log(
         chalk.green(`Deleting stack named ${stackName} from ${region}`)
       );
-      const result = await deletion;
-      if (result.$response.error) {
-        console.log(chalk.red(result.$response.error));
-      } else {
-        if (
-          !(await followStackEvents(
-            client,
-            stackName,
-            deleteSuccessStatuses,
-            start
-          ))
-        ) {
-          process.exit(1);
-        }
+      await deletion;
+      if (
+        !(await followStackEvents(
+          client,
+          stackName,
+          deleteSuccessStatuses,
+          start
+        ))
+      ) {
+        process.exit(1);
       }
     }
     console.log(
@@ -185,13 +182,13 @@ async function setEnvsForStacks(
         const searchRegion = hasRegion ? hasRegion[1] : region;
         const searchString = hasRegion ? hasRegion[2] : stack;
         const client = new CloudFormation({ region: searchRegion });
-        const cfStacks = await client.describeStacks().promise();
+        const cfStacks = await client.describeStacks({});
         console.log(
           chalk.green("Searching for stacks matching " + searchString)
         );
         const matchedStack = (cfStacks.Stacks ?? []).find(
           (it) =>
-            !!it.StackName.match(searchString) ||
+            !!it.StackName?.match(searchString) ||
             !!it.StackId?.match(searchString)
         );
         if (matchedStack) {
@@ -309,7 +306,7 @@ function zipDirectory(source: string, target: string): Promise<void> {
   return new Promise((resolve, reject) => {
     archive
       .directory(source, false)
-      .on("error", (err) => reject(err))
+      .on("error", (err: any) => reject(err))
       .pipe(stream);
     stream.on("close", () => resolve());
     archive.finalize();
@@ -338,23 +335,20 @@ async function upload(
         console.log(
           chalk.green(`Uploading ${keyName}.zip to S3 bucket named ${bucket}`)
         );
-        await client
-          .upload({
-            ContentType: "application/zip",
-            Bucket: bucket,
-            Key: keyName + ".zip",
-            Body: fs.readFileSync(`${fileName}.zip`),
-            ServerSideEncryption: "AES256",
-          })
-          .promise();
+        await client.putObject({
+          ContentType: "application/zip",
+          Bucket: bucket,
+          Key: keyName + ".zip",
+          Body: fs.readFileSync(`${fileName}.zip`),
+          ServerSideEncryption: "AES256",
+        });
         return keyName + ".zip";
       } else {
         console.log(
           chalk.green(`Uploading ${keyName} to S3 bucket named ${bucket}`)
         );
         await client
-          .upload({ Bucket: bucket, Key: keyName, Body: fs.readFileSync(file) })
-          .promise();
+          .putObject({ Bucket: bucket, Key: keyName, Body: fs.readFileSync(file) });
         return keyName;
       }
     })
@@ -418,7 +412,7 @@ async function deploy(
     if(!envName || !process.env[envName]) throw new Error(`Could not lookup parameter with name ${it}, or no env with name ${envName} was found`);
     return { ParameterKey: it, ParameterValue: process.env[envName] }
   });
-  const parameters: CloudFormation.Parameter[] =
+  const parameters: Parameter[] =
       [...(files && bucket
       ? [
           { ParameterKey: "CodeBucket", ParameterValue: bucket },
@@ -436,25 +430,20 @@ async function deploy(
     )
   );
   if (stack) {
-    if (continuable.includes(stack.StackStatus)) {
+    if (continuable.includes(stack.StackStatus!)) {
       try {
         console.log(
           chalk.green(
             `Updating existing stack in region ${region} named ${stackName}`
           )
         );
-        const result = await cf
+        await cf
           .updateStack({
             StackName: stackName,
             Capabilities: capabilities,
             Parameters: parameters,
             ...(shouldUpload ? { TemplateURL: `https://${bucket}.s3.${region}.amazonaws.com/${content}` }: { TemplateBody: content })
           })
-          .promise();
-        if (result.$response.error) {
-          console.log(chalk.red(result.$response.error));
-          process.exit(1);
-        }
       } catch (e) {
         if (e.message.includes("No updates are to be performed")) {
           console.log(chalk.yellow("No updates are to be performed"));
@@ -477,18 +466,13 @@ async function deploy(
     console.log(
       chalk.green(`Creating stack in region ${region} named ${stackName}`)
     );
-    const result = await cf
+    await cf
       .createStack({
         StackName: stackName,
         Capabilities: capabilities,
         Parameters: parameters,
         ...(shouldUpload ? { TemplateURL: `https://${bucket}.s3.${region}.amazonaws.com/${content}` }: { TemplateBody: content })
       })
-      .promise();
-    if (result.$response.error) {
-      console.log(chalk.red(result.$response.error));
-      process.exit(1);
-    }
   }
   if (!(await followStackEvents(cf, stackName, successStatuses, start))) {
     process.exit(1);
@@ -521,15 +505,15 @@ async function stackEvents(
   cf: CloudFormation,
   name: string,
   start: string
-): Promise<CloudFormation.StackEvent[]> {
-  const events = (await cf.describeStackEvents({ StackName: name }).promise())
+): Promise<StackEvent[]> {
+  const events = (await cf.describeStackEvents({ StackName: name }))
     .StackEvents;
   return (
     events
       ?.sort((a, b) =>
-        a.Timestamp.toString().localeCompare(b.Timestamp.toString())
+        a.Timestamp!.toString().localeCompare(b.Timestamp!.toString())
       )
-      .filter((e) => e.Timestamp.toISOString() > start) || []
+      .filter((e) => e.Timestamp!.toISOString() > start) || []
   );
 }
 
@@ -538,7 +522,7 @@ async function getInitialEvents(
   name: string,
   start: string
 ) {
-  let events: CloudFormation.StackEvent[] = [];
+  let events: StackEvent[] = [];
   while (events.length === 0) {
     await wait();
     let next = await stackEvents(cf, name, start);
@@ -582,12 +566,12 @@ async function followStackEvents(
       );
     }
     await wait(5000);
-    if (events.length > 0) start = events.pop()!.Timestamp.toISOString();
+    if (events.length > 0) start = events.pop()!.Timestamp!.toISOString();
     events = await stackEvents(cf, name, start);
   }
 }
 
-function display(e: CloudFormation.StackEvent) {
+function display(e: StackEvent) {
   let color = badStatuses.includes(e.ResourceStatus!)
     ? chalk.red
     : successStatuses.includes(e.ResourceStatus!)
