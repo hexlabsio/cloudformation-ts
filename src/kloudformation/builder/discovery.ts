@@ -153,7 +153,9 @@ const missingResources: Partial<Specification> = {
     PropertyTypes: {...original.PropertyTypes, ...missingResources.PropertyTypes}
   };
   const docsCache: DocsCache = new DocsCache();
-  const resources = await Promise.all(Object.keys(spec.ResourceTypes).map(async resourceKey => await buildType(spec.ResourceTypes[resourceKey], true, resourceKey, docsCache)));
+  const resources = await Promise.all(Object.keys(spec.ResourceTypes)
+    .filter(it => it !== 'AWS::AppStream::Entitlement')
+    .map(async resourceKey => await buildType(spec.ResourceTypes[resourceKey], true, resourceKey, docsCache)));
   const properties = await Promise.all(Object.keys(spec.PropertyTypes).map(async resourceKey => await buildType(spec.PropertyTypes[resourceKey], false, resourceKey, docsCache)));
   const all = [...resources, ...properties];
   buildAwsType(resources);
@@ -193,7 +195,7 @@ export function ${functionName}(${lowerName}Props: ${prop}Properties): ${prop}  
 }
 
 function rename(prop: Typed): Typed {
-  if(prop.Type === 'Json' || prop.ItemType === 'Json' || prop.Type === 'Tag' || prop.ItemType === 'Tag') return prop;
+  if(prop.Type === 'Json' || prop.PrimitiveType === 'Json' || prop.ItemType === 'Json' || prop.Type === 'Tag' || prop.ItemType === 'Tag') return prop;
   if(prop.ItemType) return { ...prop, ItemType: prop.ItemType + 'Props' };
   if(prop.PrimitiveType || prop.PrimitiveItemType) return prop;
   if(prop.Type) return { ...prop, Type: prop.Type + 'Props' };
@@ -210,7 +212,7 @@ async function buildType(from: PropertyInfo, resource: boolean, name: string, do
   const functionName = lowerName === 'function' ? '_function' : lowerName;
   const documentation = await docsCache.get(from.Documentation!);
   const descriptionString = `/**
-  ${documentation.description || ''}
+  ${(documentation.description || '').replace('*', 'x')}
   For full documentation go to <a href="${from.Documentation || ''}">the AWS Docs</a>
 */`;
     const excess = resource ? (from.Attributes ? attributeCode(from.Attributes, prop, name, location, descriptionString, functionName, lowerName) :
@@ -233,7 +235,7 @@ ${excess}
 ${descriptionString}
 export interface ${interfaceName}${resource ? 'Properties extends KloudResource ' : ''}{
   ${properties.map(it => `
-  /** ${docForProperty(it[0], documentation)} */
+  /** ${docForProperty(it[0], documentation).replaceAll('*/', 'x/')} */
   ${it[0].substring(0,1).toLowerCase()}${it[0].substring(1)}${it[1].required ? '': '?'}: ${updateType(stringFor(it[1]), it[0], documentation)}`).join('\n  ')}
 }`];
     return result;
@@ -334,6 +336,9 @@ function getType(from: Typed, name: string, location: string, wrapped: boolean):
       return { name: 'map', subtypes: [{ name: 'string', required: !!from.Required }, subtype ], required: !!from.Required};
     }
     else { return { name: 'array', subtypes: [subtype], required: !!from.Required }; }
+  }
+  else if(from.Type === 'Json') {
+    return { name: 'any', required: !!from.Required  }
   }
   else if(from.Type){
     return { name: from.Type, locations: [location], required: !!from.Required }

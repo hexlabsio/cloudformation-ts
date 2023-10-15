@@ -1,20 +1,11 @@
 #!/usr/bin/env node
-import {
-  APIGatewayProxyEvent,
-  SNSEvent,
-  SNSMessage,
-  SNSMessageAttribute,
-  SNSMessageAttributes,
-} from "aws-lambda";
+
 import { CloudFormation, S3 } from "aws-sdk";
 import * as fs from "fs";
-import { ApiDefinition, SnsDefinition } from "./modules/api";
-const archiver = require("archiver");
-const chalk = require("chalk");
-const tsNode = require("ts-node");
-import express, { RequestHandler } from "express";
-import { MessageAttributeMap, MessageAttributeValue } from "aws-sdk/clients/sns";
-const { Command } = require("commander");
+import archiver from "archiver";
+import chalk from "chalk";
+import tsNode from "ts-node";
+import { Command } from "commander";
 
 const program = new Command();
 
@@ -82,30 +73,13 @@ function translateCommand(): any {
       "eu-west-1"
     )
     .option("-t, --ts-project <fileName>", "TS Config")
-    .action(generateStack);
-}
-
-function runCommand(): any {
-  return program
-    .command("run <templateLocation> <handler> <codeLocation>")
-    .option(
-      "-s, --stack-info <stacks...>",
-      "A space separated list of stacks to get outputs as environment variables"
-    )
-    .option(
-      "-r, --region <region>",
-      "The region to gather stack outputs from",
-      "eu-west-1"
-    )
-    .option("-t, --ts-project <fileName>", "TS Config")
-    .action(runApi);
+    .action(generateStackCli);
 }
 
 (async () => {
   try {
     translateCommand();
     deployCommand();
-    runCommand();
     deleteCommand();
     await program.parseAsync(process.argv);
   } catch (e) {
@@ -238,20 +212,26 @@ async function setEnvsForStacks(
   }
 }
 
-function requireTemplate(location: string): any {
+async function requireFile(location: string): Promise<any> {
   try {
-    return require(location);
+    return await import(location + `?update=${Math.random()}`);
   } catch (e) {
-    console.log(chalk.red("Failed to require stack file"));
+    console.log(chalk.red("Failed to require file"));
     console.log(e);
     process.exit(1);
   }
 }
 
+async function generateStackCli(
+  templateLocation: string,command: any
+): Promise<void> {
+  await generateStack(templateLocation, command);
+}
+
 async function generateStack(
   templateLocation: string,
   command: any
-): Promise<{ [key: string]: string }> {
+): Promise<{[key: string]: string}> {
   if (command.tsProject) {
     tsNode.register({ project: command.tsProject });
   } else {
@@ -261,264 +241,10 @@ async function generateStack(
     console.log(chalk.green(`Translating template at ${templateLocation}`));
     const stacks: string[] = command.stackInfo ?? [];
     const envs = await setEnvsForStacks(stacks, command.region);
-    requireTemplate(templateLocation);
+    await requireFile(templateLocation);
     return envs;
   }
   return {};
-}
-
-function rawBody(req, res, next) {
-  req.setEncoding("utf8");
-  req.rawBody = "";
-  req.on("data", function (chunk) {
-    req.rawBody += chunk;
-  });
-  req.on("end", function () {
-    next();
-  });
-}
-
-function clearRequireCache() {
-  Object.keys(require.cache).forEach(function (key) {
-    delete require.cache[key];
-  });
-}
-
-function queryParameters(expressQuery: {
-  [key: string]: undefined | string | string[];
-}) {
-  return Object.keys(expressQuery).reduce(
-    (acc, elem) => {
-      if (expressQuery[elem]) {
-        return Array.isArray(expressQuery[elem])
-          ? {
-              queryStringParameters: {
-                ...acc.queryStringParameters,
-                [elem]: (expressQuery[elem] as string[])[0],
-              },
-              multiValueQueryStringParameters: {
-                ...acc.multiValueQueryStringParameters,
-                [elem]: expressQuery[elem],
-              },
-            }
-          : {
-              queryStringParameters: {
-                ...acc.queryStringParameters,
-                [elem]: expressQuery[elem],
-              },
-              multiValueQueryStringParameters: {
-                ...acc.multiValueQueryStringParameters,
-                [elem]: [expressQuery[elem]],
-              },
-            };
-      } else {
-        return acc;
-      }
-    },
-    {
-      queryStringParameters: {},
-      multiValueQueryStringParameters: {},
-    }
-  );
-}
-
-function convertSnsPublisherHeader(publisherHeader: MessageAttributeValue): SNSMessageAttribute {
-  const {DataType, StringValue} = publisherHeader
-  return {Type: DataType, Value: StringValue ?? ""}
-}
-function convertSnsPublisherHeaders(publisherHeaders: MessageAttributeMap): SNSMessageAttributes {
-  return Object.keys(publisherHeaders)
-    .reduce<SNSMessageAttributes>((acc, item) => ({[item]: convertSnsPublisherHeader(publisherHeaders[item])}), {})
-}
-
-function snsFunctionFor(
-  topicName: string,
-  codeLocation: string,
-  handler: string
-): RequestHandler {
-  return (req, res) => {
-    const request = (req as any).rawBody
-    console.log(chalk.green(`request received : ${request}`))
-    const parsedReq = JSON.parse(request)
-    const publisherHeaders: MessageAttributeMap = parsedReq.headers
-    const snsEvent: SNSEvent = {
-      Records: [
-        {
-          EventVersion: "local-event-version",
-          EventSubscriptionArn: `${topicName}-local-event-arn`,
-          EventSource: `${topicName}-event-source`,
-          Sns: {
-            MessageAttributes: convertSnsPublisherHeaders(publisherHeaders),
-            Message: parsedReq.body,
-          } as SNSMessage,
-        },
-      ],
-    };
-    clearRequireCache();
-    require(codeLocation)
-      [handler](snsEvent)
-      .then((_) => {
-        console.log(
-          chalk.green("SNS - TOPIC " + topicName + " processed message")
-        );
-        res.status(200).send("done");
-      })
-      .catch((error) => {
-        console.log(chalk.red("SNS - TOPIC " + topicName + " threw " + error));
-        res.status(500).send(error.message);
-      });
-  };
-}
-
-function functionFor(
-  method: string,
-  path: string,
-  codeLocation: string,
-  handler: string
-): RequestHandler {
-  return (req, res) => {
-    const headers = req.headers;
-    const authHeader = req.header("Authorization");
-    const claims =
-      authHeader && authHeader.includes("Bearer ")
-        ? new Buffer(authHeader.substring(7).split(".")[1], "base64").toString(
-            "ascii"
-          )
-        : undefined;
-    const requestContext = claims
-      ? { authorizer: { claims: JSON.parse(claims) } }
-      : undefined;
-    const params = req.params;
-    const queryParams = queryParameters(
-      (req.query ?? {}) as { [key: string]: undefined | string | string[] }
-    );
-    const event: APIGatewayProxyEvent = {
-      headers: headers as APIGatewayProxyEvent["headers"],
-      resource: path,
-      body: (req as any).rawBody,
-      httpMethod: method.toUpperCase(),
-      pathParameters: params,
-      path: req.path,
-      requestContext,
-      ...queryParams,
-    } as unknown as APIGatewayProxyEvent;
-    clearRequireCache();
-    require(codeLocation)
-      [handler](event)
-      .then((response) => {
-        console.log(
-          chalk.green(
-            "API - " +
-              method +
-              " " +
-              req.path +
-              " responded with " +
-              response.statusCode
-          )
-        );
-        res
-          .status(response.statusCode)
-          .set(response.headers)
-          .send(response.body);
-      })
-      .catch((error) => {
-        console.log(
-          chalk.red("API - " + method + " " + req.path + " threw " + error)
-        );
-        res.status(500).send(error.message);
-      });
-  };
-}
-
-function attachApis(
-  apis: ApiDefinition[],
-  handler: string,
-  codeLocation: string,
-  port: string,
-  app
-) {
-  apis.forEach((api) => {
-    api.resources.forEach((resource) => {
-      const path = "/" + resource.path.replace(/{([^/{}]+)}/g, ":$1");
-      app[resource.method.toLowerCase()](
-        path,
-        functionFor(resource.method, "/" + resource.path, codeLocation, handler)
-      );
-      console.log(
-        chalk.green(`${resource.method} http://localhost:${port}${path}`)
-      );
-    });
-  });
-}
-
-function attachSnsApis(
-  snsDefinitions: SnsDefinition[],
-  codeLocation: string,
-  port: string,
-  app
-) {
-  snsDefinitions.forEach((snsDefinition) => {
-    const path =
-      "/sns/" + snsDefinition.topicName.replace(/{([^/{}]+)}/g, ":$1");
-    app["post"](
-      path,
-      snsFunctionFor(
-        snsDefinition.topicName,
-        codeLocation,
-        snsDefinition.handler
-      )
-    );
-    console.log(chalk.green(`TOPIC http://localhost:${port}${path}`));
-  });
-}
-
-async function runApi(
-  templateLocation: string,
-  handler: string,
-  codeLocation: string,
-  command: any
-) {
-  try {
-    if (command.tsProject) {
-      tsNode.register({ project: command.tsProject });
-    } else {
-      tsNode.register();
-    }
-    console.log(
-      chalk.green(`Running apis from template at ${templateLocation}`)
-    );
-    const lambda = require(codeLocation);
-    if (lambda && lambda[handler]) {
-      const stacks: string[] = command.stackInfo ?? [];
-      await setEnvsForStacks(stacks, command.region);
-      console.log(chalk.green('Looking for template json from ' + templateLocation));
-      const definition: any = requireTemplate(templateLocation);
-      const apis: ApiDefinition[] = definition?.default?.outputs?.apis ?? [];
-      const localSNS: SnsDefinition[] = definition?.default?.outputs?.sns ?? [];
-      if (apis.length + localSNS.length === 0) {
-        console.log(
-          chalk.red(
-            "No API or SNS definitions exported please check docs on usage"
-          )
-        );
-        process.exit(1);
-      }
-      const PORT = process.env.PORT || "3000";
-      const app = express();
-      app.use(rawBody);
-      attachApis(apis, handler, codeLocation, PORT, app);
-      attachSnsApis(localSNS, codeLocation, PORT, app);
-      app.listen(PORT, () =>
-        console.log(`⚡Server is running here 👉 http://localhost:${PORT}`)
-      );
-    } else {
-      throw new Error("Handler not found in code file");
-    }
-  } catch (e) {
-    console.log(chalk.red('The following error occurred'))
-    console.error(e);
-    process.exit(1);
-  }
 }
 
 async function deployStack(

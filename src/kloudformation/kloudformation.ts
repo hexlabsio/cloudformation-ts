@@ -106,11 +106,11 @@ export class Template {
       if(Array.isArray(props)){
         return props.map(Template.capitalize) as any;
       }
-      if(props['_nocaps'] !== undefined) {
+      if(props?.['_nocaps'] !== undefined) {
         const {_nocaps, ...rest} = props as any;
         return rest;
       }
-      return transform(Object.keys(props as any).reduce((prev, key) => ({...prev, [caps(key)]: Template.capitalize(props[key])}), {} as any) as any)
+      return transform(Object.keys(props as any).reduce((prev, key) => ({...prev, [caps(key)]: Template.capitalize(props![key])}), {} as any) as any)
     }
     return props;
   }
