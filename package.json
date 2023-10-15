@@ -24,7 +24,7 @@
   },
   "files": [
     "dist",
-    "src",
+    "src/kloudformation/cli.ts",
     "tsconfig.json"
   ],
   "exclude": [
