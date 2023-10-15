@@ -1,16 +1,18 @@
-import {DynamoObjectDefinition, TableEntryDefinition} from "@hexlabs/dynamo-ts";
+import { DynamoDefinition, DynamoIndex } from "@hexlabs/dynamo-ts";
 import {dynamoTable} from "./dynamo";
 import * as fs from 'fs';
 
 function fakeDefinition<
-  D extends DynamoObjectDefinition['object'],
-  H extends keyof D,
-  R extends keyof D | null = null,
-  G extends Record<
-    string,
-    { hashKey: keyof D; rangeKey?: keyof D }
-    > | null = null,
-  >(definition: TableEntryDefinition<D, H, R, G>, name: string) {
+  DEFINITION extends DynamoDefinition,
+  PK extends keyof DEFINITION,
+  SK extends Exclude<keyof DEFINITION, PK> | null = null,
+  INDEXES extends Record<string, DynamoIndex<DEFINITION>> = {},
+  >(definition: {
+  definition: DEFINITION;
+  partitionKey: PK;
+  sortKey: SK;
+  indexes: INDEXES;
+}, name: string) {
   return new Promise(resolve => {
     dynamoTable({ dynamodbTable: resolve} as any, definition, name, {})
   });
@@ -26,12 +28,12 @@ function obj(it?: unknown) {
   return it;
 }
 
-export async function tableDefinition(defintions: Record<string, TableEntryDefinition<any, any, any, any>>): Promise<{tables: unknown[]}> {
+export async function tableDefinition(defintions: Record<string, any>): Promise<{tables: unknown[]}> {
   const tables = await Promise.all(Object.keys(defintions).map(async table => await fakeDefinition(defintions[table], table)));
   return { tables: tables.map(obj) };
 }
 
-export async function writeFile(defintions: Record<string, TableEntryDefinition<any, any, any, any>>, name = 'jest-dynamodb-config.js') {
+export async function writeFile(defintions: Record<string, any>, name = 'jest-dynamodb-config.js') {
   const definition = await tableDefinition(defintions);
   fs.writeFileSync('jest-dynamodb-config.js', `module.exports = ${JSON.stringify(definition, null, 2)};`);
 }

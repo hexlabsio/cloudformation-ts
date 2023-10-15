@@ -8,6 +8,50 @@ export type NameLocationContent = [string, string, string];
 
 const missingResources: Partial<Specification> = {
   ResourceTypes: {
+    'AWS::Rekognition::StreamProcessor': {
+      Properties: {
+
+      }
+    },
+    'AWS::AppStream::Entitlement': {
+      Documentation: 'http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html',
+      Properties: {
+        Description: {
+          Required: false,
+          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-description',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        Name: {
+          Required: true,
+          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-name',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        StackName: {
+          Required: true,
+          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-stackname',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        AppVisibility: {
+          Required: true,
+          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-appvisibility',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        EntitlementAttributes: {
+          Required: true,
+          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-attributes',
+          ItemType: 'Attribute',
+          UpdateType: 'Mutable'
+        },
+      },
+      Attributes: {
+        CreatedTime: {},
+        LastModifiedTime: {}
+      }
+    },
     'AWS::ApiGatewayV2::ApiGatewayManagedOverrides': {
       Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-apigatewaymanagedoverrides.html',
       Properties: {
@@ -33,6 +77,85 @@ const missingResources: Partial<Specification> = {
           Required: false,
           Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-apigatewaymanagedoverrides.html#cfn-apigatewayv2-apigatewaymanagedoverrides-stage',
           Type: 'StageOverrides',
+          UpdateType: 'Mutable'
+        }
+      }
+    },
+    'AWS::CUR::ReportDefinition': {
+      Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-apigatewaymanagedoverrides.html',
+      Properties: {
+        AdditionalArtifacts: {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-additionalartifacts',
+          UpdateType: 'Mutable',
+          Type: "List",
+          PrimitiveItemType: "String"
+        },
+        AdditionalSchemaElements: {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-additionalschemaelements',
+          UpdateType: 'Mutable',
+          Type: "List",
+          PrimitiveItemType: "String"
+        },
+        BillingViewArn: {
+          Required: false,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-billingviewarn',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        Compression: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-compression',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        Format: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-format',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        RefreshClosedReports: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-refreshclosedreports',
+          PrimitiveType: 'Boolean',
+          UpdateType: 'Mutable'
+        },
+        ReportName: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-reportname',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        ReportVersioning: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-reportversioning',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        S3Bucket: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-s3bucket',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        S3Prefix: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-s3prefix',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        S3Region: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-s3region',
+          PrimitiveType: 'String',
+          UpdateType: 'Mutable'
+        },
+        TimeUnit: {
+          Required: true,
+          Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cur-reportdefinition.html#cfn-cur-reportdefinition-timeunit',
+          PrimitiveType: 'String',
           UpdateType: 'Mutable'
         }
       }
@@ -220,7 +343,7 @@ async function buildType(from: PropertyInfo, resource: boolean, name: string, do
 export type ${prop} = ${prop}Properties
 export function ${functionName}(${lowerName}Props: ${prop}Properties): ${prop} { return ({ ...${lowerName}Props, _logicalType: '${name}' }) }
   `) : '';
-  
+
   if(from.Properties) {
     const props: PropertyInfo['Properties']  = Object.keys(from.Properties!).reduce((prev, cur) => ({...prev, [cur]: rename(from.Properties![cur])}), {});
     const properties: [string, TypeInfo][] = Object.keys(props).map(k => [k, getType(props![k], k, location + (resource ? ('.' + lowerName) : ''), true)]);
@@ -290,7 +413,10 @@ function countMatching(a: any[], b: any[]): number {
   return index;
 }
 
+const excludes = ['Json', 'CredentialsMapProps', 'ProfilePropertiesProps', 'TokenUrlCustomPropertiesProps', 'CustomPropertiesProps']
+
 function importsFor(info: TypeInfo): TypeInfo[] {
+  if(excludes.includes(info.name)) return [];
   const imports: TypeInfo[] = info.locations ? [{name: info.name, locations: info.locations, required: info.required}] : [];
   return (info.subtypes || []).reduce((imports, subtype) => [...imports, ...importsFor(subtype)], imports);
 }
@@ -317,6 +443,9 @@ function valueOfType(type: TypeInfo): TypeInfo {
 
 function getType(from: Typed, name: string, location: string, wrapped: boolean): TypeInfo {
   let type: TypeInfo = { name: 'string', required: !!from.Required };
+  if(from.Type && excludes.includes(from.Type)) {
+    return primitiveType(from.Type, !!from.Required, name);
+  }
   if(from.PrimitiveType) {
     type = primitiveType(from.PrimitiveType, !!from.Required, name);
   } else if(from.PrimitiveItemType || from.ItemType === 'Json') {
