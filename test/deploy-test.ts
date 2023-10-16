@@ -1,4 +1,4 @@
-import {TemplateBuilder} from "../src/kloudformation/kloudformation";
+import { AwsLoader } from '../src/kloudformation/aws';
 
 // export default Template.createWithParams({
 //   ABC: fromEnv('GHJ')
@@ -9,8 +9,9 @@ import {TemplateBuilder} from "../src/kloudformation/kloudformation";
 // }, 'template.json', 'parameters.json', it => JSON.stringify(it, null, 2));
 
 
-export default TemplateBuilder.create()
-.build((aws, params) => {
-  aws.snsTopic({});
+const template = await AwsLoader.register('s3').register('sns').load();
 
+export default template.create().build(aws => {
+  const bucket = aws.s3.bucket({bucketName: 'jimmy'})
+  aws.sns.topic({topicName: bucket});
 })

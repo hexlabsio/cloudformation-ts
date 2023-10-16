@@ -257,7 +257,6 @@ async function deployStack(
   try {
     if (templateLocation.endsWith(".ts")) {
       const envs = await generateStack(templateLocation, command);
-
       await deploy(
         command.region,
         command.endpointUrl,

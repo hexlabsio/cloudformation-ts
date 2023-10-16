@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import {PathLike} from "fs";
 import {KloudResource} from "./KloudResource";
-import {aws, AWS} from "./aws";
 import {ApiDefinition} from "./modules/api";
 import {transform, Value} from "./Value";
 
@@ -56,8 +55,8 @@ export interface Outputs {
     }; };
 }
 
-type Builder = (aws: AWS) => void | Outputs
-type BuilderWith<ParamType, C> = (aws: AWS, parameters: Params<ParamType>, conditional: <R>(condition: C, resource: R) => R) => void | Outputs
+type Builder<AWS> = (aws: AWS) => void | Outputs
+type BuilderWith<AWS, ParamType, C> = (aws: AWS, parameters: Params<ParamType>, conditional: <R>(condition: C, resource: R) => R) => void | Outputs
 
 
 export function normalize(name: string) {
@@ -89,6 +88,7 @@ export class Template {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   private modify<T extends Function>(a: T): T {
     return ((...args: any) => {
       const resource: KloudResource = a(...args);
@@ -112,13 +112,14 @@ export class Template {
     }) as unknown as T;
   }
 
-  private static capitalize<T extends any>(props: T): T | Value<string> {
+  private static capitalize<T>(props: T): T | Value<string> {
     function caps(key: string): string { return key.substring(0,1).toUpperCase() + key.substring(1) }
     if(typeof props === 'object') {
       if(Array.isArray(props)){
         return props.map(Template.capitalize) as any;
       }
       if(props?.['_nocaps'] !== undefined) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {_nocaps, ...rest} = props as any;
         return rest;
       }
@@ -128,19 +129,21 @@ export class Template {
   }
 
 
-  static create(
-    builder: Builder,
+  static create<AWS>(
+    aws: AWS,
+    builder: Builder<AWS>,
     file: PathLike = "template.json",
     templateTransform: (template: KloudFormationTemplate) => string = template => JSON.stringify(template, null, 2)
   ): {template: KloudFormationTemplate; outputs?: Outputs} {
-    return Template.createWithParams({}, {}, builder, file, "parameters.json", templateTransform);
+    return Template.createWithParams(aws, {}, {}, builder, file, "parameters.json", templateTransform);
   }
 
 
-  static createWithParams<T extends {[param: string]: Parameter}, C extends string = string>(
+  static createWithParams<AWS, T extends {[param: string]: Parameter}, C extends string = string>(
+    aws: AWS,
     parameters: T,
     conditions: Record<C, any>,
-    builder: BuilderWith<T, C>,
+    builder: BuilderWith<AWS, T, C>,
     file: PathLike = "template.json",
     paramsFile: PathLike = "parameters.json",
     templateTransform: (template: KloudFormationTemplate) => string = template => JSON.stringify(template, null, 2),
@@ -148,9 +151,13 @@ export class Template {
   ): {template: KloudFormationTemplate; outputs?: Outputs} {
     const template = new Template();
     const logicalNameFunction = (prefix: string) => template.logicalName(prefix);
-    const builderAws = Object.keys(aws)
-    .filter(name => name !== 'logicalName')
-    .reduce((prev, key) => Object.assign(prev, {[key]: template.modify((aws as any)[key])}), { logicalName: logicalNameFunction } as AWS);
+    const builderAws = Object.keys(aws as any).reduce((prev1, next1) =>
+      ({
+        ...prev1, [next1]: Object.keys(aws[next1])
+          .filter(name => name !== 'logicalName')
+          .reduce((prev, key) => ({...prev, [key]: template.modify(aws[next1][key])}), {})
+      })
+    , {logicalName: logicalNameFunction} as AWS)
     const parameterFunctions = Object.keys(parameters).reduce((prev, parameter) => ({...prev, [parameter]: () => ({'Ref': parameter})}), {} as Params<T>)
     const outputs = builder(builderAws, parameterFunctions, ((condition, resource) => { (resource as any)._condition = condition; return resource; }));
     const envParams = Object.keys(parameters).reduce((prev, param) => {
@@ -200,37 +207,37 @@ export class Template {
       fs.writeFileSync(file,     templateTransform(output));
       fs.writeFileSync(paramsFile, JSON.stringify(envParams));
     }
-    return {template: output, outputs: outputs || undefined};
+    return {template: output, outputs: outputs || undefined} as any;
   }
 }
 
 
-export class TemplateBuilder<P extends {[param: string]: Parameter}, C extends string = string> {
+export class TemplateBuilder<AWS, P extends {[param: string]: Parameter}, C extends string = string> {
   private parameters: {[param: string]: Parameter} = {};
   private outputDir = '';
   private conditions: Record<string, any> = {};
   private _templateTransform: (template: KloudFormationTemplate) => string = template => JSON.stringify(template, null, 2);
   private transforms: string[] = [];
-  constructor(public outputFileName: string, public parameterFileName: string = "parameters.json") {}
+  constructor(private readonly aws: AWS, public outputFileName: string, public parameterFileName: string = "parameters.json") {}
 
-  withCondition<S extends string>(name: S, condition: any): TemplateBuilder<P, C | S> {
+  withCondition<S extends string>(name: S, condition: any): TemplateBuilder<AWS, P, C | S> {
     this.conditions[name] = condition;
     return this as any;
   }
 
-  withTransform(transform: string): TemplateBuilder<P, C> {
+  withTransform(transform: string): TemplateBuilder<AWS, P, C> {
     this.transforms.push(transform);
     return this
   }
 
-  params<P2 extends {[param: string]: Parameter}>(params: P2): TemplateBuilder<P & P2, C> {
+  params<P2 extends {[param: string]: Parameter}>(params: P2): TemplateBuilder<AWS, P & P2, C> {
     this.parameters = {...this.parameters, ...params};
-    return this as TemplateBuilder<P & P2, C>;
+    return this as any;
   }
 
-  envParams<P2 extends {[params: string]: string}>(params: P2): TemplateBuilder<P & {[K in keyof P2]: {type: 'Future'; environmentName: P2[K]}}, C> {
+  envParams<P2 extends {[params: string]: string}>(params: P2): TemplateBuilder<AWS, P & {[K in keyof P2]: {type: 'Future'; environmentName: P2[K]}}, C> {
     this.parameters = {...this.parameters, ...Object.keys(params).reduce((prev, key) => ({...prev, [key]: {type: 'Future', environmentName: params[key]}}), {})};
-    return this as TemplateBuilder<P & {[K in keyof P2]: {type: 'Future'; environmentName: P2[K]}}, C>;
+    return this as any;
   }
 
   outputTo(directory: string): this {
@@ -250,8 +257,8 @@ export class TemplateBuilder<P extends {[param: string]: Parameter}, C extends s
     return (this.outputDir ? this.outputDir + '/' : '') + file;
   }
 
-  build(builder: BuilderWith<P, C>): {template: KloudFormationTemplate; outputs?: Outputs} {
-    return Template.createWithParams<P, C>((this.parameters ?? {}) as any,
+  build(builder: BuilderWith<AWS, P, C>): {template: KloudFormationTemplate; outputs?: Outputs} {
+    return Template.createWithParams<AWS, P, C>(this.aws, (this.parameters ?? {}) as any,
         this.conditions,
         builder,
         this.pathTo(this.outputFileName),
@@ -261,7 +268,7 @@ export class TemplateBuilder<P extends {[param: string]: Parameter}, C extends s
   }
 
 
-  static create<C extends string = string>(outputFileName = 'template.json', parametersFileName='parameters.json'): TemplateBuilder<{}, C> {
-    return new TemplateBuilder(outputFileName, parametersFileName);
+  static create<AWS, C extends string = string>(aws: AWS, outputFileName = 'template.json', parametersFileName='parameters.json'): TemplateBuilder<AWS, {}, C> {
+    return new TemplateBuilder(aws, outputFileName, parametersFileName);
   }
 }

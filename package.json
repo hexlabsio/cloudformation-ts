@@ -12,7 +12,7 @@
   "scripts": {
     "run": "ts-node --project tsconfig.json test/deploy-test.ts",
     "prebuild": "rimraf dist",
-    "pregenerate": "rimraf src/kloudformation/aws.ts src/aws src/alexa",
+    "pregenerate": "rimraf src/kloudformation/aws-resources.ts src/aws src/alexa",
     "generate": "ts-node --project tsconfig.json src/kloudformation/builder/discovery.ts",
     "build": "tsc",
     "test": "jest --ci --runInBand --coverage --reporters=default --reporters=jest-junit",
@@ -47,7 +47,7 @@
     },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-      "ecmaVersion": 2018,
+      "ecmaVersion": 2021,
       "sourceType": "module"
     },
     "plugins": [
@@ -91,11 +91,11 @@
     "@types/jest": "^24.9.1",
     "@types/node": "^16.11.48",
     "@types/request-promise": "^4.1.46",
-    "@typescript-eslint/eslint-plugin": "^2.10.0",
-    "@typescript-eslint/parser": "^2.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
     "beautiful-dom": "^1.0.7",
     "commonmark": "^0.29.1",
-    "eslint": "^6.7.2",
+    "eslint": "^8.51.0",
     "eslint-plugin-jest": "^23.1.1",
     "husky": "^6.0.0",
     "jest": "^28.1.3",

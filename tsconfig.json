@@ -19,15 +19,19 @@
     "inlineSourceMap": false,
     "inlineSources": false,
     "esModuleInterop": true,
+    "resolveJsonModule": true
   },
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node"
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "src/aws/s3"
   ],
   "exclude": [
-    "src/kloudformation/cli.ts"
+    "src/kloudformation/cli.ts",
+    "src/aws",
+    "src/alexa"
   ]
 }

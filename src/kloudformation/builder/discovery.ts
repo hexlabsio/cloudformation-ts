@@ -270,15 +270,23 @@ const missingResources: Partial<Specification> = {
 
 (async () => {
   const original: Specification = await request({ gzip: true, uri: 'https://dnwj8swjjbsbt.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json', json: true});
+  // const original: Specification = (await import('../../../CloudFormationResourceSpecification.json')).default;
   const spec: Specification =  {
     ...original,
     ResourceTypes: {...original.ResourceTypes, ...missingResources.ResourceTypes},
     PropertyTypes: {...original.PropertyTypes, ...missingResources.PropertyTypes}
   };
   const docsCache: DocsCache = new DocsCache();
+  const progress: number[] = []
   const resources = await Promise.all(Object.keys(spec.ResourceTypes)
     .filter(it => it !== 'AWS::AppStream::Entitlement')
-    .map(async resourceKey => await buildType(spec.ResourceTypes[resourceKey], true, resourceKey, docsCache)));
+    .map(async (resourceKey, index, arr) => {
+      const promise = buildType(spec.ResourceTypes[resourceKey], true, resourceKey, docsCache)
+      const result = await promise;
+      progress.push(0);
+      console.log(`${progress.length} / ${arr.length} complete (${resourceKey})`)
+      return result;
+    }));
   const properties = await Promise.all(Object.keys(spec.PropertyTypes).map(async resourceKey => await buildType(spec.PropertyTypes[resourceKey], false, resourceKey, docsCache)));
   const all = [...resources, ...properties];
   buildAwsType(resources);
@@ -289,18 +297,30 @@ const missingResources: Partial<Specification> = {
   })
 })();
 
+function lowerFirst<S extends string>(value: S): S extends `${infer F}${infer Rest}` ? `${Lowercase<F>}${Rest}}` : S{
+  return `${value.substring(0,1).toLowerCase()}${value.substring(1)}` as any;
+}
+
+function groupByService(resources: NameLocationContent[]): { [service: string]: NameLocationContent[]} {
+  const groups: { [service: string]: NameLocationContent[]} = {};
+  resources.forEach(([name, location]) => {
+    const [platform, service] = location.split('.');
+    const item = lowerFirst(name);
+    const updatedItem = item === 'function' ? '_function': item;
+    groups[platform] = { ...groups[platform], [service]: { ...groups[platform]?.[service], [updatedItem]: `{ load: async () => (await import('../${location.replace(/\./g, '/')}/${name}')).${updatedItem} }` } }
+  })
+  return groups;
+}
+
+
+
 function buildAwsType(resources: NameLocationContent[]) {
-  const imports = resources.map(it => {
-    const location = it[1].split('.').slice(1).map((it, index) => index > 0 ? (it.substring(0,1).toUpperCase() + it.substring(1)) : it).join('');
-    const asImport = `${it[0] === 'Function' ? `_function` : `${it[0].substring(0,1).toLowerCase()}${it[0].substring(1)}`} as ${location}${it[0]}`;
-    return `import { ${asImport} } from '../${it[1].replace(/\./g, '/')}/${it[0]}';`;
-  }).join('\n');
-  const parent = imports + '\nimport {customResource} from \'./modules/custom-resource\';\n\nexport type AWS = typeof aws & { logicalName: (prefix: string) => string };' +
-    '\n\nexport const aws = {\n    customResource,\n' + resources.map(it => {
-      const location = it[1].split('.').slice(1).map((it, index) => index > 0 ? (it.substring(0,1).toUpperCase() + it.substring(1)) : it).join('');
-      return '    ' + location + it[0];
-    }).join(',\n') + '\n};';
-  fs.writeFileSync('src/kloudformation/aws.ts', parent);
+  const result = groupByService(resources);
+  const resourcesString = Object.keys(result)
+    .map(platform => `${platform} : {\n${Object.keys(result[platform]).map(service => `${service} : {\n${Object.keys(result[platform][service]).map(resource => `${resource} : ${result[platform][service][resource]}`)}}`).join(',\n')}}`)
+    .join(',\n');
+  const code = `export const resources = {\n${resourcesString}};`
+  fs.writeFileSync('src/kloudformation/aws-resources.ts', code);
 }
 function attName(name: string) { return name.replace(/\./g, '_')}
 
