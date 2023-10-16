@@ -56,7 +56,7 @@ export interface Outputs {
 }
 
 type Builder<AWS> = (aws: AWS) => void | Outputs
-type BuilderWith<AWS, ParamType, C> = (aws: AWS, parameters: Params<ParamType>, conditional: <R>(condition: C, resource: R) => R) => void | Outputs
+type BuilderWith<AWS, ParamType, C> = (aws: AWS & { logicalName(prefix: string): string }, parameters: Params<ParamType>, conditional: <R>(condition: C, resource: R) => R) => void | Outputs
 
 
 export function normalize(name: string) {
@@ -157,7 +157,7 @@ export class Template {
           .filter(name => name !== 'logicalName')
           .reduce((prev, key) => ({...prev, [key]: template.modify(aws[next1][key])}), {})
       })
-    , {logicalName: logicalNameFunction} as AWS)
+    , {logicalName: logicalNameFunction} as any)
     const parameterFunctions = Object.keys(parameters).reduce((prev, parameter) => ({...prev, [parameter]: () => ({'Ref': parameter})}), {} as Params<T>)
     const outputs = builder(builderAws, parameterFunctions, ((condition, resource) => { (resource as any)._condition = condition; return resource; }));
     const envParams = Object.keys(parameters).reduce((prev, param) => {

@@ -4,7 +4,7 @@ import {Function as LambdaFunction} from "../../aws/lambda/Function";
 import {CodeProps} from "../../aws/lambda/function/CodeProps";
 import {Permission} from "../../aws/lambda/Permission";
 import {Subscription} from "../../aws/sns/Subscription";
-import {AWS} from "../aws";
+import { AWSResourceFor } from '../aws';
 import {iamPolicy} from "../iam/PolicyDocument";
 import {normalize} from "../kloudformation";
 import {join, joinWith, Value} from "../Value";
@@ -17,7 +17,7 @@ export class Lambda {
   rules: Rule[];
   name: string;
   
-  constructor(private readonly aws: AWS, name: string, role: Role, lambda: LambdaFunction) {
+  constructor(private readonly aws: AWSResourceFor<'lambda'> & AWSResourceFor<'events'> & AWSResourceFor<'sns'>, name: string, role: Role, lambda: LambdaFunction) {
     this.aws = aws;
     this.name = name;
     this.role = role;
@@ -28,12 +28,12 @@ export class Lambda {
   }
   
   schedule(scheduleExpression: string): Lambda {
-    const rule = this.aws.eventsRule({
+    const rule = this.aws.events.rule({
       scheduleExpression: scheduleExpression,
       targets: [{arn: this.lambda.attributes.Arn, id: '1'}]
     });
     this.rules.push(rule);
-    this.permissions.push(this.aws.lambdaPermission({
+    this.permissions.push(this.aws.lambda.permission({
       action: 'lambda:InvokeFunction',
       functionName: this.lambda.attributes.Arn,
       principal: 'events.amazonaws.com',
@@ -59,8 +59,8 @@ export class Lambda {
     return this;
   }
   
-  static grantInvoke(aws: AWS, lambdaName: Value<string>,  toArn: Value<string>, principal: Value<string>, sourceAccount?: Value<string>): Permission {
-    return aws.lambdaPermission({
+  static grantInvoke(aws: AWSResourceFor<'lambda'>, lambdaName: Value<string>,  toArn: Value<string>, principal: Value<string>, sourceAccount?: Value<string>): Permission {
+    return aws.lambda.permission({
       action: 'lambda:InvokeFunction',
       functionName: lambdaName,
       principal,
@@ -79,9 +79,9 @@ export class Lambda {
     return this;
   }
   
-  private static snsTrigger(aws: AWS, lambdaArn: Value<string>, topicArn: Value<string>, sourceAccount?: Value<string>): [Permission, Subscription] {
+  private static snsTrigger(aws: AWSResourceFor<'sns'> & AWSResourceFor<'lambda'>, lambdaArn: Value<string>, topicArn: Value<string>, sourceAccount?: Value<string>): [Permission, Subscription] {
     const permission = Lambda.grantInvoke(aws, lambdaArn, topicArn, 'sns.amazonaws.com', sourceAccount);
-    const subscription = aws.snsSubscription({
+    const subscription = aws.sns.subscription({
       protocol: 'lambda',
       topicArn: topicArn,
       endpoint: lambdaArn
@@ -89,10 +89,10 @@ export class Lambda {
     return [permission, subscription];
   }
   
-  static create(aws: AWS, name: string, code: CodeProps, handler: Value<string>, runtime: LambdaFunction['runtime'], extra?: Partial<LambdaFunction>): Lambda {
+  static create(aws: AWSResourceFor<'iam'> & AWSResourceFor<'lambda'> & AWSResourceFor<'events'> & AWSResourceFor<'sns'>, name: string, code: CodeProps, handler: Value<string>, runtime: LambdaFunction['runtime'], extra?: Partial<LambdaFunction>): Lambda {
     const normalName = normalize(name);
     const functionName = extra?.functionName ?? name;
-    const role = aws.iamRole({
+    const role = aws.iam.role({
       _logicalName: `${normalName}Role`,
       path: '/',
       assumeRolePolicyDocument: iamPolicy({
@@ -111,7 +111,7 @@ export class Lambda {
       }],
       tags: extra?.tags,
     });
-    const lambda = aws.lambdaFunction({ _logicalName: `${normalName}Function`, functionName: name, code, handler, role: role.attributes.Arn, runtime, ...extra  });
+    const lambda = aws.lambda._function({ _logicalName: `${normalName}Function`, functionName: name, code, handler, role: role.attributes.Arn, runtime, ...extra  });
     return new Lambda(aws, normalName, role, lambda);
   }
 }

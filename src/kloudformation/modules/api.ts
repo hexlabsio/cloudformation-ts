@@ -5,15 +5,14 @@ import {Method} from "../../aws/apigateway/Method";
 import {Resource} from "../../aws/apigateway/Resource";
 import {RestApi} from "../../aws/apigateway/RestApi";
 import {Permission} from "../../aws/lambda/Permission";
-import {AWS} from "../aws";
+import { AWSResourceFor } from '../aws';
 import {join, joinWith, Value} from "../Value";
 import {Tag} from '../../aws/Tag';
-
 
 export class Path {
   
   constructor(
-    private readonly aws: AWS,
+    private readonly aws: AWSResourceFor<'apigateway'>,
     public api: Api,
     public resources: Resource[],
     public parent?: Path,
@@ -62,7 +61,7 @@ export class Path {
   }
   
   method(method: string): Path {
-    const apiMethod = this.aws.apigatewayMethod({
+    const apiMethod = this.aws.apigateway.method({
       _logicalName: this.aws.logicalName(`Method${this.logicalName()}${method}`),
       httpMethod: method,
       resourceId: this.resources[this.resources.length - 1],
@@ -99,7 +98,7 @@ export class Path {
           [corsCredentials]: `'${credentials}'`
         }
       } else {
-        this.optionsMethod = this.aws.apigatewayMethod({
+        this.optionsMethod = this.aws.apigateway.method({
           _logicalName: this.aws.logicalName(`Method${this.logicalName()}Options`),
           httpMethod: 'OPTIONS',
           resourceId: this.resources[this.resources.length - 1],
@@ -146,14 +145,14 @@ export class Path {
     return this;
   }
   
-  private static resources(aws: AWS, api: Api, path: string, parent: Value<string>, parentLogicalName?: string): Resource[] {
+  private static resources(aws: AWSResourceFor<'apigateway'>, api: Api, path: string, parent: Value<string>, parentLogicalName?: string): Resource[] {
     const parts = path.startsWith('/') ? path.substring(1).split('/') : path.split('/');
     let previous = parent;
     let pathName = '';
     const resources: Resource[] = [];
     for(const part of parts) {
       pathName += part.startsWith('{') ? (part.substring(1, part.length-1) + 'Var') : part;
-      const resource = aws.apigatewayResource({
+      const resource = aws.apigateway.resource({
         parentId: previous,
         restApiId: api.restApi,
         pathPart: part,
@@ -165,7 +164,7 @@ export class Path {
     return resources;
   }
   
-  static longPath(aws: AWS, api: Api, path: string, info: PathInfo, parent?: Path): Path {
+  static longPath(aws: AWSResourceFor<'apigateway'>, api: Api, path: string, info: PathInfo, parent?: Path): Path {
     const parentLogicalName = parent?.pathLogicalNames();
     const newPathResources = Path.resources(aws, api, path, parent?.resources?.[parent.resources.length-1] ?? api.restApi.attributes.RootResourceId, parentLogicalName)
     const infoOptions = info?.options
@@ -176,7 +175,7 @@ export class Path {
     return newPath;
   }
   
-  static resource(aws: AWS, api: Api, path: string): Path {
+  static resource(aws: AWSResourceFor<'apigateway'>, api: Api, path: string): Path {
     const resources = Path.resources(aws, api, path, api.restApi.attributes.RootResourceId);
     return new Path(aws, api, resources).options()
   }
@@ -197,7 +196,7 @@ export interface PathInfo {
 export class Api{
   
   constructor(
-    private readonly aws: AWS,
+    private readonly aws: AWSResourceFor<'apigateway'>,
     public readonly name: string,
     public restApi: RestApi,
     public deployment: Deployment,
@@ -228,7 +227,7 @@ export class Api{
   }
   
   mapTo(basePath: Value<string>, domainName: Value<string>): this {
-    this.basePathMapping = this.aws.apigatewayBasePathMapping({
+    this.basePathMapping = this.aws.apigateway.basePathMapping({
       _dependsOn: [this.deployment],
       restApiId: this.restApi,
       stage: this.deployment.stageName,
@@ -243,9 +242,9 @@ export class Api{
     return this;
   }
   
-  static create(aws: AWS, name: string, stage: string, providerArns?: Value<string>[], lambdaArn?: Value<string>, tags?: Tag[]): Api {
-    const restApi = aws.apigatewayRestApi({ name, tags });
-    const authorizer = providerArns && providerArns.length > 0 ? aws.apigatewayAuthorizer({
+  static create(aws: AWSResourceFor<'apigateway'> & AWSResourceFor<'lambda'>, name: string, stage: string, providerArns?: Value<string>[], lambdaArn?: Value<string>, tags?: Tag[]): Api {
+    const restApi = aws.apigateway.restApi({ name, tags });
+    const authorizer = providerArns && providerArns.length > 0 ? aws.apigateway.authorizer({
       authorizerResultTtlInSeconds: 300,
       providerARNs: providerArns,
       identitySource: 'method.request.header.Authorization',
@@ -253,13 +252,13 @@ export class Api{
       restApiId: restApi,
       name: `api-auth-${name}`,
     }) : undefined;
-    const permission = lambdaArn ? aws.lambdaPermission({
+    const permission = lambdaArn ? aws.lambda.permission({
       action: 'lambda:InvokeFunction',
       functionName: lambdaArn!,
       principal: joinWith('.', 'apigateway', {Ref: 'AWS::URLSuffix'}),
       sourceArn: joinWith(':', 'arn', {Ref: 'AWS::Partition'}, 'execute-api', {Ref: 'AWS::Region'}, {Ref: 'AWS::AccountId'}, join(restApi, '/*/*'))
     }): undefined;
-    const deployment = aws.apigatewayDeployment({
+    const deployment = aws.apigateway.deployment({
       restApiId: restApi,
       _logicalName: aws.logicalName('ApiDeployment' + Math.floor(Math.random() * 100000000)),
       stageName: stage

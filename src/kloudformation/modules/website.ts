@@ -1,6 +1,6 @@
 import {Bucket} from "../../aws/s3/Bucket";
 import {BucketPolicy} from "../../aws/s3/BucketPolicy";
-import {AWS} from "../aws";
+import { AWSResourceFor } from "../aws";
 
 import {join, Value} from "../Value";
 
@@ -14,12 +14,12 @@ export class Website {
     this.bucketPolicy = bucketPolicy;
   }
   
-  static create(aws: AWS, indexDocument: Value<string> = 'index.html', errorDocument: Value<string> = indexDocument): Website {
-    const bucket = aws.s3Bucket({
+  static create(aws: AWSResourceFor<'s3'>, indexDocument: Value<string> = 'index.html', errorDocument: Value<string> = indexDocument): Website {
+    const bucket = aws.s3.bucket({
       accessControl: 'PublicRead',
       websiteConfiguration: { indexDocument, errorDocument }
     });
-    const policy = aws.s3BucketPolicy({
+    const policy = aws.s3.bucketPolicy({
       bucket: bucket,
       policyDocument: { statement: [{action: 's3:GetObject', effect: 'Allow', resource: [join('arn:aws:s3:::', bucket, '/*')], principal: '*'}] }
     });

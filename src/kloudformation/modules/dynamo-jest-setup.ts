@@ -35,5 +35,5 @@ export async function tableDefinition(defintions: Record<string, any>): Promise<
 
 export async function writeFile(defintions: Record<string, any>, name = 'jest-dynamodb-config.js') {
   const definition = await tableDefinition(defintions);
-  fs.writeFileSync('jest-dynamodb-config.js', `module.exports = ${JSON.stringify(definition, null, 2)};`);
+  fs.writeFileSync(name, `module.exports = ${JSON.stringify(definition, null, 2)};`);
 }
