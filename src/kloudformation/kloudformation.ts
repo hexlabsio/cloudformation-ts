@@ -4,6 +4,9 @@ import {KloudResource} from "./KloudResource";
 import {ApiDefinition} from "./modules/api";
 import {transform, Value} from "./Value";
 
+export * from './iam/iamActions';
+export * from './iam/PolicyDocument';
+
 export * from './modules/api';
 export * from './modules/cron';
 export * from './modules/custom-resource';
