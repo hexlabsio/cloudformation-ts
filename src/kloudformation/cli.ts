@@ -312,11 +312,12 @@ function zipDirectory(source: string, target: string): Promise<void> {
 
 async function upload(
   files: string[],
+  region: string,
   prefix: string,
   bucket: string
 ): Promise<string[]> {
   console.log(chalk.green("Uploading to S3"));
-  const client = new S3();
+  const client = new S3({ region });
   const dateTime = new Date().toISOString();
   const randomPart = Math.floor(Math.random() * 10000000);
   const key = `${prefix}${randomPart}-${dateTime}/`;
@@ -382,12 +383,12 @@ async function deploy(
     process.exit(1);
   }
   validateCapabilities(capabilities);
-  const locations = files && bucket ? await upload(files, prefix ?? "", bucket) : [];
+  const locations = files && bucket ? await upload(files, region, prefix ?? "", bucket) : [];
   const templateLocation = template ?? 'template.json';
 
   async function getFileContent(): Promise<string> {
     if(shouldUpload) {
-      const files = await upload([templateLocation], prefix ?? "", bucket);
+      const files = await upload([templateLocation], region, prefix ?? "", bucket);
       return files[0];
     }
     else {
