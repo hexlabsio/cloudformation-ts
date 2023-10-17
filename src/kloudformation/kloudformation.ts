@@ -4,6 +4,19 @@ import {KloudResource} from "./KloudResource";
 import {ApiDefinition} from "./modules/api";
 import {transform, Value} from "./Value";
 
+export * from './modules/api';
+export * from './modules/cron';
+export * from './modules/custom-resource';
+export * from './modules/dynamo';
+export * from './modules/lambda';
+export * from './modules/website';
+
+export * from './Attribute';
+export * from './aws';
+export * from './aws-resources';
+export * from './KloudResource';
+export * from './Value';
+
 export interface KloudFormationTemplate<C extends string = string> {
   Conditions?: Record<C, any>;
   Description?: string;
