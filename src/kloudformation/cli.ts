@@ -224,7 +224,12 @@ async function requireFile(location: string): Promise<any> {
 async function generateStackCli(
   templateLocation: string,command: any
 ): Promise<void> {
-  await generateStack(templateLocation, command);
+  try {
+    await generateStack(templateLocation, command);
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
+  }
 }
 
 async function generateStack(
@@ -294,6 +299,7 @@ async function deployStack(
     }
   } catch (e) {
     console.error(e);
+    process.exit(1);
   }
 }
 
