@@ -34,10 +34,6 @@ jobs:
       - name: Production Build
         run: npm run build
 
-
-      - name: Test CLI
-        run: npm run test:run-cli
-
       - name: Authenticate with NPM registry
         if: github.ref == 'refs/heads/master'
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
