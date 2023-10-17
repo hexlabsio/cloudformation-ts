@@ -352,7 +352,7 @@ async function upload(
   );
 }
 
-function getParametersFile(parameterFile: string): {[name: string]: {envName: string}}{
+function getParametersFile(parameterFile: string): {[name: string]: {envName: string} | string}{
   if(parameterFile) {
     try {
       const parametersContent = fs.readFileSync(parameterFile);
@@ -405,9 +405,9 @@ async function deploy(
   console.log(chalk.green(`Deploying ${stackName}`));
   const envParams = Object.keys(parametersInfo).map(it => {
     const info = parametersInfo[it];
-    const envName = info.envName;
-    if(!envName || !process.env[envName]) throw new Error(`Could not lookup parameter with name ${it}, or no env with name ${envName} was found`);
-    return { ParameterKey: it, ParameterValue: process.env[envName] }
+    const envName = typeof info === 'object' ? info.envName : info;
+    if(envName && !process.env[envName]) throw new Error(`Could not lookup parameter with name ${it}, or no env with name ${envName} was found`);
+    return { ParameterKey: it, ParameterValue: envName ? process.env[envName] : info as string }
   });
   const parameters: Parameter[] =
       [...(files && bucket

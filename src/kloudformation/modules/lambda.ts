@@ -9,7 +9,7 @@ import {iamPolicy} from "../iam/PolicyDocument";
 import {normalize} from "../kloudformation";
 import {join, joinWith, Value} from "../Value";
 
-export type LambdaExpects = AWSResourceFor<'lambda'> & AWSResourceFor<'events'> & AWSResourceFor<'sns'>;
+export type LambdaExpects = AWSResourceFor<'lambda'> & AWSResourceFor<'events'> & AWSResourceFor<'sns'> & AWSResourceFor<'iam'>;
 export class Lambda {
   role: Role;
   lambda: LambdaFunction;
@@ -69,8 +69,7 @@ export class Lambda {
       sourceAccount
     });
   }
-  
-  
+
   snsTrigger(topicArn: Value<string>, sourceAccount?: Value<string>): Lambda {
     const [permission, subscription] = Lambda.snsTrigger(this.aws, this.lambda.attributes.Arn, topicArn, sourceAccount);
     permission._logicalName = `${this.aws.logicalName(this.lambda._logicalName + 'Permission')}`;
@@ -90,7 +89,7 @@ export class Lambda {
     return [permission, subscription];
   }
   
-  static create(aws: AWSResourceFor<'iam'> & AWSResourceFor<'lambda'> & AWSResourceFor<'events'> & AWSResourceFor<'sns'>, name: string, code: CodeProps, handler: Value<string>, runtime: LambdaFunction['runtime'], extra?: Partial<LambdaFunction>): Lambda {
+  static create(aws: LambdaExpects, name: string, code: CodeProps, handler: Value<string>, runtime: LambdaFunction['runtime'], extra?: Partial<LambdaFunction>): Lambda {
     const normalName = normalize(name);
     const functionName = extra?.functionName ?? name;
     const role = aws.iam.role({
