@@ -9,6 +9,7 @@ import {iamPolicy} from "../iam/PolicyDocument";
 import {normalize} from "../kloudformation";
 import {join, joinWith, Value} from "../Value";
 
+export type LambdaExpects = AWSResourceFor<'lambda'> & AWSResourceFor<'events'> & AWSResourceFor<'sns'>;
 export class Lambda {
   role: Role;
   lambda: LambdaFunction;
@@ -17,7 +18,7 @@ export class Lambda {
   rules: Rule[];
   name: string;
   
-  constructor(private readonly aws: AWSResourceFor<'lambda'> & AWSResourceFor<'events'> & AWSResourceFor<'sns'>, name: string, role: Role, lambda: LambdaFunction) {
+  constructor(private readonly aws: LambdaExpects, name: string, role: Role, lambda: LambdaFunction) {
     this.aws = aws;
     this.name = name;
     this.role = role;

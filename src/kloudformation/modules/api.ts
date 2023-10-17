@@ -9,6 +9,7 @@ import { AWSResourceFor } from '../aws';
 import {join, joinWith, Value} from "../Value";
 import {Tag} from '../../aws/Tag';
 
+export type ApiExpects = AWSResourceFor<'apigateway'> & AWSResourceFor<'lambda'>;
 export class Path {
   
   constructor(
@@ -242,7 +243,7 @@ export class Api{
     return this;
   }
   
-  static create(aws: AWSResourceFor<'apigateway'> & AWSResourceFor<'lambda'>, name: string, stage: string, providerArns?: Value<string>[], lambdaArn?: Value<string>, tags?: Tag[]): Api {
+  static create(aws: ApiExpects, name: string, stage: string, providerArns?: Value<string>[], lambdaArn?: Value<string>, tags?: Tag[]): Api {
     const restApi = aws.apigateway.restApi({ name, tags });
     const authorizer = providerArns && providerArns.length > 0 ? aws.apigateway.authorizer({
       authorizerResultTtlInSeconds: 300,
