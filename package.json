@@ -20,7 +20,7 @@
     "lambda": "chmod +x dist/kloudformation/cli.js && node --trace-deprecation dist/kloudformation/cli.js run -t tsconfigtest.json $(pwd)/test/deploy-test.ts handler $(pwd)/test/fakeLambda.js",
     "stack": "ts-node test/deploy-test.ts",
     "start": "src/kloudformation/cli.ts translate -t tsconfigtest.json $(pwd)/test/deploy-test.ts",
-    "deploy": "src/kloudformation/cli.ts deploy --stack-upload -b hexlabs-deployments -p kloudformation-test -t tsconfigtest.json test-stack $(pwd)/test/deploy-test.ts"
+    "deploy": "export AWS_PROFILE=gitboard2 && src/kloudformation/cli.ts deploy test-stack $(pwd)/test/deploy-test.ts"
   },
   "files": [
     "dist",

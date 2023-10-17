@@ -127,10 +127,8 @@ async function stackExists(
   cf: CloudFormation,
   name: string
 ): Promise<Stack | undefined> {
-  const stacks = await cf.describeStacks({StackName: name});
-  if (stacks.Stacks?.length) {
-    return stacks.Stacks[0];
-  }
+  const stacks = await cf.describeStacks({});
+  return stacks.Stacks?.find(it => it.StackName === name);
 }
 
 async function deleteStack(stackName: string, command: any) {
