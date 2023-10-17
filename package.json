@@ -11,6 +11,7 @@
   },
   "scripts": {
     "run": "ts-node --project tsconfig.json test/deploy-test.ts",
+    "test:run-cli": "ts-node --project tsconfig.json src/kloudformation/cli.ts",
     "prebuild": "rimraf dist",
     "pregenerate": "rimraf src/kloudformation/aws-resources.ts src/aws src/alexa",
     "generate": "ts-node --project tsconfig.json src/kloudformation/builder/discovery.ts",

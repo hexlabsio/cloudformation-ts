@@ -1,6 +1,6 @@
 #!/usr/bin/env ts-node
 
-import { CloudFormation, Parameter, Stack, StackEvent } from "@aws-sdk/client-cloudformation";
+import { Capability, CloudFormation, Parameter, Stack, StackEvent } from "@aws-sdk/client-cloudformation";
 import { S3 } from "@aws-sdk/client-s3";
 
 import * as fs from "fs";
@@ -437,7 +437,7 @@ async function deploy(
         await cf
           .updateStack({
             StackName: stackName,
-            Capabilities: capabilities,
+            Capabilities: capabilities as Capability[],
             Parameters: parameters,
             ...(shouldUpload ? { TemplateURL: `https://${bucket}.s3.${region}.amazonaws.com/${content}` }: { TemplateBody: content })
           })
@@ -466,7 +466,7 @@ async function deploy(
     await cf
       .createStack({
         StackName: stackName,
-        Capabilities: capabilities,
+        Capabilities: capabilities as Capability[],
         Parameters: parameters,
         ...(shouldUpload ? { TemplateURL: `https://${bucket}.s3.${region}.amazonaws.com/${content}` }: { TemplateBody: content })
       })
@@ -522,9 +522,9 @@ async function getInitialEvents(
   let events: StackEvent[] = [];
   while (events.length === 0) {
     await wait();
-    let next = await stackEvents(cf, name, start);
+    const next = await stackEvents(cf, name, start);
     events.forEach((ev) => console.log(ev));
-    let startingPoint = next
+    const startingPoint = next
       .reverse()
       .find(
         (ev) =>
@@ -547,6 +547,7 @@ async function followStackEvents(
   start: string
 ): Promise<boolean> {
   let events = await getInitialEvents(cf, name, start);
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     events.forEach(display);
     if (
@@ -569,7 +570,7 @@ async function followStackEvents(
 }
 
 function display(e: StackEvent) {
-  let color = badStatuses.includes(e.ResourceStatus!)
+  const color = badStatuses.includes(e.ResourceStatus!)
     ? chalk.red
     : successStatuses.includes(e.ResourceStatus!)
     ? chalk.green
