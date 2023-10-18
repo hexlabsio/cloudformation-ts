@@ -220,7 +220,12 @@ export class Template {
       }, {} as KloudFormationTemplate['Outputs']) : undefined
     };
     if(file) {
-      fs.writeFileSync(file,     templateTransform(output));
+      const location = file as string;
+      const dir = location.substring(0, location.lastIndexOf('/') + 1);
+      if(dir.endsWith('/')) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      fs.writeFileSync(file, templateTransform(output));
       fs.writeFileSync(paramsFile, JSON.stringify(envParams));
     }
     return {template: output, outputs: outputs || undefined} as any;
