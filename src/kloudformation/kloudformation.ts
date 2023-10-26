@@ -62,13 +62,18 @@ type Parameter = ({
 type Params<T> = { [K in keyof T]: <R = string>() => Value<R> }
 
 
+export interface Output {
+  description? : string;
+  value: Value<any>;
+  export?: { name: string };
+}
 export interface Outputs {
   apis?: ApiDefinition[];
-  outputs?: { [logicalId: string]: {
-      description? : string;
-      value: Value<any>;
-      export?: { name: string };
-    }; };
+  outputs?: Record<string, Output>;
+}
+
+export function stackOutput(value: Value<string>, description?: string, exportName?: string): Output {
+  return { value, description: description ?? '', ...(exportName ? { export: { name: exportName } } : {})};
 }
 
 type Builder<AWS> = (aws: AWS) => void | Outputs
@@ -213,7 +218,7 @@ export class Template {
           ...prev,
           [logicalId]: {
             Description: output.description,
-            Value: output.value,
+            Value: transform(output.value),
             Export: output.export ? { Name: output.export!.name } : undefined
           }
         })

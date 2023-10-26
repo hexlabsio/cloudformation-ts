@@ -237,6 +237,16 @@ export class Api{
     });
     return this;
   }
+
+  mapToDomain(domainName: Value<string>): this {
+    this.basePathMapping = this.aws.apigateway.basePathMapping({
+      _dependsOn: [this.deployment],
+      restApiId: this.restApi,
+      stage: this.deployment.stageName,
+      domainName
+    });
+    return this;
+  }
   
   apiFrom(pathInfo: { [key: string]: PathInfo }): this {
     this.paths = Object.keys(pathInfo).map(path => Path.longPath(this.aws, this, path, pathInfo[path]));

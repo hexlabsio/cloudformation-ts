@@ -1,4 +1,6 @@
 import { AwsLoader } from '../src/kloudformation/aws';
+import { Output } from '../src/kloudformation/kloudformation';
+import { Value } from '../src/kloudformation/Value';
 
 // export default Template.createWithParams({
 //   ABC: fromEnv('GHJ')
@@ -11,7 +13,13 @@ import { AwsLoader } from '../src/kloudformation/aws';
 
 const template = await AwsLoader.register('s3').register('sns').load();
 
+
 export default template.create().build(aws => {
   const bucket = aws.s3.bucket({bucketName: 'jimmy'})
   aws.sns.topic({topicName: bucket});
+  return {
+    outputs: {
+      Test: stackOutput(bucket)
+    }
+  }
 })
