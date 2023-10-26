@@ -76,6 +76,16 @@ export function stackOutput(value: Value<string>, description?: string, exportNa
   return { value, description: description ?? '', ...(exportName ? { export: { name: exportName } } : {})};
 }
 
+export function keepCase<T>(item: T): T {
+  if(typeof item === 'object') {
+    if(Array.isArray(item)) {
+      return item.map(keepCase) as T;
+    }
+    return Object.keys(item as any).reduce((prev, next) => ({...prev, [next]: keepCase((item as any)[next])}), {_nocaps: true} as T);
+  }
+  return item;
+}
+
 type Builder<AWS> = (aws: AWS) => void | Outputs
 type BuilderWith<AWS, ParamType, C> = (aws: AWS & { logicalName(prefix: string): string }, parameters: Params<ParamType>, conditional: <R>(condition: C, resource: R) => R) => void | Outputs
 
