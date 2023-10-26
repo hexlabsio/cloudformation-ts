@@ -81,7 +81,8 @@ export function keepCase<T>(item: T): T {
     if(Array.isArray(item)) {
       return item.map(keepCase) as T;
     }
-    return Object.keys(item as any).reduce((prev, next) => ({...prev, [next]: keepCase((item as any)[next])}), {_nocaps: true} as T);
+    if(!Object.prototype.hasOwnProperty.call(item, 'Ref'))
+      return Object.keys(item as any).reduce((prev, next) => ({...prev, [next]: keepCase((item as any)[next])}), {_nocaps: true} as T);
   }
   return item;
 }
@@ -302,7 +303,6 @@ export class TemplateBuilder<AWS, P extends {[param: string]: Parameter}, C exte
         this._templateTransform,
         this.transforms.length > 0 ? this.transforms : undefined);
   }
-
 
   static create<AWS, C extends string = string>(aws: AWS, outputFileName = 'template.json', parametersFileName='parameters.json'): TemplateBuilder<AWS, {}, C> {
     return new TemplateBuilder(aws, outputFileName, parametersFileName);

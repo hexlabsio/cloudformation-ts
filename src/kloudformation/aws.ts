@@ -13,7 +13,7 @@ class Builder<AWS> {
 }
 
 type Get<T extends {[key: string]: { load: () => Promise<any> }}> = {[K in keyof T]: T[K]['load'] extends () => Promise<infer R> ? R : never}
-export type AWSResourceFor<S extends AwsServices> = { [k in S]: Get<(typeof resources)['aws'][S]> } & { logicalName(prefix: string): string; }
+export type AWSResourceFor<S extends AwsServices> = { [k in S]: Get<(typeof resources)['aws'][k]> } & { logicalName(prefix: string): string; }
 
 export class AwsLoader<AWS> {
   aws = {};
@@ -23,13 +23,13 @@ export class AwsLoader<AWS> {
     const parts = await Promise.all(Object.keys(resources.aws[service]).map(async resource => ({[resource]: await resources.aws[service][resource].load()})));
     this.aws = { ...this.aws, [service]: parts.reduce((prev, next) => ({...prev, ...next}), {}) };
   }
-  register<S extends AwsServices>(service: S): AwsLoader<AWS & AWSResourceFor<S>> {
-    this.promises.push(this.add(service));
+  register<S extends AwsServices[]>(...service: S): AwsLoader<AWS & AWSResourceFor<S[number]>> {
+    this.promises.push(...service.map(it => this.add(it)));
     return this as any;
   }
 
-  static register<S extends AwsServices>(resource: S): AwsLoader<{ [k in S]: Get<(typeof resources)['aws'][S]> }> {
-    return new AwsLoader<any>().register(resource);
+  static register<S extends AwsServices[]>(...resource: S): AwsLoader<{ [k in S[number]]: Get<(typeof resources)['aws'][k]> }> {
+    return new AwsLoader<any>().register(...resource);
   }
 
   async load(): Promise<Builder<AWS>> {
@@ -37,4 +37,3 @@ export class AwsLoader<AWS> {
     return new Builder<any>(this.aws);
   }
 }
-

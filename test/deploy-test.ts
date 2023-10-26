@@ -1,6 +1,5 @@
 import { AwsLoader } from '../src/kloudformation/aws';
-import { Output } from '../src/kloudformation/kloudformation';
-import { Value } from '../src/kloudformation/Value';
+import { stackOutput } from '../src/kloudformation/kloudformation';
 
 // export default Template.createWithParams({
 //   ABC: fromEnv('GHJ')
@@ -11,8 +10,7 @@ import { Value } from '../src/kloudformation/Value';
 // }, 'template.json', 'parameters.json', it => JSON.stringify(it, null, 2));
 
 
-const template = await AwsLoader.register('s3').register('sns').load();
-
+const template = await AwsLoader.register('s3', 'sns').load();
 
 export default template.create().build(aws => {
   const bucket = aws.s3.bucket({bucketName: 'jimmy'})
