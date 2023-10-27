@@ -4,12 +4,12 @@ import {Function as LambdaFunction} from "../../aws/lambda/Function";
 import {CodeProps} from "../../aws/lambda/function/CodeProps";
 import {Permission} from "../../aws/lambda/Permission";
 import {Subscription} from "../../aws/sns/Subscription";
-import { AWSResourceFor } from '../aws';
+import { AWSResourcesFor } from '../aws';
 import {iamPolicy} from "../iam/PolicyDocument";
 import {normalize} from "../kloudformation";
 import {join, joinWith, Value} from "../Value";
 
-export type LambdaExpects = AWSResourceFor<'lambda'> & AWSResourceFor<'events'> & AWSResourceFor<'sns'> & AWSResourceFor<'iam'>;
+export type LambdaExpects = AWSResourcesFor<'lambda' | 'events' | 'sns' | 'iam'>;
 export class Lambda {
   role: Role;
   lambda: LambdaFunction;
@@ -60,7 +60,7 @@ export class Lambda {
     return this;
   }
   
-  static grantInvoke(aws: AWSResourceFor<'lambda'>, lambdaName: Value<string>,  toArn: Value<string>, principal: Value<string>, sourceAccount?: Value<string>): Permission {
+  static grantInvoke(aws: AWSResourcesFor<'lambda'>, lambdaName: Value<string>,  toArn: Value<string>, principal: Value<string>, sourceAccount?: Value<string>): Permission {
     return aws.lambda.permission({
       action: 'lambda:InvokeFunction',
       functionName: lambdaName,
@@ -79,7 +79,7 @@ export class Lambda {
     return this;
   }
   
-  private static snsTrigger(aws: AWSResourceFor<'sns'> & AWSResourceFor<'lambda'>, lambdaArn: Value<string>, topicArn: Value<string>, sourceAccount?: Value<string>): [Permission, Subscription] {
+  private static snsTrigger(aws: AWSResourcesFor<'sns' | 'lambda'>, lambdaArn: Value<string>, topicArn: Value<string>, sourceAccount?: Value<string>): [Permission, Subscription] {
     const permission = Lambda.grantInvoke(aws, lambdaArn, topicArn, 'sns.amazonaws.com', sourceAccount);
     const subscription = aws.sns.subscription({
       protocol: 'lambda',

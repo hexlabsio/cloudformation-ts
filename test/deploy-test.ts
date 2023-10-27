@@ -13,6 +13,10 @@ import { stackOutput } from '../src/kloudformation/kloudformation';
 const template = await AwsLoader.register('s3', 'sns').load();
 
 export default template.create().build(aws => {
+  aws.customResource('abc', {
+    ServiceToken: '',
+    ParameterName: ''
+  })
   const bucket = aws.s3.bucket({bucketName: 'jimmy'})
   aws.sns.topic({topicName: bucket});
   return {

@@ -1,6 +1,6 @@
 import {Bucket} from "../../aws/s3/Bucket";
 import {BucketPolicy} from "../../aws/s3/BucketPolicy";
-import { AWSResourceFor } from "../aws";
+import { AWSResourcesFor } from "../aws";
 
 import {join, Value} from "../Value";
 
@@ -14,7 +14,7 @@ export class Website {
     this.bucketPolicy = bucketPolicy;
   }
   
-  static create(aws: AWSResourceFor<'s3'>, indexDocument: Value<string> = 'index.html', errorDocument: Value<string> = indexDocument): Website {
+  static create(aws: AWSResourcesFor<'s3'>, indexDocument: Value<string> = 'index.html', errorDocument: Value<string> = indexDocument): Website {
     const bucket = aws.s3.bucket({
       accessControl: 'PublicRead',
       websiteConfiguration: { indexDocument, errorDocument }

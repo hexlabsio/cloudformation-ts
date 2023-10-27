@@ -2,6 +2,7 @@ import * as fs from "fs";
 import {PathLike} from "fs";
 import {KloudResource} from "./KloudResource";
 import {ApiDefinition} from "./modules/api";
+import { customResource } from './modules/custom-resource';
 import {transform, Value} from "./Value";
 
 export * from './iam/iamActions';
@@ -88,7 +89,7 @@ export function keepCase<T>(item: T): T {
 }
 
 type Builder<AWS> = (aws: AWS) => void | Outputs
-type BuilderWith<AWS, ParamType, C> = (aws: AWS & { logicalName(prefix: string): string }, parameters: Params<ParamType>, conditional: <R>(condition: C, resource: R) => R) => void | Outputs
+type BuilderWith<AWS, ParamType, C> = (aws: AWS, parameters: Params<ParamType>, conditional: <R>(condition: C, resource: R) => R) => void | Outputs
 
 
 export function normalize(name: string) {
@@ -191,7 +192,7 @@ export class Template {
       })
     , {logicalName: logicalNameFunction} as any)
     const parameterFunctions = Object.keys(parameters).reduce((prev, parameter) => ({...prev, [parameter]: () => ({'Ref': parameter})}), {} as Params<T>)
-    const outputs = builder(builderAws, parameterFunctions, ((condition, resource) => { (resource as any)._condition = condition; return resource; }));
+    const outputs = builder({...builderAws, customResource}, parameterFunctions, ((condition, resource) => { (resource as any)._condition = condition; return resource; }));
     const envParams = Object.keys(parameters).reduce((prev, param) => {
       const parameter = parameters[param] as any;
       if(parameter.type === 'Future')

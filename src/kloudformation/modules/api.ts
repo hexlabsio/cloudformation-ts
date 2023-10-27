@@ -5,15 +5,15 @@ import {Method} from "../../aws/apigateway/Method";
 import {Resource} from "../../aws/apigateway/Resource";
 import {RestApi} from "../../aws/apigateway/RestApi";
 import {Permission} from "../../aws/lambda/Permission";
-import { AWSResourceFor } from '../aws';
+import { AWSResourcesFor } from '../aws';
 import {join, joinWith, Value} from "../Value";
 import {Tag} from '../../aws/Tag';
 
-export type ApiExpects = AWSResourceFor<'apigateway'> & AWSResourceFor<'lambda'>;
+export type ApiExpects = AWSResourcesFor<'apigateway' | 'lambda'>
 export class Path {
   
   constructor(
-    private readonly aws: AWSResourceFor<'apigateway'>,
+    private readonly aws: AWSResourcesFor<'apigateway'>,
     public api: Api,
     public resources: Resource[],
     public parent?: Path,
@@ -146,7 +146,7 @@ export class Path {
     return this;
   }
   
-  private static resources(aws: AWSResourceFor<'apigateway'>, api: Api, path: string, parent: Value<string>, parentLogicalName?: string): Resource[] {
+  private static resources(aws: AWSResourcesFor<'apigateway'>, api: Api, path: string, parent: Value<string>, parentLogicalName?: string): Resource[] {
     const parts = path.startsWith('/') ? path.substring(1).split('/') : path.split('/');
     let previous = parent;
     let pathName = '';
@@ -165,7 +165,7 @@ export class Path {
     return resources;
   }
   
-  static longPath(aws: AWSResourceFor<'apigateway'>, api: Api, path: string, info: PathInfo, parent?: Path): Path {
+  static longPath(aws: AWSResourcesFor<'apigateway'>, api: Api, path: string, info: PathInfo, parent?: Path): Path {
     const parentLogicalName = parent?.pathLogicalNames();
     const newPathResources = Path.resources(aws, api, path, parent?.resources?.[parent.resources.length-1] ?? api.restApi.attributes.RootResourceId, parentLogicalName)
     const infoOptions = info?.options
@@ -176,7 +176,7 @@ export class Path {
     return newPath;
   }
   
-  static resource(aws: AWSResourceFor<'apigateway'>, api: Api, path: string): Path {
+  static resource(aws: AWSResourcesFor<'apigateway'>, api: Api, path: string): Path {
     const resources = Path.resources(aws, api, path, api.restApi.attributes.RootResourceId);
     return new Path(aws, api, resources).options()
   }
@@ -197,7 +197,7 @@ export interface PathInfo {
 export class Api{
   
   constructor(
-    private readonly aws: AWSResourceFor<'apigateway'>,
+    private readonly aws: AWSResourcesFor<'apigateway'>,
     public readonly name: string,
     public restApi: RestApi,
     public deployment: Deployment,

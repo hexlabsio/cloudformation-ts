@@ -1,7 +1,7 @@
 import { DynamoIndex, DynamoDefinition } from "@hexlabs/dynamo-ts";
 import {Table, TableProperties} from "../../aws/dynamodb/Table";
 import {Role} from "../../aws/iam/Role";
-import { AWSResourceFor } from '../aws';
+import { AWSResourcesFor } from '../aws';
 import {Iam, Policy} from "../iam/PolicyDocument";
 import {normalize} from "../kloudformation";
 import {join} from "../Value";
@@ -16,7 +16,7 @@ export function dynamoTable<
   PK extends keyof DEFINITION,
   SK extends Exclude<keyof DEFINITION, PK> | null = null,
   INDEXES extends Record<string, DynamoIndex<DEFINITION>> = {},
-  >(aws: AWSResourceFor<'dynamodb'>, definition: {
+  >(aws: AWSResourcesFor<'dynamodb'>, definition: {
   definition: DEFINITION;
   partitionKey: PK;
   sortKey: SK;
