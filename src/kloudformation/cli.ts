@@ -41,6 +41,7 @@ function deployCommand(): any {
       "A space separated list of files to upload to s3"
     )
     .option("-b, --bucket <bucket>", "The s3 bucket in which to upload files")
+    .option("-x, --bucket-region <region>", "The s3 bucket region in which to upload files")
     .option(
       "-p, --prefix <prefix>",
       "The s3 object key prefix in which to upload files"
@@ -270,6 +271,7 @@ async function deployStack(
         command.file,
         command.prefix,
         command.bucket,
+        command.bucketRegion,
         command.outputFile,
         envs,
         command.stackUpload
@@ -292,6 +294,7 @@ async function deployStack(
         command.file,
         command.prefix,
         command.bucket,
+        command.bucketRegion,
         command.outputFile,
         envs,
         command.stackUpload
@@ -380,6 +383,7 @@ async function deploy(
   files: string[],
   prefix: string,
   bucket: string,
+  bucketRegion: string,
   outputFile?: string,
   envs?: { [key: string]: string },
   shouldUpload?: boolean,
@@ -389,12 +393,12 @@ async function deploy(
     process.exit(1);
   }
   validateCapabilities(capabilities);
-  const locations = files && bucket ? await upload(files, region, prefix ?? "", bucket) : [];
+  const locations = files && bucket ? await upload(files, bucketRegion ?? region, prefix ?? "", bucket) : [];
   const templateLocation = template ?? 'template.json';
 
   async function getFileContent(): Promise<string> {
     if(shouldUpload) {
-      const files = await upload([templateLocation], region, prefix ?? "", bucket);
+      const files = await upload([templateLocation], bucketRegion ?? region, prefix ?? "", bucket);
       return files[0];
     }
     else {
