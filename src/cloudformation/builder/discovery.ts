@@ -260,7 +260,7 @@ function groupByService(resources: NameLocationContent[]): { [service: string]: 
   resources.forEach(([name, location]) => {
     const [platform, service] = location.split('.');
     const item = lowerFirst(name);
-    const updatedItem = item === 'function' ? 'createFunction': item;
+    const updatedItem = item === 'functionProp' ? 'createFunction': item;
     groups[platform] = { ...groups[platform], [service]: { ...groups[platform]?.[service], [updatedItem]: `{ load: async () => (await import('../${location.replace(/\./g, '/')}/${name}')).${updatedItem} }` } }
   })
   return groups;
@@ -314,8 +314,9 @@ async function buildType(from: PropertyInfo, resource: boolean, name: string, do
   const nameParts = [...split.slice(0, -1).map(s => s.toLowerCase()), ...(resource ? [] : split[split.length-1].split('.').slice(0,-1).map(it => it.toLowerCase()))];
   const location = name === 'Tag' ? 'aws' : nameParts.join('.');
   const lastPart = split[split.length - 1].split('.');
-  const prop = lastPart[lastPart.length - 1];
-  const lowerName = prop.substring(0,1).toLowerCase() + prop.substring(1);
+  const prop = lastPart[lastPart.length - 1] == 'Function' ? 'FunctionProp' : lastPart[lastPart.length - 1];
+  const namePart = lastPart[lastPart.length - 1];
+  const lowerName = namePart.substring(0,1).toLowerCase() + namePart.substring(1);
   const functionName = lowerName === 'function' ? 'createFunction' : lowerName;
   const documentation = await docsCache.get(from.Documentation!);
   const comments = descriptionString(documentation, from.Documentation);

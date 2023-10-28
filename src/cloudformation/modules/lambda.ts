@@ -1,6 +1,6 @@
 import {Rule} from "../../aws/events/Rule";
 import {Role} from "../../aws/iam/Role";
-import { Function as LambdaFunction, FunctionProperties } from "../../aws/lambda/Function";
+import { FunctionProp , FunctionPropProperties } from "../../aws/lambda/FunctionProp";
 import {CodeProps} from "../../aws/lambda/function/CodeProps";
 import {Permission} from "../../aws/lambda/Permission";
 import {Subscription} from "../../aws/sns/Subscription";
@@ -12,13 +12,13 @@ import {join, joinWith, Value} from "../Value";
 export type LambdaExpects = AWSResourcesFor<'lambda' | 'events' | 'sns' | 'iam'>;
 export class Lambda {
   role: Role;
-  lambda: LambdaFunction;
+  lambda: FunctionProp;
   permissions: Permission[];
   subscriptions: Subscription[];
   rules: Rule[];
   name: string;
   
-  constructor(private readonly aws: LambdaExpects, name: string, role: Role, lambda: LambdaFunction) {
+  constructor(private readonly aws: LambdaExpects, name: string, role: Role, lambda: FunctionProp) {
     this.aws = aws;
     this.name = name;
     this.role = role;
@@ -89,9 +89,9 @@ export class Lambda {
     return [permission, subscription];
   }
   
-  static create(aws: LambdaExpects, name: string, code: CodeProps, handler: Value<string>, runtime: FunctionProperties['runtime'], extra?: Partial<LambdaFunction>): Lambda {
+  static create(aws: LambdaExpects, name: string, code: CodeProps, handler: Value<string>, runtime: FunctionPropProperties['runtime'], extra?: Partial<FunctionProp['properties']>): Lambda {
     const normalName = normalize(name);
-    const functionName = extra?.properties?.functionName ?? name;
+    const functionName = extra?.functionName ?? name;
     const role = aws.iam.role({
       path: '/',
       assumeRolePolicyDocument: iamPolicy({
@@ -108,7 +108,7 @@ export class Lambda {
           ],
         })
       }],
-      tags: extra?.properties?.tags,
+      tags: extra?.tags,
     }).withLogicalName(`${normalName}Role`);
     const lambda = aws.lambda
       .createFunction({functionName: name, code, handler, role: role.attributes.Arn, runtime, ...extra  })
