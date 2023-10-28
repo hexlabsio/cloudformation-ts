@@ -16,6 +16,26 @@ export type Base64Fn = {
 export type Cidr = {
   'Fn::Cidr': [Value<string>, Value<number>, Value<number>]
 }
+export type Condition = {
+  Condition: string
+}
+export type ConditionAnd = {
+  'Fn::And': [ConditionalValue, ConditionalValue]
+}
+export type ConditionOr = {
+  'Fn::Or': [ConditionalValue, ConditionalValue]
+}
+export type ConditionEquals = {
+  'Fn::Equals' : [ConditionalValue, ConditionalValue]
+}
+export type ConditionNot = {
+  'Fn::Not' : [ConditionalValue]
+}
+export type ConditionIf = {
+  'Fn::If' : [ConditionalValue, ConditionalValue, ConditionalValue]
+}
+export type ConditionalValue = Value<any> | ConditionFunction;
+export type ConditionFunction = ConditionAnd | ConditionOr | ConditionEquals | ConditionNot | ConditionIf;
 
 export type Instrinsic<T, S extends string> = Record<S, T>
 
@@ -33,13 +53,13 @@ export function sub<T extends string>(body: T, params: SubParams<T>): Sub {
     "Fn::Sub": [body, params]
   }
 }
-export function ref(logicalName: string): Ref {
+export function ref<R extends string = string>(logicalName: R): { Ref: R } {
   return {
     Ref: logicalName
   }
 }
 
-export function transform(part: Value<string>): Value<string> {
+export function transform(part: Value<any>): Value<any> {
   if(part instanceof AwsResource){
     return ref(part.logicalName!);
   }
@@ -55,5 +75,3 @@ export function joinWith(separator: string, ...parts: Value<string>[]): Join {
     'Fn::Join': [separator, bits]
   }
 }
-
-

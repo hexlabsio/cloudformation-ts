@@ -2,18 +2,95 @@ import fs from 'fs';
 import { PathLike } from 'fs';
 import { customResource } from '../modules/custom-resource';
 import { AwsResource } from '../resources/AwsResource';
-import { transform } from '../Value';
+import { ConditionalValue, joinWith, ref, transform, Value } from '../Value';
 import { CloudFormationTemplate } from './cloudformation-template';
 import { Outputs } from './outputs';
 import { Parameter, Params } from './parameter';
+import { ifCondition } from './template-builder';
 
+export type SubFor<S extends string, P = {}> = S extends `${infer F}\${${infer N}}${infer Rest}` ? P & {[k in N]: Value<string>} & SubFor<Rest,  P> : P
+
+export type BuiltIns<Condition extends string = never> = {
+  logicalName(prefix: string): string;
+  customResource: typeof customResource
+  accountId: { Ref: 'AWS::AccountId' }
+  notificationArns: { Ref: 'AWS::NotificationARNs' }
+  noValue: { Ref: 'AWS::NoValue' }
+  region: { Ref: 'AWS::Region' }
+  stackId: { Ref: 'AWS::StackId' }
+  stackName: { Ref: 'AWS::StackName' }
+  urlSuffix: { Ref: 'AWS::URLSuffix' }
+  condition(name: Condition): ConditionalValue;
+  functions: {
+    import<T>(name: Value<string>): T;
+    select<T>(index: number, items: Value<T[]>): T;
+    getAzs(region?: Value<string>): Value<Value<string>[]>;
+    base64Encode(value: Value<string>): Value<string>;
+    cidr(ipBlock: Value<string>, count: Value<number>, cidrBits: Value<number>): Value<Value<string>[]>;
+    if<T>(predicate: ConditionalValue, ifTrue: ConditionalValue, ifFalse: ConditionalValue): Value<Exclude<T, undefined>>;
+    join(delimiter: string, ...parts: Value<string>[]): Value<string>;
+    length(items: Value<Value<any>[]>): Value<number>;
+    split(delimiter: string, source: Value<string>): Value<Value<string>[]>;
+    sub<S extends string>(substitutionString: S, replaceWith: SubFor<S>): Value<string>;
+  }
+}
 export type Builder<AWS> = (aws: AWS) => void | Outputs
-export type BuilderWith<AWS, ParamType, C> = (aws: AWS, parameters: Params<ParamType>, conditional: <R>(condition: C, resource: R) => R) => void | Outputs
+export type BuilderWith<AWS, ParamType, C extends string> = (aws: AWS & BuiltIns<C>, parameters: Params<ParamType>, conditional: <R>(condition: C, resource: R) => R) => void | Outputs
 
 export class TemplateCreator {
   private logicalNames: string[] = [];
 
   resources: AwsResource<string, any, any>[] = [];
+
+  builtInFunctions(): BuiltIns<string> {
+    const logicalName = (prefix: string) => this.logicalName(prefix);
+    return {
+      logicalName,
+      customResource,
+      accountId: ref('AWS::AccountId'),
+      notificationArns: ref('AWS::NotificationARNs'),
+      noValue: ref('AWS::NoValue'),
+      region: ref('AWS::Region'),
+      stackId: ref('AWS::StackId'),
+      stackName: ref('AWS::StackName'),
+      urlSuffix: ref('AWS::URLSuffix'),
+      condition(name: string): ConditionalValue {
+        return { 'Condition': name };
+      },
+      functions: {
+        import<T>(name: Value<string>): T {
+          return {"Fn::ImportValue": name} as any;
+        },
+        select<T>(index: number, items: Value<T[]>): T {
+          return { "Fn::Select" : [ `${index}`, items ] } as any;
+        },
+        getAzs(region?: Value<string>): Value<Value<string>[]> {
+          return { "Fn::GetAZs": region ?? ref('AWS::Region') } as any;
+        },
+        base64Encode<T extends Value<string>>(value: T) {
+          return { "Fn::Base64" : value };
+        },
+        cidr(ipBlock: Value<string>, count: Value<number>, cidrBits: Value<number>) {
+          return { "Fn::Cidr" : [transform(ipBlock), transform(count), transform(cidrBits)]}
+        },
+        if<T>(predicate: ConditionalValue, ifTrue: ConditionalValue, ifFalse: ConditionalValue): Value<T> {
+          return ifCondition(predicate, transform(ifTrue), transform(ifFalse)) as any;
+        },
+        join(delimiter: string, ...parts): Value<string> {
+          return joinWith(delimiter, ...parts);
+        },
+        length(items: Value<Value<any>[]>): Value<number> {
+          return { "Fn::Length": transform(items) } as any;
+        },
+        split(delimiter: string, source: Value<string>): Value<Value<string>[]> {
+          return { "Fn::Split" : [ delimiter, transform(source) ] };
+        },
+        sub<S extends string>(substitutionString: S, replaceWith: SubFor<S>): Value<string> {
+          return { "Fn::Sub": [ substitutionString, Object.keys(replaceWith).reduce((prev, next) => ({...prev, [next]: transform(replaceWith[next])}), {_nocaps: true} as any)] }
+        }
+      }
+    }
+  }
 
   private logicalName(prefix: string): string {
     const _prefix = prefix.substring(0, 60)
@@ -59,27 +136,26 @@ export class TemplateCreator {
   }
 
 
-  static createWithParams<AWS, T extends {[param: string]: Parameter}, C extends string = string>(
+  static createWithParams<AWS, T extends {[param: string]: Parameter}, C extends Record<string, never> = {}>(
     aws: AWS,
     parameters: T,
-    conditions: Record<C, any>,
-    builder: BuilderWith<AWS, T, C>,
+    conditions: Record<string, any>,
+    builder: BuilderWith<AWS, T, keyof C & string>,
     file: PathLike = "template.json",
     paramsFile: PathLike = "parameters.json",
     templateTransform: (template: CloudFormationTemplate) => string = template => JSON.stringify(template, null, 2),
     transForms?: string[]
   ): {template: CloudFormationTemplate; outputs?: Outputs} {
     const template = new TemplateCreator();
-    const logicalNameFunction = (prefix: string) => template.logicalName(prefix);
     const builderAws = Object.keys(aws as any).reduce((prev1, next1) =>
         ({
           ...prev1, [next1]: Object.keys(aws[next1])
             .filter(name => name !== 'logicalName')
             .reduce((prev, key) => ({...prev, [key]: template.modify(aws[next1][key])}), {})
         })
-      , {logicalName: logicalNameFunction} as any)
+      , {} as any)
     const parameterFunctions = Object.keys(parameters).reduce((prev, parameter) => ({...prev, [parameter]: () => ({'Ref': parameter})}), {} as Params<T>)
-    const outputs = builder({...builderAws, customResource: template.modify(customResource)}, parameterFunctions, ((condition, resource) => { (resource as any)._condition = condition; return resource; }));
+    const outputs = builder({...builderAws, ...template.builtInFunctions()}, parameterFunctions, ((condition, resource) => { (resource as any)._condition = condition; return resource; }));
     const envParams = Object.keys(parameters).reduce((prev, param) => {
       const parameter = parameters[param] as any;
       if(parameter.type === 'Future')

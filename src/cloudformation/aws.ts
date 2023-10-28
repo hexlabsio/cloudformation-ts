@@ -1,24 +1,21 @@
 import {resources} from './aws-resources';
-import { customResource } from './cloudformation';
+import { BuiltIns, customResource } from './cloudformation';
 import { TemplateBuilder } from './template/template-builder';
 
 type AwsServiceList = (typeof resources)['aws'];
 export type AwsServices = keyof AwsServiceList;
 
+export type AWSResourcesFor<S extends AwsServices> = { [k in S]: Get<(typeof resources)['aws'][k]> } & BuiltIns
+
 class Builder<AWS> {
   constructor(private readonly aws: AWS) {
   }
-  create<C extends string = string>(outputFileName = 'template.json', parametersFileName='parameters.json'): TemplateBuilder<AWS, {}, C> {
-    return TemplateBuilder.create(this.aws, outputFileName, parametersFileName);
+  create(outputFileName = 'template.json', parametersFileName='parameters.json'): TemplateBuilder<AWS, {}> {
+    return TemplateBuilder.create(this.aws as any, outputFileName, parametersFileName);
   }
 }
 
 type Get<T extends {[key: string]: { load: () => Promise<any> }}> = {[K in keyof T]: T[K]['load'] extends () => Promise<infer R> ? R : never}
-export type BuiltIns = {
-  logicalName(prefix: string): string;
-  customResource: typeof customResource
-}
-export type AWSResourcesFor<S extends AwsServices> = { [k in S]: Get<(typeof resources)['aws'][k]> } & BuiltIns
 
 export class AwsLoader<AWS> {
   aws = {};

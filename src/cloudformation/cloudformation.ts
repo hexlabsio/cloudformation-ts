@@ -18,8 +18,6 @@ export * from './template/outputs';
 export * from './template/cloudformation-template';
 export * from './template/parameter';
 
-
-
 export function normalize(name: string) {
   return name.split(/[^a-zA-Z0-9]/g).reduce((prev, current) => `${prev}${current.substring(0,1).toUpperCase()}${current.substring(1)}`, '');
 }
