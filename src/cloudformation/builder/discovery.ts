@@ -260,8 +260,8 @@ function groupByService(resources: NameLocationContent[]): { [service: string]: 
   resources.forEach(([name, location]) => {
     const [platform, service] = location.split('.');
     const item = lowerFirst(name);
-    const updatedItem = item === 'functionProp' ? 'createFunction': item;
-    groups[platform] = { ...groups[platform], [service]: { ...groups[platform]?.[service], [updatedItem]: `{ load: async () => (await import('../${location.replace(/\./g, '/')}/${name}')).${updatedItem} }` } }
+    const updatedItem = item === 'function' ? `${service}Function`: item;
+    groups[platform] = { ...groups[platform], [service]: { ...groups[platform]?.[service], [item]: `{ load: async () => (await import('../${location.replace(/\./g, '/')}/${name}')).${updatedItem} }` } }
   })
   return groups;
 }
@@ -278,16 +278,16 @@ function buildAwsType(resources: NameLocationContent[]) {
 }
 function attName(name: string) { return name.replace(/\./g, '_')}
 
-function attributeCode(attributes: PropertyInfo['Attributes'], allPropsOptional: boolean, prop: string, name: string, location: string, descriptionString: string, functionName: string, lowerName: string): string {
+function attributeCode(attributes: PropertyInfo['Attributes'], allPropsOptional: boolean, newName: string, prop: string, name: string, location: string, descriptionString: string, functionName: string, lowerName: string): string {
   const atts = Object.keys(attributes!).map(attribute => {
     const attributeType = getType(rename(attributes![attribute]), attribute, location, false);
     return `${attName(attribute)}: Attribute<${stringFor(attributeType)}>`
   }).join(';');
   const attributeNames = Object.keys(attributes!).map(attribute => `${attName(attribute)}: '${attribute}'`).join(',');
   return `export type ${prop}Attributes = { ${atts} }
-export type ${prop} = AwsResource<'${name}', ${prop}Properties, ${prop}Attributes>
+export type ${newName} = AwsResource<'${name}', ${prop}Properties, ${prop}Attributes>
 ${descriptionString}
-export function ${functionName}(${lowerName}Props: ${prop}Properties${allPropsOptional ? ' = {}' : ''}): ${prop} {
+export function ${functionName}(${lowerName}Props: ${prop}Properties${allPropsOptional ? ' = {}' : ''}): ${newName} {
   return new AwsResource('${name}', ${lowerName}Props, { ${attributeNames} });
 }
    `;
@@ -314,16 +314,19 @@ async function buildType(from: PropertyInfo, resource: boolean, name: string, do
   const nameParts = [...split.slice(0, -1).map(s => s.toLowerCase()), ...(resource ? [] : split[split.length-1].split('.').slice(0,-1).map(it => it.toLowerCase()))];
   const location = name === 'Tag' ? 'aws' : nameParts.join('.');
   const lastPart = split[split.length - 1].split('.');
-  const prop = lastPart[lastPart.length - 1] == 'Function' ? 'FunctionProp' : lastPart[lastPart.length - 1];
+  const lastNamePart = nameParts[nameParts.length - 1];
+  const prop = lastPart[lastPart.length - 1];
+  const newName = prop === 'Function' ? `${lastNamePart}Function` : prop;
+  const upperName = newName.substring(0, 1).toUpperCase() + newName.substring(1);
   const namePart = lastPart[lastPart.length - 1];
   const lowerName = namePart.substring(0,1).toLowerCase() + namePart.substring(1);
-  const functionName = lowerName === 'function' ? 'createFunction' : lowerName;
+  const functionName = lowerName === 'function' ? newName : lowerName;
   const documentation = await docsCache.get(from.Documentation!);
   const comments = descriptionString(documentation, from.Documentation);
-  const excess = resource ? (from.Attributes ? attributeCode(from.Attributes, allPropsOptional, prop, name, location, comments, functionName, lowerName) :
+  const excess = resource ? (from.Attributes ? attributeCode(from.Attributes, allPropsOptional, upperName, prop, name, location, comments, functionName, lowerName) :
     `${comments}
-export type ${prop} = AwsResource<'${name}', ${prop}Properties>
-export function ${functionName}(${lowerName}Props: ${prop}Properties${allPropsOptional ? ' = {}' : ''}): ${prop} {
+export type ${upperName} = AwsResource<'${name}', ${prop}Properties>
+export function ${functionName}(${lowerName}Props: ${prop}Properties${allPropsOptional ? ' = {}' : ''}): ${upperName} {
   return new AwsResource('${name}', ${lowerName}Props);
 }
   `) : '';

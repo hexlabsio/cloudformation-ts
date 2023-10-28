@@ -1,6 +1,6 @@
 import {Rule} from "../../aws/events/Rule";
 import {Role} from "../../aws/iam/Role";
-import { FunctionProp , FunctionPropProperties } from "../../aws/lambda/FunctionProp";
+import { FunctionProperties, LambdaFunction } from '../../aws/lambda/Function';
 import {CodeProps} from "../../aws/lambda/function/CodeProps";
 import {Permission} from "../../aws/lambda/Permission";
 import {Subscription} from "../../aws/sns/Subscription";
@@ -12,13 +12,13 @@ import {join, joinWith, Value} from "../Value";
 export type LambdaExpects = AWSResourcesFor<'lambda' | 'events' | 'sns' | 'iam'>;
 export class Lambda {
   role: Role;
-  lambda: FunctionProp;
+  lambda: LambdaFunction;
   permissions: Permission[];
   subscriptions: Subscription[];
   rules: Rule[];
   name: string;
   
-  constructor(private readonly aws: LambdaExpects, name: string, role: Role, lambda: FunctionProp) {
+  constructor(private readonly aws: LambdaExpects, name: string, role: Role, lambda: LambdaFunction) {
     this.aws = aws;
     this.name = name;
     this.role = role;
@@ -89,7 +89,7 @@ export class Lambda {
     return [permission, subscription];
   }
   
-  static create(aws: LambdaExpects, name: string, code: CodeProps, handler: Value<string>, runtime: FunctionPropProperties['runtime'], extra?: Partial<FunctionProp['properties']>): Lambda {
+  static create(aws: LambdaExpects, name: string, code: CodeProps, handler: Value<string>, runtime: FunctionProperties['runtime'], extra?: Partial<FunctionProperties>): Lambda {
     const normalName = normalize(name);
     const functionName = extra?.functionName ?? name;
     const role = aws.iam.role({
@@ -111,7 +111,7 @@ export class Lambda {
       tags: extra?.tags,
     }).withLogicalName(`${normalName}Role`);
     const lambda = aws.lambda
-      .createFunction({functionName: name, code, handler, role: role.attributes.Arn, runtime, ...extra  })
+      .function({functionName: name, code, handler, role: role.attributes.Arn, runtime, ...extra  })
       .withLogicalName(`${normalName}Function`)
     return new Lambda(aws, normalName, role, lambda);
   }
