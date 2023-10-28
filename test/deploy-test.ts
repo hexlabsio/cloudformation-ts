@@ -1,5 +1,4 @@
-import { AwsLoader } from '../src/kloudformation/aws';
-import { stackOutput } from '../src/kloudformation/kloudformation';
+import { AwsLoader, stackOutput } from '../src/cloudformation/cloudformation';
 
 // export default Template.createWithParams({
 //   ABC: fromEnv('GHJ')
@@ -13,12 +12,12 @@ import { stackOutput } from '../src/kloudformation/kloudformation';
 const template = await AwsLoader.register('s3', 'sns').load();
 
 export default template.create().build(aws => {
-  aws.customResource('abc', {
+  const a = aws.customResource('abc', {
     ServiceToken: '',
     ParameterName: ''
-  })
+  }, 'ABC', 'DEF')
   const bucket = aws.s3.bucket({bucketName: 'jimmy'})
-  aws.sns.topic({topicName: bucket});
+  aws.sns.topic({topicName: bucket, displayName: a.attributes.DEF});
   return {
     outputs: {
       Test: stackOutput(bucket)

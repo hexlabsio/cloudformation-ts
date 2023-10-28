@@ -1,5 +1,6 @@
 import {resources} from './aws-resources';
-import { customResource, TemplateBuilder } from './kloudformation';
+import { customResource } from './cloudformation';
+import { TemplateBuilder } from './template/template-builder';
 
 type AwsServiceList = (typeof resources)['aws'];
 export type AwsServices = keyof AwsServiceList;

@@ -8,50 +8,6 @@ export type NameLocationContent = [string, string, string];
 
 const missingResources: Partial<Specification> = {
   ResourceTypes: {
-    'AWS::Rekognition::StreamProcessor': {
-      Properties: {
-
-      }
-    },
-    'AWS::AppStream::Entitlement': {
-      Documentation: 'http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html',
-      Properties: {
-        Description: {
-          Required: false,
-          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-description',
-          PrimitiveType: 'String',
-          UpdateType: 'Mutable'
-        },
-        Name: {
-          Required: true,
-          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-name',
-          PrimitiveType: 'String',
-          UpdateType: 'Mutable'
-        },
-        StackName: {
-          Required: true,
-          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-stackname',
-          PrimitiveType: 'String',
-          UpdateType: 'Mutable'
-        },
-        AppVisibility: {
-          Required: true,
-          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-appvisibility',
-          PrimitiveType: 'String',
-          UpdateType: 'Mutable'
-        },
-        EntitlementAttributes: {
-          Required: true,
-          Documentation:'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appstream-entitlement.html#cfn-appstream-entitlement-attributes',
-          ItemType: 'Attribute',
-          UpdateType: 'Mutable'
-        },
-      },
-      Attributes: {
-        CreatedTime: {},
-        LastModifiedTime: {}
-      }
-    },
     'AWS::ApiGatewayV2::ApiGatewayManagedOverrides': {
       Documentation: 'https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigatewayv2-apigatewaymanagedoverrides.html',
       Properties: {
@@ -269,8 +225,8 @@ const missingResources: Partial<Specification> = {
 };
 
 (async () => {
-  const original: Specification = await request({ gzip: true, uri: 'https://dnwj8swjjbsbt.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json', json: true});
-  // const original: Specification = (await import('../../../CloudFormationResourceSpecification.json')).default;
+  // const original: Specification = await request({ gzip: true, uri: 'https://dnwj8swjjbsbt.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json', json: true});
+  const original: Specification = (await import('../../../fallback.json')).default;
   const spec: Specification =  {
     ...original,
     ResourceTypes: {...original.ResourceTypes, ...missingResources.ResourceTypes},
@@ -279,7 +235,6 @@ const missingResources: Partial<Specification> = {
   const docsCache: DocsCache = new DocsCache();
   const progress: number[] = []
   const resources = await Promise.all(Object.keys(spec.ResourceTypes)
-    .filter(it => it !== 'AWS::AppStream::Entitlement')
     .map(async (resourceKey, index, arr) => {
       const promise = buildType(spec.ResourceTypes[resourceKey], true, resourceKey, docsCache)
       const result = await promise;
@@ -306,7 +261,7 @@ function groupByService(resources: NameLocationContent[]): { [service: string]: 
   resources.forEach(([name, location]) => {
     const [platform, service] = location.split('.');
     const item = lowerFirst(name);
-    const updatedItem = item === 'function' ? '_function': item;
+    const updatedItem = item === 'function' ? 'createFunction': item;
     groups[platform] = { ...groups[platform], [service]: { ...groups[platform]?.[service], [updatedItem]: `{ load: async () => (await import('../${location.replace(/\./g, '/')}/${name}')).${updatedItem} }` } }
   })
   return groups;
@@ -320,7 +275,7 @@ function buildAwsType(resources: NameLocationContent[]) {
     .map(platform => `${platform} : {\n${Object.keys(result[platform]).map(service => `${service} : {\n${Object.keys(result[platform][service]).map(resource => `${resource} : ${result[platform][service][resource]}`)}}`).join(',\n')}}`)
     .join(',\n');
   const code = `export const resources = {\n${resourcesString}};`
-  fs.writeFileSync('src/kloudformation/aws-resources.ts', code);
+  fs.writeFileSync('src/cloudformation/aws-resources.ts', code);
 }
 function attName(name: string) { return name.replace(/\./g, '_')}
 
@@ -331,9 +286,11 @@ function attributeCode(attributes: PropertyInfo['Attributes'], prop: string, nam
   }).join(';');
   const attributeNames = Object.keys(attributes!).map(attribute => `${attName(attribute)}: '${attribute}'`).join(',');
   return `export type ${prop}Attributes = { ${atts} }
-export type ${prop} = ${prop}Properties & {attributes: ${prop}Attributes}
+export type ${prop} = AwsResource<'${name}', ${prop}Properties, ${prop}Attributes>
 ${descriptionString}
-export function ${functionName}(${lowerName}Props: ${prop}Properties): ${prop}  { return ({ ...${lowerName}Props, _logicalType: '${name}', attributes: { ${attributeNames} } }) }
+export function ${functionName}(${lowerName}Props: ${prop}Properties): ${prop} {
+  return new AwsResource('${name}', ${lowerName}Props, { ${attributeNames} });
+}
    `;
 }
 
@@ -345,6 +302,13 @@ function rename(prop: Typed): Typed {
   return prop;
 }
 
+function descriptionString(documentation: Documentation, documentationLocation?: string, ) {
+  return `/**
+  ${(documentation.description || '')}
+  For full documentation go to <a href="${documentationLocation || ''}">the AWS Docs</a>
+*/`;
+}
+
 async function buildType(from: PropertyInfo, resource: boolean, name: string, docsCache: DocsCache): Promise<NameLocationContent> {
   const split = name.split('::');
   const nameParts = [...split.slice(0, -1).map(s => s.toLowerCase()), ...(resource ? [] : split[split.length-1].split('.').slice(0,-1).map(it => it.toLowerCase()))];
@@ -352,33 +316,32 @@ async function buildType(from: PropertyInfo, resource: boolean, name: string, do
   const lastPart = split[split.length - 1].split('.');
   const prop = lastPart[lastPart.length - 1];
   const lowerName = prop.substring(0,1).toLowerCase() + prop.substring(1);
-  const functionName = lowerName === 'function' ? '_function' : lowerName;
+  const functionName = lowerName === 'function' ? 'createFunction' : lowerName;
   const documentation = await docsCache.get(from.Documentation!);
-  const descriptionString = `/**
-  ${(documentation.description || '').replace('*', 'x')}
-  For full documentation go to <a href="${from.Documentation || ''}">the AWS Docs</a>
-*/`;
-    const excess = resource ? (from.Attributes ? attributeCode(from.Attributes, prop, name, location, descriptionString, functionName, lowerName) :
-      `${descriptionString}
-export type ${prop} = ${prop}Properties
-export function ${functionName}(${lowerName}Props: ${prop}Properties): ${prop} { return ({ ...${lowerName}Props, _logicalType: '${name}' }) }
+  const comments = descriptionString(documentation, from.Documentation);
+  const excess = resource ? (from.Attributes ? attributeCode(from.Attributes, prop, name, location, comments, functionName, lowerName) :
+    `${comments}
+export type ${prop} = AwsResource<'${name}', ${prop}Properties>
+export function ${functionName}(${lowerName}Props: ${prop}Properties): ${prop} {
+  return new AwsResource('${name}', ${lowerName}Props);
+}
   `) : '';
 
   if(from.Properties) {
     const props: PropertyInfo['Properties']  = Object.keys(from.Properties!).reduce((prev, cur) => ({...prev, [cur]: rename(from.Properties![cur])}), {});
     const properties: [string, TypeInfo][] = Object.keys(props).map(k => [k, getType(props![k], k, location + (resource ? ('.' + lowerName) : ''), true)]);
     const attributes: [string, TypeInfo][] = Object.keys(from.Attributes || {}).map(k => [k, getType(rename(from.Attributes![k]), k, location + (resource ? ('.' + lowerName) : ''), false)]);
-    const attImport: [string, TypeInfo][] = from.Attributes ? [["Attribute", { name: 'Attribute', locations: ['kloudformation'] }as TypeInfo]]: [];
-    const resourceImport: [string, TypeInfo][] = resource ? [["KloudResource", { name: 'KloudResource', locations: ['kloudformation'] }as TypeInfo]]: [];
+    const attImport: [string, TypeInfo][] = from.Attributes ? [["Attribute", { name: 'Attribute', locations: ['cloudformation'] }as TypeInfo]]: [];
+    const resourceImport: [string, TypeInfo][] = resource ? [["AwsResource", { name: 'AwsResource', locations: ['cloudformation.resources'] }as TypeInfo]]: [];
     const all: [string, TypeInfo][] = [...properties, ...attributes, ...attImport, ...resourceImport];
     const interfaceName = prop + ((resource || prop === 'Tag') ? '' : 'Props');
     const importString = importsForProperties(all.map(([_,b]) => b), location, interfaceName, resource);
     const result: NameLocationContent = [interfaceName, location, `${importString}
 ${excess}
-${descriptionString}
-export interface ${interfaceName}${resource ? 'Properties extends KloudResource ' : ''}{
+${comments}
+export interface ${interfaceName}${resource ? 'Properties ' : ''}{
   ${properties.map(it => `
-  /** ${docForProperty(it[0], documentation).replaceAll('*/', 'x/')} */
+  /** ${docForProperty(it[0], documentation).replaceAll('*/', '\\u{002A}/')} */
   ${it[0].substring(0,1).toLowerCase()}${it[0].substring(1)}${it[1].required ? '': '?'}: ${updateType(stringFor(it[1]), it[0], documentation)}`).join('\n  ')}
 }`];
     return result;
@@ -413,7 +376,7 @@ function docForProperty(name: string, documentation: Documentation): string {
 }
 
 function importsForProperties(properties: TypeInfo[], currentLocation: string, name: string, resource: boolean): string {
-  return [...new Set(properties.flatMap(importsFor).filter(it => resource || it.name !== name).map(it => `import { ${it.name} } from '${importLocation(it.name, it.locations![0], currentLocation, )}';`))].join('\n');
+  return [...new Set(properties.flatMap(importsFor).filter(it => resource || it.name !== name).map(it => `import { ${it.name}${it.others ?? ''} } from '${importLocation(it.name, it.locations![0], currentLocation, )}';`))].join('\n');
 }
 
 function importLocation(name: string, locationName: string, currentLocation: string) {
@@ -437,7 +400,7 @@ const excludes = ['Json', 'CredentialsMapProps', 'ProfilePropertiesProps', 'Toke
 
 function importsFor(info: TypeInfo): TypeInfo[] {
   if(excludes.includes(info.name)) return [];
-  const imports: TypeInfo[] = info.locations ? [{name: info.name, locations: info.locations, required: info.required}] : [];
+  const imports: TypeInfo[] = info.locations ? [{name: info.name, locations: info.locations, required: info.required, others: info.others}] : [];
   return (info.subtypes || []).reduce((imports, subtype) => [...imports, ...importsFor(subtype)], imports);
 }
 
@@ -452,13 +415,14 @@ function stringFor(type: TypeInfo): string {
 
 interface TypeInfo {
   name: string;
+  others?: string;
   subtypes?: TypeInfo[];
   locations?: string[];
   required: boolean;
 }
 
 function valueOfType(type: TypeInfo): TypeInfo {
-  return { name: 'Value', locations: ['kloudformation'], subtypes: [type], required: type.required };
+  return { name: 'Value', locations: ['cloudformation'], subtypes: [type], required: type.required };
 }
 
 function getType(from: Typed, name: string, location: string, wrapped: boolean): TypeInfo {
@@ -503,7 +467,7 @@ function primitiveType(from: string, required: boolean, propertyName: string): T
     case 'Double': return { name: 'number', required  };
     case 'Boolean': return { name: 'boolean', required  };
     case 'String': return { name: 'string', required  };
-    case 'Json': return propertyName.includes('PolicyDocument') ? { name: 'PolicyDocument', required, locations: ['kloudformation.iam']  }: { name: 'any', required  };
+    case 'Json': return propertyName.includes('PolicyDocument') ? { name: 'PolicyDocument', required, locations: ['cloudformation.iam']  }: { name: 'any', required  };
     default: return { name: 'any', required };
   }
 }

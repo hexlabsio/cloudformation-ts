@@ -76,7 +76,7 @@ export class Documentation {
       const name = current.substring(current.indexOf('<code>') + 6, current.indexOf('</code>'));
       const description = current.substring(current.indexOf('<code>'), current.indexOf('<em>'));
       let rest = current.substring(current.indexOf('<em>'));
-      let parts: any = {};
+      const parts: any = {};
       while(rest.includes('<em>')) {
         const start = rest.indexOf('<em>');
         const end = rest.indexOf('</em>');

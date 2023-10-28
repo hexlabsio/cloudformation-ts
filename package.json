@@ -1,31 +1,26 @@
 {
-  "name": "@hexlabs/kloudformation-ts",
+  "name": "@hexlabs/cloudformation-ts",
   "description": "A Typescript way to build CloudFormation",
   "license": "Apache-2.0",
   "version": "1.0.0",
-  "main": "dist/kloudformation/kloudformation.js",
-  "types": "dist/kloudformation/kloudformation.d.ts",
+  "main": "dist/cloudformation/cloudformation.js",
+  "types": "dist/cloudformation/cloudformation.d.ts",
   "type": "module",
   "bin": {
-    "kloudformation": "src/kloudformation/cli.ts"
+    "kloudformation": "src/cloudformation/cli/index.ts"
   },
   "scripts": {
     "run": "ts-node --project tsconfig.json test/deploy-test.ts",
-    "test:run-cli": "ts-node --project tsconfig.json src/kloudformation/cli.ts",
     "prebuild": "rimraf dist",
-    "pregenerate": "rimraf src/kloudformation/aws-resources.ts src/aws src/alexa",
-    "generate": "ts-node --project tsconfig.json src/kloudformation/builder/discovery.ts",
+    "pregenerate": "rimraf src/cloudformation/aws-resources.ts src/aws src/alexa",
+    "generate": "ts-node --project tsconfig.json src/cloudformation/builder/discovery.ts",
     "build": "tsc",
     "test": "jest --ci --runInBand --coverage --reporters=default --reporters=jest-junit",
-    "lint": "eslint **/*.ts",
-    "lambda": "chmod +x dist/kloudformation/cli.js && node --trace-deprecation dist/kloudformation/cli.js run -t tsconfigtest.json $(pwd)/test/deploy-test.ts handler $(pwd)/test/fakeLambda.js",
-    "stack": "ts-node test/deploy-test.ts",
-    "start": "src/kloudformation/cli.ts translate -t tsconfigtest.json $(pwd)/test/deploy-test.ts",
-    "deploy": "export AWS_PROFILE=gitboard2 && src/kloudformation/cli.ts deploy test-stack $(pwd)/test/deploy-test.ts"
+    "lint": "eslint **/*.ts"
   },
   "files": [
     "dist",
-    "src/kloudformation/cli.ts",
+    "src/cloudformation/cli",
     "tsconfig.json"
   ],
   "exclude": [

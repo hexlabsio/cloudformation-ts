@@ -1,12 +1,12 @@
 import {Rule} from "../../aws/events/Rule";
 import {Role} from "../../aws/iam/Role";
-import {Function as LambdaFunction} from "../../aws/lambda/Function";
+import { Function as LambdaFunction, FunctionProperties } from "../../aws/lambda/Function";
 import {CodeProps} from "../../aws/lambda/function/CodeProps";
 import {Permission} from "../../aws/lambda/Permission";
 import {Subscription} from "../../aws/sns/Subscription";
 import { AWSResourcesFor } from '../aws';
 import {iamPolicy} from "../iam/PolicyDocument";
-import {normalize} from "../kloudformation";
+import {normalize} from "../cloudformation";
 import {join, joinWith, Value} from "../Value";
 
 export type LambdaExpects = AWSResourcesFor<'lambda' | 'events' | 'sns' | 'iam'>;
@@ -50,11 +50,11 @@ export class Lambda {
   
   enableTracing(): Lambda {
     const managedPolicy = 'arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess';
-    const current = (this.role.managedPolicyArns as Value<string>[] ?? []);
+    const current = (this.role.properties.managedPolicyArns as Value<string>[] ?? []);
     if(!current.includes(managedPolicy)) {
-      this.role.managedPolicyArns = [...current, managedPolicy];
+      this.role.properties.managedPolicyArns = [...current, managedPolicy];
     }
-    this.lambda.tracingConfig = {
+    this.lambda.properties.tracingConfig = {
       mode: 'Active'
     }
     return this;
@@ -72,8 +72,8 @@ export class Lambda {
 
   snsTrigger(topicArn: Value<string>, sourceAccount?: Value<string>): Lambda {
     const [permission, subscription] = Lambda.snsTrigger(this.aws, this.lambda.attributes.Arn, topicArn, sourceAccount);
-    permission._logicalName = `${this.aws.logicalName(this.lambda._logicalName + 'Permission')}`;
-    subscription._logicalName = `${this.aws.logicalName(this.lambda._logicalName + 'Subscription')}`;
+    permission.logicalName = `${this.aws.logicalName(this.lambda.logicalName + 'Permission')}`;
+    subscription.logicalName = `${this.aws.logicalName(this.lambda.logicalName + 'Subscription')}`;
     this.permissions.push(permission);
     this.subscriptions.push(subscription);
     return this;
@@ -89,11 +89,10 @@ export class Lambda {
     return [permission, subscription];
   }
   
-  static create(aws: LambdaExpects, name: string, code: CodeProps, handler: Value<string>, runtime: LambdaFunction['runtime'], extra?: Partial<LambdaFunction>): Lambda {
+  static create(aws: LambdaExpects, name: string, code: CodeProps, handler: Value<string>, runtime: FunctionProperties['runtime'], extra?: Partial<LambdaFunction>): Lambda {
     const normalName = normalize(name);
-    const functionName = extra?.functionName ?? name;
+    const functionName = extra?.properties?.functionName ?? name;
     const role = aws.iam.role({
-      _logicalName: `${normalName}Role`,
       path: '/',
       assumeRolePolicyDocument: iamPolicy({
         statement: [{action: 'sts:AssumeRole', effect: 'Allow', principal: { Service: ['lambda.amazonaws.com'] }}],
@@ -109,9 +108,11 @@ export class Lambda {
           ],
         })
       }],
-      tags: extra?.tags,
-    });
-    const lambda = aws.lambda._function({ _logicalName: `${normalName}Function`, functionName: name, code, handler, role: role.attributes.Arn, runtime, ...extra  });
+      tags: extra?.properties?.tags,
+    }).withLogicalName(`${normalName}Role`);
+    const lambda = aws.lambda
+      .createFunction({functionName: name, code, handler, role: role.attributes.Arn, runtime, ...extra  })
+      .withLogicalName(`${normalName}Function`)
     return new Lambda(aws, normalName, role, lambda);
   }
 }
