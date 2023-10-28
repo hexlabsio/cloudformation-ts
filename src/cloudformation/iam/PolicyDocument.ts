@@ -1,4 +1,4 @@
-import {Role} from "../../aws/iam/Role";
+import { PolicyProps } from '../../aws/iam/role/PolicyProps';
 import {Value} from "../Value";
 import {Action} from "./iamActions";
 export type Principal = '*' | { AWS: Value<string>[] } | { Federated: Value<string>[] } | { Service: Value<string>[] }
@@ -21,6 +21,7 @@ export interface PolicyStatement {
 }
 
 export function iamPolicy(policyDocument: PolicyDocument): PolicyDocument { return policyDocument }
+
 
 export class Policy {
   private constructor(readonly document: PolicyDocument = {statement: [], version: "2012-10-17"}) { }
@@ -50,18 +51,27 @@ export class Policy {
   }
 }
 
-export class Iam {
-  private constructor(private role: Role) { }
+export class Iam<T extends {properties: { managedPolicyArns?: Value<Value<string>[]>, policies?: PolicyProps[]}}> {
+  private constructor(private roleLike: T) { }
   
   add(policyName: string, policy: Policy): this {
-    this.role.policies = [
-      ...(this.role.policies ?? []),
+    this.roleLike.properties.policies = [
+      ...(this.roleLike.properties.policies ?? []),
       {policyName, policyDocument: policy.document}
     ]
     return this;
   }
+
+  withManagedPolicies(...arns: Value<string>[]): this {
+    this.roleLike.properties.managedPolicyArns = arns;
+    return this;
+  }
+
+  static policy(creator: () => Policy): Policy {
+    return creator();
+  }
   
-  static from(role: Role) {
-    return new Iam(role);
+  static from<T extends {properties: { managedPolicyArns?: Value<Value<string>[]>, policies?: PolicyProps[]}}>(roleLike: T) {
+    return new Iam(roleLike);
   }
 }

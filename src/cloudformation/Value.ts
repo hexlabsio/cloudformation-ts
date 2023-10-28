@@ -1,5 +1,5 @@
 import {Attribute} from "./Attribute";
-import {KloudResource} from "./KloudResource";
+import { AwsResource } from './resources/AwsResource';
 
 export type Ref = {
   'Ref': string;
@@ -19,7 +19,7 @@ export type Cidr = {
 
 export type Instrinsic<T, S extends string> = Record<S, T>
 
-export type Value<T> = T | Ref | Attribute<T> | Join | Sub | KloudResource | Base64Fn | Cidr | Instrinsic<T, any>;
+export type Value<T> = T | Ref | Attribute<T> | Join | Sub | AwsResource<any, any, any> | Base64Fn | Cidr | Instrinsic<T, any>;
 
 type SubParams<T extends string> =
   T extends `${infer Start}\${${infer SubParam}}${infer Rest}`
@@ -40,8 +40,8 @@ export function ref(logicalName: string): Ref {
 }
 
 export function transform(part: Value<string>): Value<string> {
-  if(typeof part === 'object' && Object.prototype.hasOwnProperty.call(part,'_logicalType')){
-    return ref((part as KloudResource)._logicalName!)
+  if(part instanceof AwsResource){
+    return ref(part.logicalName!);
   }
   return part;
 }

@@ -24,7 +24,7 @@ export class Path {
   
   route(): string {
     const parentPath = this.parent ? (this.parent.route() + '/') : ''
-    return parentPath + this.resources.map(it => it.pathPart).join('/')
+    return parentPath + this.resources.map(it => it.properties.pathPart).join('/')
   }
   
   path(path: string): Path {
@@ -53,7 +53,7 @@ export class Path {
   }
   
   private pathLogicalNames(): string {
-    const resources = this.resources.map(it => it.pathPart.toString().startsWith('{') ? (it.pathPart.toString().substring(1, it.pathPart.toString().length-1) + 'Var') : it.pathPart.toString()).join('');
+    const resources = this.resources.map(it => it.properties.pathPart.toString().startsWith('{') ? (it.properties.pathPart.toString().substring(1, it.properties.pathPart.toString().length-1) + 'Var') : it.properties.pathPart.toString()).join('');
     return (this.parent?.pathLogicalNames() ?? '') + resources;
   }
   
@@ -63,7 +63,6 @@ export class Path {
   
   method(method: string): Path {
     const apiMethod = this.aws.apigateway.method({
-      _logicalName: this.aws.logicalName(`Method${this.logicalName()}${method}`),
       httpMethod: method,
       resourceId: this.resources[this.resources.length - 1],
       restApiId: this.api.restApi,
@@ -78,9 +77,9 @@ export class Path {
         } } : {}),
       methodResponses: [],
       requestParameters: {}
-    });
+    }).withLogicalName(this.aws.logicalName(`Method${this.logicalName()}${method}`));
     this.methods.push(apiMethod);
-    this.api.deployment._dependsOn = [...(this.api.deployment._dependsOn ?? []), apiMethod]
+    this.api.deployment.withDependency(...(this.api.deployment.dependsOn ?? []), apiMethod)
     return this;
   }
   
@@ -89,9 +88,9 @@ export class Path {
       const corsHeaders = 'method.response.header.Access-Control-Allow-Headers'
       const corsMethods = 'method.response.header.Access-Control-Allow-Methods'
       const corsCredentials = 'method.response.header.Access-Control-Allow-Credentials'
-      const methods = this.methods.map(it => it.httpMethod).join();
+      const methods = this.methods.map(it => it.properties.httpMethod).join();
       if (this.optionsMethod) {
-        this.optionsMethod.integration!.integrationResponses![0].responseParameters = {
+        this.optionsMethod.properties.integration!.integrationResponses![0].responseParameters = {
           _nocaps: '',
           [corsOrigin]: `'${origin}'`,
           [corsHeaders]: `'${headers.join() || '*'}'`,
@@ -100,7 +99,6 @@ export class Path {
         }
       } else {
         this.optionsMethod = this.aws.apigateway.method({
-          _logicalName: this.aws.logicalName(`Method${this.logicalName()}Options`),
           httpMethod: 'OPTIONS',
           resourceId: this.resources[this.resources.length - 1],
           restApiId: this.api.restApi,
@@ -141,7 +139,7 @@ export class Path {
               }
             ]
           }
-        })
+        }).withLogicalName(this.aws.logicalName(`Method${this.logicalName()}Options`))
       }
     return this;
   }
@@ -157,8 +155,7 @@ export class Path {
         parentId: previous,
         restApiId: api.restApi,
         pathPart: part,
-        _logicalName: aws.logicalName(`Api${api.name.replace(/[^\w]+/g, '')}${parentLogicalName ?? ''}${pathName}`)
-      });
+      }).withLogicalName(aws.logicalName(`Api${api.name.replace(/[^\w]+/g, '')}${parentLogicalName ?? ''}${pathName}`));
       resources.push(resource);
       previous = resource
     }
@@ -209,7 +206,7 @@ export class Api{
   ) {}
   
   pathMethodsFrom(path: Path): Array<{path: string, method: string}> {
-    const mainRoutes = path.methods.map(method => ({path: path.route(), method: method.httpMethod.toString()}));
+    const mainRoutes = path.methods.map(method => ({path: path.route(), method: method.properties.httpMethod.toString()}));
     const subRoutes = path.paths.flatMap(this.pathMethodsFrom.bind(this));
     return [...mainRoutes, ...subRoutes] as Array<{path: string, method: string}>;
   }
@@ -229,22 +226,20 @@ export class Api{
   
   mapTo(basePath: Value<string>, domainName: Value<string>): this {
     this.basePathMapping = this.aws.apigateway.basePathMapping({
-      _dependsOn: [this.deployment],
       restApiId: this.restApi,
-      stage: this.deployment.stageName,
+      stage: this.deployment.properties.stageName,
       basePath,
       domainName
-    });
+    }).withDependency(this.deployment);
     return this;
   }
 
   mapToDomain(domainName: Value<string>): this {
     this.basePathMapping = this.aws.apigateway.basePathMapping({
-      _dependsOn: [this.deployment],
       restApiId: this.restApi,
-      stage: this.deployment.stageName,
+      stage: this.deployment.properties.stageName,
       domainName
-    });
+    }).withDependency(this.deployment);
     return this;
   }
   
@@ -271,9 +266,8 @@ export class Api{
     }): undefined;
     const deployment = aws.apigateway.deployment({
       restApiId: restApi,
-      _logicalName: aws.logicalName('ApiDeployment' + Math.floor(Math.random() * 100000000)),
       stageName: stage
-    })
+    }).withLogicalName(aws.logicalName('ApiDeployment' + Math.floor(Math.random() * 100000000)))
     return new Api(aws, name, restApi, deployment, authorizer, lambdaArn, permission, undefined);
   }
 }
