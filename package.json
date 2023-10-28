@@ -7,7 +7,7 @@
   "types": "dist/cloudformation/cloudformation.d.ts",
   "type": "module",
   "bin": {
-    "kloudformation": "src/cloudformation/cli/index.ts"
+    "cloudformation-ts": "src/cloudformation/cli/index.ts"
   },
   "scripts": {
     "run": "ts-node --project tsconfig.json test/deploy-test.ts",

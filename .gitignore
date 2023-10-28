@@ -5,6 +5,7 @@ junit.xml
 coverage
 src/alexa
 src/aws
+src/amzn
 src/kloudformation/aws-resources.ts
 template.json
 parameters.json

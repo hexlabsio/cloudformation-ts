@@ -1,5 +1,4 @@
 import * as fs from "fs";
-// @ts-ignore
 import request from "request-promise";
 import DocsCache, {Documentation} from "../docs/docs";
 import {PropertyInfo, Specification, Typed} from "./model";
@@ -225,8 +224,8 @@ const missingResources: Partial<Specification> = {
 };
 
 (async () => {
-  // const original: Specification = await request({ gzip: true, uri: 'https://dnwj8swjjbsbt.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json', json: true});
-  const original: Specification = (await import('../../../fallback.json')).default;
+  const original: Specification = await request({ gzip: true, uri: 'https://dnwj8swjjbsbt.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json', json: true});
+  // const original: Specification = (await import('../../../fallback.json')).default;
   const spec: Specification =  {
     ...original,
     ResourceTypes: {...original.ResourceTypes, ...missingResources.ResourceTypes},
@@ -279,7 +278,7 @@ function buildAwsType(resources: NameLocationContent[]) {
 }
 function attName(name: string) { return name.replace(/\./g, '_')}
 
-function attributeCode(attributes: PropertyInfo['Attributes'], prop: string, name: string, location: string, descriptionString: string, functionName: string, lowerName: string): string {
+function attributeCode(attributes: PropertyInfo['Attributes'], allPropsOptional: boolean, prop: string, name: string, location: string, descriptionString: string, functionName: string, lowerName: string): string {
   const atts = Object.keys(attributes!).map(attribute => {
     const attributeType = getType(rename(attributes![attribute]), attribute, location, false);
     return `${attName(attribute)}: Attribute<${stringFor(attributeType)}>`
@@ -288,7 +287,7 @@ function attributeCode(attributes: PropertyInfo['Attributes'], prop: string, nam
   return `export type ${prop}Attributes = { ${atts} }
 export type ${prop} = AwsResource<'${name}', ${prop}Properties, ${prop}Attributes>
 ${descriptionString}
-export function ${functionName}(${lowerName}Props: ${prop}Properties): ${prop} {
+export function ${functionName}(${lowerName}Props: ${prop}Properties${allPropsOptional ? ' = {}' : ''}): ${prop} {
   return new AwsResource('${name}', ${lowerName}Props, { ${attributeNames} });
 }
    `;
@@ -311,6 +310,7 @@ function descriptionString(documentation: Documentation, documentationLocation?:
 
 async function buildType(from: PropertyInfo, resource: boolean, name: string, docsCache: DocsCache): Promise<NameLocationContent> {
   const split = name.split('::');
+  const allPropsOptional = !Object.keys(from.Properties ?? {}).some(it => from.Properties![it].Required);
   const nameParts = [...split.slice(0, -1).map(s => s.toLowerCase()), ...(resource ? [] : split[split.length-1].split('.').slice(0,-1).map(it => it.toLowerCase()))];
   const location = name === 'Tag' ? 'aws' : nameParts.join('.');
   const lastPart = split[split.length - 1].split('.');
@@ -319,10 +319,10 @@ async function buildType(from: PropertyInfo, resource: boolean, name: string, do
   const functionName = lowerName === 'function' ? 'createFunction' : lowerName;
   const documentation = await docsCache.get(from.Documentation!);
   const comments = descriptionString(documentation, from.Documentation);
-  const excess = resource ? (from.Attributes ? attributeCode(from.Attributes, prop, name, location, comments, functionName, lowerName) :
+  const excess = resource ? (from.Attributes ? attributeCode(from.Attributes, allPropsOptional, prop, name, location, comments, functionName, lowerName) :
     `${comments}
 export type ${prop} = AwsResource<'${name}', ${prop}Properties>
-export function ${functionName}(${lowerName}Props: ${prop}Properties): ${prop} {
+export function ${functionName}(${lowerName}Props: ${prop}Properties${allPropsOptional ? ' = {}' : ''}): ${prop} {
   return new AwsResource('${name}', ${lowerName}Props);
 }
   `) : '';

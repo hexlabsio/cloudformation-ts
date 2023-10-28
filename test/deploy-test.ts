@@ -1,4 +1,4 @@
-import { AwsLoader, stackOutput } from '../src/cloudformation/cloudformation';
+import { AwsLoader, stackOutput, join } from '../src/cloudformation/cloudformation';
 
 // export default Template.createWithParams({
 //   ABC: fromEnv('GHJ')
@@ -9,18 +9,14 @@ import { AwsLoader, stackOutput } from '../src/cloudformation/cloudformation';
 // }, 'template.json', 'parameters.json', it => JSON.stringify(it, null, 2));
 
 
-const template = await AwsLoader.register('s3', 'sns').load();
-
-export default template.create().build(aws => {
-  const a = aws.customResource('abc', {
-    ServiceToken: '',
-    ParameterName: ''
-  }, 'ABC', 'DEF')
-  const bucket = aws.s3.bucket({bucketName: 'jimmy'})
-  aws.sns.topic({topicName: bucket, displayName: a.attributes.DEF});
-  return {
-    outputs: {
-      Test: stackOutput(bucket)
-    }
-  }
+const template = await AwsLoader.register('s3').load();
+export default template
+  .create()
+  .params({
+    MyBucketInStackA: { type: 'String' }
+  })
+  .build((aws, params) => {
+  aws.s3.bucket({
+    bucketName: join(params.MyBucketInStackA(), '-contrived-example')
+  });
 })
