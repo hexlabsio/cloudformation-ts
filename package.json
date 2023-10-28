@@ -9,6 +9,12 @@
   "bin": {
     "cloudformation-ts": "src/cloudformation/cli/index.ts"
   },
+  "keywords": [
+    "cloudformation",
+    "typescript",
+    "aws",
+    "infrastructure"
+  ],
   "scripts": {
     "run": "ts-node --project tsconfig.json test/deploy-test.ts",
     "prebuild": "rimraf dist",
