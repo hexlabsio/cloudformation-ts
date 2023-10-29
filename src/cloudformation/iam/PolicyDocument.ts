@@ -61,11 +61,11 @@ export class Iam<T extends {properties: { assumeRolePolicyDocument?: Value<Polic
     ]
     return this;
   }
-  withAssumeRolePolicyStatement(action: Action | Action[], effect: PolicyStatement['effect'], onResource: PolicyStatement['resource']): this {
+  withAssumeRolePolicyStatement(action: Action | Action[], effect: PolicyStatement['effect'], rest: Omit<PolicyStatement, 'action' | 'effect'>): this {
     const current: PolicyDocument = this.roleLike.properties.assumeRolePolicyDocument as PolicyDocument ?? { version: "2012-10-17", statement: []};
     this.roleLike.properties.assumeRolePolicyDocument = {
       ...current,
-      statement: [...current.statement, {  action, effect, resource: onResource }]
+      statement: [...current.statement, {  action, effect, ...rest }]
     }
     return this;
   }
