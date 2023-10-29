@@ -51,7 +51,7 @@ export class Policy {
   }
 }
 
-export class Iam<T extends {properties: { managedPolicyArns?: Value<Value<string>[]>, policies?: PolicyProps[]}}> {
+export class Iam<T extends {properties: { assumeRolePolicyDocument?: Value<PolicyDocument>, managedPolicyArns?: Value<Value<string>[]>, policies?: PolicyProps[]}}> {
   private constructor(private roleLike: T) { }
   
   add(policyName: string, policy: Policy): this {
@@ -61,7 +61,14 @@ export class Iam<T extends {properties: { managedPolicyArns?: Value<Value<string
     ]
     return this;
   }
-
+  withAssumeRolePolicyStatement(action: Action | Action[], effect: PolicyStatement['effect'], onResource: PolicyStatement['resource']): this {
+    const current: PolicyDocument = this.roleLike.properties.assumeRolePolicyDocument as PolicyDocument ?? { version: "2012-10-17", statement: []};
+    this.roleLike.properties.assumeRolePolicyDocument = {
+      ...current,
+      statement: [...current.statement, {  action, effect, resource: onResource }]
+    }
+    return this;
+  }
   withManagedPolicies(...arns: Value<string>[]): this {
     this.roleLike.properties.managedPolicyArns = arns;
     return this;
