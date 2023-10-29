@@ -165,7 +165,7 @@ export class Path {
   
   static longPath(aws: AWSResourcesFor<'apigateway'>, api: Api, path: string, info: PathInfo, parent?: Path): Path {
     const parentLogicalName = parent?.pathLogicalNames();
-    const newPathResources = Path.resources(aws, api, path, parent?.resources?.[parent.resources.length-1] ?? api.restApi.attributes.RootResourceId, parentLogicalName)
+    const newPathResources = Path.resources(aws, api, path, parent?.resources?.[parent.resources.length-1] ?? api.restApi.attributes.RootResourceId(), parentLogicalName)
     const infoOptions = info?.options
     const newPath = new Path(aws, api, newPathResources, parent)
     .options(infoOptions?.origin ?? '*', infoOptions?.headers ?? [], infoOptions?.credentials ?? true)
@@ -175,7 +175,7 @@ export class Path {
   }
   
   static resource(aws: AWSResourcesFor<'apigateway'>, api: Api, path: string): Path {
-    const resources = Path.resources(aws, api, path, api.restApi.attributes.RootResourceId);
+    const resources = Path.resources(aws, api, path, api.restApi.attributes.RootResourceId());
     return new Path(aws, api, resources).options()
   }
 }

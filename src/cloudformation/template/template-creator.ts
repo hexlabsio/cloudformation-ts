@@ -117,8 +117,6 @@ export class TemplateCreator {
       if(this.resources.find(it => it.logicalName === logicalName)) {
         throw Error(`Logical Name ${logicalName} for resource type ${resource.type} is already being used, try updating it to something else.`);
       }
-      const attributes = resource.attributes;
-      resource.attributes = Object.keys(attributes || []).reduce((prev, attribute) => ({...prev, [attribute]: {'Fn::GetAtt': [logicalName, attributes[attribute].replace(/_/g,'.')]}}), {})
       resource.logicalName = logicalName;
       this.resources.push(resource);
       return resource;

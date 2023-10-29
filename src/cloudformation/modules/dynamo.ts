@@ -7,8 +7,8 @@ import {normalize} from "../cloudformation";
 import {join} from "../Value";
 
 export function grantTableAccess(role: Role, policyName: string, tables: Table[]) {
-  const indexes = tables.flatMap(it => (it.properties.globalSecondaryIndexes ?? []).map(gsi => join(it.attributes.Arn, '/index/', gsi.indexName)));
-  Iam.from(role).add(policyName, Policy.allow("dynamodb:*", [...tables.map(table => table.attributes.Arn), ...indexes]))
+  const indexes = tables.flatMap(it => (it.properties.globalSecondaryIndexes ?? []).map(gsi => join(it.attributes.Arn(), '/index/', gsi.indexName)));
+  Iam.from(role).add(policyName, Policy.allow("dynamodb:*", [...tables.map(table => table.attributes.Arn()), ...indexes]))
 }
 
 export function dynamoTable<

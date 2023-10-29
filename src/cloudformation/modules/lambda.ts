@@ -31,20 +31,20 @@ export class Lambda {
   schedule(scheduleExpression: string): Lambda {
     const rule = this.aws.events.rule({
       scheduleExpression: scheduleExpression,
-      targets: [{arn: this.lambda.attributes.Arn, id: '1'}]
+      targets: [{arn: this.lambda.attributes.Arn(), id: '1'}]
     });
     this.rules.push(rule);
     this.permissions.push(this.aws.lambda.permission({
       action: 'lambda:InvokeFunction',
-      functionName: this.lambda.attributes.Arn,
+      functionName: this.lambda.attributes.Arn(),
       principal: 'events.amazonaws.com',
-      sourceArn: rule.attributes.Arn
+      sourceArn: rule.attributes.Arn()
     }))
     return this;
   }
   
   grantInvoke(toArn: Value<string>, principal: Value<string>, sourceAccount?: Value<string>): Lambda{
-    this.permissions.push(Lambda.grantInvoke(this.aws, this.lambda.attributes.Arn, toArn, principal, sourceAccount));
+    this.permissions.push(Lambda.grantInvoke(this.aws, this.lambda.attributes.Arn(), toArn, principal, sourceAccount));
     return this;
   }
   
@@ -71,7 +71,7 @@ export class Lambda {
   }
 
   snsTrigger(topicArn: Value<string>, sourceAccount?: Value<string>): Lambda {
-    const [permission, subscription] = Lambda.snsTrigger(this.aws, this.lambda.attributes.Arn, topicArn, sourceAccount);
+    const [permission, subscription] = Lambda.snsTrigger(this.aws, this.lambda.attributes.Arn(), topicArn, sourceAccount);
     permission.logicalName = `${this.aws.logicalName(this.lambda.logicalName + 'Permission')}`;
     subscription.logicalName = `${this.aws.logicalName(this.lambda.logicalName + 'Subscription')}`;
     this.permissions.push(permission);
@@ -111,7 +111,7 @@ export class Lambda {
       tags: extra?.tags,
     }).withLogicalName(`${normalName}Role`);
     const lambda = aws.lambda
-      .function({functionName: name, code, handler, role: role.attributes.Arn, runtime, ...extra  })
+      .function({functionName: name, code, handler, role: role.attributes.Arn(), runtime, ...extra  })
       .withLogicalName(`${normalName}Function`)
     return new Lambda(aws, normalName, role, lambda);
   }

@@ -1,12 +1,23 @@
 import { CloudFormationTemplate } from '../template/cloudformation-template';
 import { ref, Value } from '../Value';
 
-export class AwsResource<T extends string, R extends Record<string, any>, A = undefined>{
+export class AwsResource<T extends string, R extends Record<string, any>, A extends Record<string, string> = {}>{
   logicalName?: string;
   condition?: string;
   dependsOn?: (AwsResource<any, any, any> | string)[];
   deletionPolicy?: CloudFormationTemplate['Resources'][string]['DeletionPolicy'];
-  constructor(public type: T, public properties: R,public attributes: A = undefined as A) {
+  attributes: { [K in keyof A]: <T = any>() => Value<Exclude<T, undefined>> }
+  constructor(public type: T, public properties: R, _attributes: A = {} as A) {
+    this.attributes = Object.keys(_attributes || [])
+      .reduce((prev, attribute) =>
+        ({ ...prev, [attribute]: () => ({ 'Fn::GetAtt': [this.logicalName, _attributes[attribute].replace(/_/g, '.')] }) })
+        , {} as { [K in keyof A]: <T = any>() => Value<Exclude<T, undefined>> }
+      );
+
+  }
+
+  attribute(name: keyof A): Value<string> {
+    return this.attributes[name]();
   }
 
   withLogicalName(logicalName: string): this {
