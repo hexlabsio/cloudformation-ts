@@ -157,6 +157,7 @@ export default template
 })
 ```
 
+
 stack-b-properties.json
 
 ```json
