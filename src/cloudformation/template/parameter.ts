@@ -44,4 +44,4 @@ export type Parameter = ({
   minValue?: number;
 }
 
-export type Params<T> = { [K in keyof T]: <R = string>() => Value<R> }
+export type Params<T> = { [K in keyof T]: () => Value<any> }
