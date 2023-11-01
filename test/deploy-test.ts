@@ -13,7 +13,8 @@ const template = await AwsLoader.register('apigateway', 'lambda').load();
 export default template
   .create()
   .build((aws) => {
+
     Api.create(aws, 'xyz', 'def', [], 'lambda').apiFrom({
-      '/.xyz/abc-dsf': {methods: ['GET']}
+      '/.xyz/abc-dsf': {methods: ['GET'], methodIntegrations : {'GET': {lambda: 'TESTING'}}}
     })
 })

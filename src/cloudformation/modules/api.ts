@@ -14,13 +14,13 @@ export type ApiExpects = AWSResourcesFor<'apigateway' | 'lambda'>
 export class Path {
   
   constructor(
-    private readonly aws: AWSResourcesFor<'apigateway'>,
+    private readonly aws: AWSResourcesFor<'apigateway' | 'lambda'>,
     public api: Api,
     public resources: Resource[],
     public parent?: Path,
     public methods: Method[] = [],
     public optionsMethod?: Method,
-    public paths: Path[] = []
+    public paths: Path[] = [],
   ) {}
   
   route(): string {
@@ -37,7 +37,7 @@ export class Path {
   
   private longPath(parts: string[], info: PathInfo): Path {
     if(parts.length === 0) {
-      (info.methods ?? []).forEach(method => this.method(method).options());
+      (info.methods ?? []).forEach(method => this.method(method, info.methodIntegrations?.[method]?.lambda).options());
       if(info.paths) {
         Object.keys(info.paths).map(path => this.paths.push(Path.longPath(this.aws, this.api, path, info.paths![path], this)));
       }
@@ -62,18 +62,26 @@ export class Path {
     return this.api.name.replace(/[\W.-]+/g, '') + this.pathLogicalNames();
   }
   
-  method(method: string): Path {
+  method(method: string, specificLambdaArn?: Value<string>): Path {
+    if(specificLambdaArn) {
+      this.api.lambdaPermissions.push(this.aws.lambda.permission({
+        action: 'lambda:InvokeFunction',
+        functionName: specificLambdaArn!,
+        principal: joinWith('.', 'apigateway', {Ref: 'AWS::URLSuffix'}),
+        sourceArn: joinWith(':', 'arn', {Ref: 'AWS::Partition'}, 'execute-api', {Ref: 'AWS::Region'}, {Ref: 'AWS::AccountId'}, join(this.api.restApi, '/*/*'))
+      }));
+    }
     const apiMethod = this.aws.apigateway.method({
       httpMethod: method,
       resourceId: this.resources[this.resources.length - 1],
       restApiId: this.api.restApi,
       apiKeyRequired: false,
       ...(this.api.authorizer ? { authorizationType: 'COGNITO_USER_POOLS', authorizerId: this.api.authorizer}: { authorizationType: 'NONE' }),
-      ...(this.api.lambdaArn ? { integration: {
+      ...((this.api.lambdaArn || specificLambdaArn) ? { integration: {
           integrationHttpMethod: 'POST',
           type: 'AWS_PROXY',
           uri: joinWith(':', 'arn', {Ref: 'AWS::Partition'}, 'apigateway', {Ref: 'AWS::Region'},
-            join('lambda:path/2015-03-31/functions/', this.api.lambdaArn, '/invocations')
+            join('lambda:path/2015-03-31/functions/', specificLambdaArn! ?? this.api.lambdaArn, '/invocations')
           ),
         } } : {}),
       methodResponses: [],
@@ -163,7 +171,7 @@ export class Path {
     return resources;
   }
   
-  static longPath(aws: AWSResourcesFor<'apigateway'>, api: Api, path: string, info: PathInfo, parent?: Path): Path {
+  static longPath(aws: ApiExpects, api: Api, path: string, info: PathInfo, parent?: Path): Path {
     const parentLogicalName = parent?.pathLogicalNames();
     const newPathResources = Path.resources(aws, api, path, parent?.resources?.[parent.resources.length-1] ?? api.restApi.attributes.RootResourceId(), parentLogicalName)
     const infoOptions = info?.options
@@ -174,7 +182,7 @@ export class Path {
     return newPath;
   }
   
-  static resource(aws: AWSResourcesFor<'apigateway'>, api: Api, path: string): Path {
+  static resource(aws: ApiExpects, api: Api, path: string): Path {
     const resources = Path.resources(aws, api, path, api.restApi.attributes.RootResourceId());
     return new Path(aws, api, resources).options()
   }
@@ -188,20 +196,21 @@ export interface SnsDefinition { topicName: string, handler: string }
 
 export interface PathInfo { 
   paths?: { [key: string]: PathInfo }, 
-  methods?: string[], 
+  methods?: string[],
+  methodIntegrations?: {[ method: string]: { lambda: Value<string>} }
   options?: { origin: string, headers: string[], credentials: boolean }
 }
 
 export class Api{
   
   constructor(
-    private readonly aws: AWSResourcesFor<'apigateway'>,
+    private readonly aws: ApiExpects,
     public readonly name: string,
     public restApi: RestApi,
     public deployment: Deployment,
     public authorizer?: Authorizer,
     public lambdaArn?: Value<string>,
-    public lambdaPermission?: Permission,
+    public lambdaPermissions: Permission[] = [],
     public basePathMapping?: BasePathMapping,
     private paths: Path[] = []
   ) {}
@@ -269,6 +278,6 @@ export class Api{
       restApiId: restApi,
       stageName: stage
     }).withLogicalName(aws.logicalName('ApiDeployment' + Math.floor(Math.random() * 100000000)))
-    return new Api(aws, name, restApi, deployment, authorizer, lambdaArn, permission, undefined);
+    return new Api(aws, name, restApi, deployment, authorizer, lambdaArn, permission ? [permission] : [], undefined);
   }
 }
