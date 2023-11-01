@@ -156,7 +156,7 @@ export class Path {
         parentId: previous,
         restApiId: api.restApi,
         pathPart: part,
-      }).withLogicalName(aws.logicalName(`Api${api.name.replace(/[^\w]+/g, '')}${parentLogicalName ?? ''}${pathName}`));
+      }).withLogicalName(aws.logicalName(`Api${api.name.replace(/[\W.-]+/g, '')}${parentLogicalName ?? ''}${pathName}`));
       resources.push(resource);
       previous = resource
     }

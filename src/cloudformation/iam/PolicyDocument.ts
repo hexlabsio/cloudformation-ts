@@ -1,7 +1,7 @@
 import { PolicyProps } from '../../aws/iam/role/PolicyProps';
 import {Value} from "../Value";
 import {Action} from "./iamActions";
-export type Principal = '*' | { AWS: Value<string>[] } | { Federated: Value<string>[] } | { Service: Value<string>[] }
+export type Principal = '*' | { AWS: Value<string> | Value<string>[] } | { Federated: Value<string> | Value<string>[] } | { Service: Value<string> | Value<string>[] }
 export interface PolicyDocument {
   id?: string;
   version?: '2008-10-17' | '2012-10-17' | string;
