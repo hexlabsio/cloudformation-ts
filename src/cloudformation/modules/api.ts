@@ -55,11 +55,11 @@ export class Path {
   
   private pathLogicalNames(): string {
     const resources = this.resources.map(it => it.properties.pathPart.toString().startsWith('{') ? (it.properties.pathPart.toString().substring(1, it.properties.pathPart.toString().length-1) + 'Var') : it.properties.pathPart.toString()).join('');
-    return (this.parent?.pathLogicalNames() ?? '') + resources;
+    return (this.parent?.pathLogicalNames() ?? '') + resources.replace(/[\W.-]+/g, '');
   }
   
   private logicalName(): string {
-    return this.api.name.replace(/[^\w]+/g, '') + this.pathLogicalNames();
+    return this.api.name.replace(/[\W.-]+/g, '') + this.pathLogicalNames();
   }
   
   method(method: string): Path {
@@ -156,7 +156,7 @@ export class Path {
         parentId: previous,
         restApiId: api.restApi,
         pathPart: part,
-      }).withLogicalName(aws.logicalName(`Api${api.name.replace(/[\W.-]+/g, '')}${parentLogicalName ?? ''}${pathName}`));
+      }).withLogicalName(aws.logicalName(`Api${api.name}${parentLogicalName ?? ''}${pathName}`.replace(/[\W.-]+/g, '')));
       resources.push(resource);
       previous = resource
     }

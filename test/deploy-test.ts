@@ -1,4 +1,4 @@
-import { AwsLoader } from '../src/cloudformation/cloudformation';
+import { Api, AwsLoader } from '../src/cloudformation/cloudformation';
 
 // export default Template.createWithParams({
 //   ABC: fromEnv('GHJ')
@@ -9,13 +9,11 @@ import { AwsLoader } from '../src/cloudformation/cloudformation';
 // }, 'template.json', 'parameters.json', it => JSON.stringify(it, null, 2));
 
 
-const template = await AwsLoader.register('s3').load();
+const template = await AwsLoader.register('apigateway', 'lambda').load();
 export default template
   .create()
   .build((aws) => {
-    const bucket = aws.s3.bucket({});
-    bucket.withLogicalName('XYZ');
-    aws.s3.bucket({
-      bucketName: bucket.attributes.Arn()
+    Api.create(aws, 'xyz', 'def', [], 'lambda').apiFrom({
+      '/.xyz/abc-dsf': {methods: ['GET']}
     })
 })
