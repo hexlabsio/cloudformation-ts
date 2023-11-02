@@ -51,7 +51,7 @@ export function dynamoTable<
           return 'M';
       }
     }
-  return aws.dynamodb.table({
+  const table = aws.dynamodb.table({
   ...(name ? {_logicalName: normalize(name) }: {}),
     ...props,
     ...(name ? {tableName: name }: {}),
@@ -70,5 +70,7 @@ export function dynamoTable<
         projection: { projectionType: 'ALL' }
       }
     })}:{})
-  })
+  });
+  if(name) return table.withLogicalName(normalize(name));
+  return table;
 }
