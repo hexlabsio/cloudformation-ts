@@ -94,7 +94,7 @@ Options:
 Deploy a template to AWS. templateLocation can be a .ts or .json file. If .json then jsonFileLocation is not required.
 
 ```
-Usage: cloudformation-ts deploy [options] <stackName> <templateLocation> [jsonFileLocation]
+Usage: cfts deploy [options] <stackName> <templateLocation> [jsonFileLocation]
 
 Options:
   -r, --region <region>               The region to delete stack from (default: "eu-west-1")
