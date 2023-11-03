@@ -20,6 +20,7 @@ export type BuiltIns<Condition extends string = never> = {
   stackId: { Ref: 'AWS::StackId' }
   stackName: { Ref: 'AWS::StackName' }
   urlSuffix: { Ref: 'AWS::URLSuffix' }
+  cloudFrontHostedZoneId: string;
   condition(name: Condition): ConditionalValue;
   functions: {
     import<T>(name: Value<string>): T;
@@ -47,6 +48,7 @@ export class TemplateCreator {
     return {
       logicalName,
       customResource,
+      cloudFrontHostedZoneId: 'Z2FDTNDATAQYW2',
       accountId: ref('AWS::AccountId'),
       notificationArns: ref('AWS::NotificationARNs'),
       noValue: ref('AWS::NoValue'),

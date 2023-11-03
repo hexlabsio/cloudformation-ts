@@ -2,19 +2,21 @@
 import {Authorizer} from "../../aws/apigateway/Authorizer";
 import {BasePathMapping} from "../../aws/apigateway/BasePathMapping";
 import {Deployment} from "../../aws/apigateway/Deployment";
+import { DomainName } from '../../aws/apigateway/DomainName';
 import {Method} from "../../aws/apigateway/Method";
 import {Resource} from "../../aws/apigateway/Resource";
 import {RestApi} from "../../aws/apigateway/RestApi";
 import {Permission} from "../../aws/lambda/Permission";
+import { RecordSet } from '../../aws/route53/RecordSet';
 import { AWSResourcesFor } from '../aws';
 import {join, joinWith, Value} from "../Value";
 import {Tag} from '../../aws/Tag';
 
-export type ApiExpects = AWSResourcesFor<'apigateway' | 'lambda'>
+export type ApiExpects = AWSResourcesFor<'apigateway' | 'lambda' | 'route53'>
 export class Path {
   
   constructor(
-    private readonly aws: AWSResourcesFor<'apigateway' | 'lambda'>,
+    private readonly aws: ApiExpects,
     public api: Api,
     public resources: Resource[],
     public parent?: Path,
@@ -212,7 +214,9 @@ export class Api{
     public lambdaArn?: Value<string>,
     public lambdaPermissions: Permission[] = [],
     public basePathMapping?: BasePathMapping,
-    private paths: Path[] = []
+    private paths: Path[] = [],
+    public customDomain?: DomainName,
+    public aRecord?: RecordSet,
   ) {}
   
   pathMethodsFrom(path: Path): Array<{path: string, method: string}> {
@@ -242,6 +246,24 @@ export class Api{
       domainName
     }).withDependency(this.deployment);
     return this;
+  }
+
+  mapToARecord(certificateArnInUsEast1: Value<string>, hostedZoneId: Value<string>, apiDomain: Value<string>): this {
+    this.customDomain = this.aws.apigateway.domainName({
+      domainName: apiDomain,
+      certificateArn: certificateArnInUsEast1,
+      endpointConfiguration: { types: ['EDGE'] }
+    });
+    this.aRecord = this.aws.route53.recordSet({
+      name: apiDomain,
+      type: 'A',
+      hostedZoneId: hostedZoneId,
+      aliasTarget: {
+        dNSName: this.customDomain.attributes.DistributionDomainName(),
+        hostedZoneId: this.customDomain.attributes.DistributionHostedZoneId()
+      }
+    })
+    return this.mapToDomain(this.customDomain);
   }
 
   mapToDomain(domainName: Value<string>): this {

@@ -52,7 +52,6 @@ export function dynamoTable<
       }
     }
   const table = aws.dynamodb.table({
-  ...(name ? {_logicalName: normalize(name) }: {}),
     ...props,
     ...(name ? {tableName: name }: {}),
     keySchema: [{keyType: 'HASH', attributeName: definition.partitionKey as string}, ...(definition.sortKey ? [{keyType: 'RANGE', attributeName: definition.sortKey as unknown as string}]: [])],

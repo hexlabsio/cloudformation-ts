@@ -26,28 +26,33 @@ export function iamPolicy(policyDocument: PolicyDocument): PolicyDocument { retu
 export class Policy {
   private constructor(readonly document: PolicyDocument = {statement: [], version: "2012-10-17"}) { }
   
-  grant(action: Action | Action[], effect: PolicyStatement['effect'], onResource: PolicyStatement['resource']): this {
+  grant(
+    action: Action | Action[],
+    effect: PolicyStatement['effect'],
+    onResource: PolicyStatement['resource'],
+    statement?: Omit<PolicyStatement, 'resource' | 'action' | 'effect'>
+  ): this {
     this.document.statement = [
       ...(this.document.statement ?? []),
-      {  action, effect, resource: onResource }
+      {  action, effect, resource: onResource, ...statement }
     ]
     return this;
   }
   
-  allow(action: Action | Action[], onResource: PolicyStatement['resource']): this {
-    return this.grant(action, 'Allow', onResource)
+  allow(action: Action | Action[], onResource: PolicyStatement['resource'], statement?: Omit<PolicyStatement, 'resource' | 'action' | 'effect'>): this {
+    return this.grant(action, 'Allow', onResource, statement)
   }
   
-  deny(action: Action | Action[], onResource: PolicyStatement['resource']): this {
-    return this.grant(action, 'Deny', onResource)
+  deny(action: Action | Action[], onResource: PolicyStatement['resource'], statement?: Omit<PolicyStatement, 'resource' | 'action' | 'effect'>): this {
+    return this.grant(action, 'Deny', onResource, statement)
   }
   
-  static allow(action: Action | Action[], onResource: PolicyStatement['resource']): Policy {
-    return new Policy().allow(action, onResource);
+  static allow(action: Action | Action[], onResource: PolicyStatement['resource'], statement?: Omit<PolicyStatement, 'resource' | 'action' | 'effect'>): Policy {
+    return new Policy().allow(action, onResource, statement);
   }
   
-  static deny(action: Action | Action[], onResource: PolicyStatement['resource']): Policy {
-    return new Policy().deny(action, onResource);
+  static deny(action: Action | Action[], onResource: PolicyStatement['resource'], statement?: Omit<PolicyStatement, 'resource' | 'action' | 'effect'>): Policy {
+    return new Policy().deny(action, onResource, statement);
   }
 }
 
