@@ -7,7 +7,8 @@
   "types": "dist/cloudformation/cloudformation.d.ts",
   "type": "module",
   "bin": {
-    "cloudformation-ts": "src/cloudformation/cli/index.ts"
+    "cloudformation-ts": "src/cloudformation/cli/index.ts",
+    "cfts": "src/cloudformation/cli/index.ts"
   },
   "keywords": [
     "cloudformation",
