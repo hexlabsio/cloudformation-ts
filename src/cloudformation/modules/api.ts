@@ -78,7 +78,7 @@ export class Path {
       resourceId: this.resources[this.resources.length - 1],
       restApiId: this.api.restApi,
       apiKeyRequired: false,
-      ...(this.api.authorizer && authorized ? { authorizationType: this.api.authorizer.properties.type, authorizerId: this.api.authorizer}: { authorizationType: 'NONE' }),
+      ...(this.api.authorizer && authorized ? { authorizationType: this.api.authorizerType, authorizerId: this.api.authorizer}: { authorizationType: 'NONE' }),
       ...((this.api.lambdaArn || specificLambdaArn) ? { integration: {
           integrationHttpMethod: 'POST',
           type: 'AWS_PROXY',
@@ -203,6 +203,8 @@ export interface PathInfo {
   options?: { origin: string, headers: string[], credentials: boolean }
 }
 
+export type AuthorizerType = 'NONE' | 'AWS_IAM' | 'CUSTOM' | 'COGNITO_USER_POOLS' | 'AWS_CROSS_ACCOUNT_IAM' | 'JWT';
+
 export class Api{
   
   constructor(
@@ -211,6 +213,7 @@ export class Api{
     public restApi: RestApi,
     public deployment: Deployment,
     public authorizer?: Authorizer,
+    public authorizerType?: AuthorizerType,
     public lambdaArn?: Value<string>,
     public lambdaPermissions: Permission[] = [],
     public basePathMapping?: BasePathMapping,
@@ -280,27 +283,29 @@ export class Api{
     return this;
   }
 
-  withCognitoAuthorizer(...providerArns: Value<string>[]): this {
+  withCognitoAuthorizer(userPoolArn: Value<string>, type: 'TOKEN' | 'REQUEST' | 'COGNITO_USER_POOLS' = 'COGNITO_USER_POOLS'): this {
    this.authorizer = this.aws.apigateway.authorizer({
       authorizerResultTtlInSeconds: 300,
-      providerARNs: providerArns,
+      providerARNs: [userPoolArn],
       identitySource: 'method.request.header.Authorization',
-      type: 'COGNITO_USER_POOLS',
+      type: type,
       restApiId: this.restApi,
       name: `api-auth`,
     });
+   this.authorizerType = 'COGNITO_USER_POOLS'
     return this;
   }
 
-  withCustomAuthorizer(lambdaArn: Value<string>, identitySource: Value<string>, ttl: Value<number> = 300, type: Value<string> = 'REQUEST'): this {
+  withCustomAuthorizer(lambdaArn: Value<string>, identitySource: Value<string>, authType: AuthorizerType = 'CUSTOM', ttl: Value<number> = 300, type: 'TOKEN' | 'REQUEST' = 'REQUEST'): this {
     this.authorizer = this.aws.apigateway.authorizer({
       authorizerResultTtlInSeconds: ttl,
-      name: 'api-key-auth',
+      name: 'api-auth',
       authorizerUri: join('arn:aws:apigateway:', this.aws.region, ':lambda:path/2015-03-31/functions/', lambdaArn, '/invocations'),
       restApiId: this.restApi,
       type,
       identitySource: identitySource,
     });
+    this.authorizerType = authType;
 
     this.aws.lambda.permission({
       action: 'lambda:InvokeFunction',
@@ -323,7 +328,7 @@ export class Api{
       restApiId: restApi,
       stageName: stage
     }).withLogicalName(aws.logicalName('ApiDeployment' + Math.floor(Math.random() * 100000000)))
-    return new Api(aws, name, restApi, deployment, undefined, lambdaArn, permission ? [permission] : [], undefined);
+    return new Api(aws, name, restApi, deployment, undefined, undefined, lambdaArn, permission ? [permission] : [], undefined);
   }
   
   static createWithCognitoAuth(aws: ApiExpects, name: string, stage: string, providerArns?: Value<string>[], lambdaArn?: Value<string>, tags?: Tag[]): Api {
