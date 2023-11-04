@@ -39,7 +39,7 @@ export class Path {
   
   private longPath(parts: string[], info: PathInfo): Path {
     if(parts.length === 0) {
-      (info.methods ?? []).forEach(method => this.method(method, info.methodIntegrations?.[method]?.lambda).options());
+      (info.methods ?? []).forEach(method => this.method(method, info.methodIntegrations?.[method]?.lambda, info.methodIntegrations?.[method]?.authorized ?? true).options());
       if(info.paths) {
         Object.keys(info.paths).map(path => this.paths.push(Path.longPath(this.aws, this.api, path, info.paths![path], this)));
       }
@@ -64,7 +64,7 @@ export class Path {
     return this.api.name.replace(/[\W.-]+/g, '') + this.pathLogicalNames();
   }
   
-  method(method: string, specificLambdaArn?: Value<string>): Path {
+  method(method: string, specificLambdaArn?: Value<string>, authorized?: boolean): Path {
     if(specificLambdaArn) {
       this.api.lambdaPermissions.push(this.aws.lambda.permission({
         action: 'lambda:InvokeFunction',
@@ -78,7 +78,7 @@ export class Path {
       resourceId: this.resources[this.resources.length - 1],
       restApiId: this.api.restApi,
       apiKeyRequired: false,
-      ...(this.api.authorizer ? { authorizationType: 'COGNITO_USER_POOLS', authorizerId: this.api.authorizer}: { authorizationType: 'NONE' }),
+      ...(this.api.authorizer && authorized ? { authorizationType: this.api.authorizer.properties.type, authorizerId: this.api.authorizer}: { authorizationType: 'NONE' }),
       ...((this.api.lambdaArn || specificLambdaArn) ? { integration: {
           integrationHttpMethod: 'POST',
           type: 'AWS_PROXY',
@@ -199,7 +199,7 @@ export interface SnsDefinition { topicName: string, handler: string }
 export interface PathInfo { 
   paths?: { [key: string]: PathInfo }, 
   methods?: string[],
-  methodIntegrations?: {[ method: string]: { lambda: Value<string>} }
+  methodIntegrations?: {[ method: string]: { lambda: Value<string>, authorized?: boolean } }
   options?: { origin: string, headers: string[], credentials: boolean }
 }
 
@@ -279,17 +279,40 @@ export class Api{
     this.paths = Object.keys(pathInfo).map(path => Path.longPath(this.aws, this, path, pathInfo[path]));
     return this;
   }
-  
-  static create(aws: ApiExpects, name: string, stage: string, providerArns?: Value<string>[], lambdaArn?: Value<string>, tags?: Tag[]): Api {
-    const restApi = aws.apigateway.restApi({ name, tags });
-    const authorizer = providerArns && providerArns.length > 0 ? aws.apigateway.authorizer({
+
+  withCognitoAuthorizer(...providerArns: Value<string>[]): this {
+   this.authorizer = this.aws.apigateway.authorizer({
       authorizerResultTtlInSeconds: 300,
       providerARNs: providerArns,
       identitySource: 'method.request.header.Authorization',
       type: 'COGNITO_USER_POOLS',
-      restApiId: restApi,
-      name: `api-auth-${name}`,
-    }) : undefined;
+      restApiId: this.restApi,
+      name: `api-auth`,
+    });
+    return this;
+  }
+
+  withCustomAuthorizer(lambdaArn: Value<string>, identitySource: Value<string>, ttl: Value<number> = 300, type: Value<string> = 'REQUEST'): this {
+    this.authorizer = this.aws.apigateway.authorizer({
+      authorizerResultTtlInSeconds: ttl,
+      name: 'api-key-auth',
+      authorizerUri: join('arn:aws:apigateway:', this.aws.region, ':lambda:path/2015-03-31/functions/', lambdaArn, '/invocations'),
+      restApiId: this.restApi,
+      type,
+      identitySource: identitySource,
+    });
+
+    this.aws.lambda.permission({
+      action: 'lambda:InvokeFunction',
+      functionName: lambdaArn,
+      principal: 'apigateway.amazonaws.com',
+      sourceArn: join('arn:aws:execute-api:', this.aws.region, ':', this.aws.accountId,':', this.restApi, '/authorizers/', this.authorizer)
+    })
+    return this;
+  }
+
+  static create(aws: ApiExpects, name: string, stage: string, lambdaArn?: Value<string>, tags?: Tag[]): Api {
+    const restApi = aws.apigateway.restApi({ name, tags });
     const permission = lambdaArn ? aws.lambda.permission({
       action: 'lambda:InvokeFunction',
       functionName: lambdaArn!,
@@ -300,6 +323,10 @@ export class Api{
       restApiId: restApi,
       stageName: stage
     }).withLogicalName(aws.logicalName('ApiDeployment' + Math.floor(Math.random() * 100000000)))
-    return new Api(aws, name, restApi, deployment, authorizer, lambdaArn, permission ? [permission] : [], undefined);
+    return new Api(aws, name, restApi, deployment, undefined, lambdaArn, permission ? [permission] : [], undefined);
+  }
+  
+  static createWithCognitoAuth(aws: ApiExpects, name: string, stage: string, providerArns?: Value<string>[], lambdaArn?: Value<string>, tags?: Tag[]): Api {
+    return Api.create(aws, name, stage, lambdaArn, tags).withCognitoAuthorizer(...(providerArns ?? []));
   }
 }

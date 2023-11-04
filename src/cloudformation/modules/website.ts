@@ -19,7 +19,7 @@ export class Website {
   ) {
   }
 
-  withARecord(domain: Value<string>, hostedZoneId: Value<string>) {
+  withARecord(domain: Value<string>, hostedZoneId: Value<string>): this {
     if(!this.distribution) throw new Error('You must call withDistribution to create A record');
     this.aRecord = this.aws.route53.recordSet({
       name: domain,
@@ -30,6 +30,7 @@ export class Website {
         hostedZoneId: this.aws.cloudFrontHostedZoneId
       }
     });
+    return this;
   }
 
   withDistribution(
