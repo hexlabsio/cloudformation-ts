@@ -316,7 +316,7 @@ export class Api{
     return this;
   }
 
-  static create(aws: ApiExpects, name: string, stage: string, lambdaArn?: Value<string>, tags?: Tag[]): Api {
+  static create(aws: ApiExpects, name: string, stage: Value<string>, lambdaArn?: Value<string>, tags?: Tag[]): Api {
     const restApi = aws.apigateway.restApi({ name, tags });
     const permission = lambdaArn ? aws.lambda.permission({
       action: 'lambda:InvokeFunction',
@@ -329,9 +329,5 @@ export class Api{
       stageName: stage
     }).withLogicalName(aws.logicalName('ApiDeployment' + Math.floor(Math.random() * 100000000)))
     return new Api(aws, name, restApi, deployment, undefined, undefined, lambdaArn, permission ? [permission] : [], undefined);
-  }
-  
-  static createWithCognitoAuth(aws: ApiExpects, name: string, stage: string, providerArns?: Value<string>[], lambdaArn?: Value<string>, tags?: Tag[]): Api {
-    return Api.create(aws, name, stage, lambdaArn, tags).withCognitoAuthorizer(...(providerArns ?? []));
   }
 }
