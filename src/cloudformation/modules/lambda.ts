@@ -88,6 +88,15 @@ export class Lambda {
     });
     return [permission, subscription];
   }
+
+  private static sqsTrigger(aws: AWSResourcesFor<'sqs' | 'lambda'>, lambdaArn: Value<string>, queueArn: Value<string>, batchSize: Value<number>) {
+    aws.lambda.eventSourceMapping({
+      batchSize: batchSize,
+      enabled: true,
+      eventSourceArn: queueArn,
+      functionName: lambdaArn
+    })
+  }
   
   static create(aws: LambdaExpects, name: string, code: CodeProps, handler: Value<string>, runtime: FunctionProperties['runtime'], extra?: Partial<FunctionProperties>): Lambda {
     const normalName = normalize(name);
