@@ -89,7 +89,7 @@ export class Lambda {
     return [permission, subscription];
   }
 
-  private static sqsTrigger(aws: AWSResourcesFor<'sqs' | 'lambda'>, lambdaArn: Value<string>, queueArn: Value<string>, batchSize: Value<number>) {
+  static sqsTrigger(aws: AWSResourcesFor<'sqs' | 'lambda'>, lambdaArn: Value<string>, queueArn: Value<string>, batchSize: Value<number>) {
     aws.lambda.eventSourceMapping({
       batchSize: batchSize,
       enabled: true,
