@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import * as request from "request-promise";
+import request from "request-promise";
 import DocsCache, {Documentation} from "../docs/docs";
 import {PropertyInfo, Specification, Typed} from "./model";
 
