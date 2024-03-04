@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env -S node --loader ts-node/esm --no-warnings
 
 import { Command } from "commander";
 import { deleteStack } from './delete-stack';

@@ -7,8 +7,8 @@
   "types": "dist/cloudformation/cloudformation.d.ts",
   "type": "module",
   "bin": {
-    "cloudformation-ts": "src/cloudformation/cli/index.ts",
-    "cfts": "src/cloudformation/cli/index.ts"
+    "cloudformation-ts": "dist/cloudformation/cli/index.js",
+    "cfts": "dist/cloudformation/cli/index.js"
   },
   "keywords": [
     "cloudformation",
@@ -20,7 +20,7 @@
     "run": "ts-node --project tsconfig.json test/deploy-test.ts",
     "prebuild": "rimraf dist",
     "pregenerate": "rimraf src/cloudformation/aws-resources.ts src/aws src/alexa",
-    "generate": "ts-node --project tsconfig.json src/cloudformation/builder/discovery.ts",
+    "generate": "node --loader ts-node/esm --no-warnings src/cloudformation/builder/discovery.ts",
     "build": "tsc",
     "test": "jest --ci --runInBand --coverage --reporters=default --reporters=jest-junit",
     "lint": "eslint **/*.ts"
