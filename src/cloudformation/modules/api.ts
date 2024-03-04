@@ -119,10 +119,10 @@ export class Path {
             responseModels: {},
             responseParameters: {
               _nocaps: '',
-              [corsOrigin]: true,
-              [corsHeaders]: true,
-              [corsMethods]: true,
-              [corsCredentials]: true
+              [corsOrigin]: true as any,
+              [corsHeaders]: true as any,
+              [corsMethods]: true as any,
+              [corsCredentials]: true as any
             }
           }],
           requestParameters: {},
