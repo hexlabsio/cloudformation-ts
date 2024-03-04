@@ -30,8 +30,6 @@
     "src/aws/s3"
   ],
   "exclude": [
-    "src/cloudformation/cli",
-    "src/cloudformation/builder",
     "src/aws",
     "src/alexa",
   ]
