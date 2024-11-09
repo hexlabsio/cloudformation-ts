@@ -18,7 +18,7 @@ export function keepCase<T>(item: T): T {
       return item.map(keepCase) as T;
     }
     if(!Object.prototype.hasOwnProperty.call(item, 'Ref'))
-      return Object.keys(item as any).reduce((prev, next) => ({...prev, [next]: keepCase((item as any)[next])}), {_nocaps: true} as T);
+      return Object.keys(item as any).reduce((prev, next) => ({...prev, [next]: keepCase((item as any)[next])}), {_nocaps: true} as unknown as T);
   }
   return item;
 }

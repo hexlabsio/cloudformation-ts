@@ -4,6 +4,7 @@ import fs from 'fs';
 import tsNode from 'ts-node';
 import { continuableStatuses, followStackEvents, successStatuses } from './follow-stack-events';
 import { generateStack } from './generate-stack';
+import { printStackOutputs } from './print-stack-outputs';
 import { setEnvsForStacks } from './set-envs-for-stacks';
 import { stackExists } from './stack-exists';
 import { upload } from './upload';
@@ -157,7 +158,7 @@ export async function deploy(
       } catch (e) {
         if (e.message.includes("No updates are to be performed")) {
           console.log(chalk.yellow("No updates are to be performed"));
-          printEnvs(stackName, region, outputFile, envs);
+          await printStackOutputs([stackName], region, outputFile, envs);
           return;
         } else {
           console.log(chalk.red(e.message));
@@ -187,22 +188,5 @@ export async function deploy(
   if (!(await followStackEvents(cf, stackName, successStatuses, start))) {
     process.exit(1);
   }
-  printEnvs(stackName, region, outputFile, envs);
-}
-
-async function printEnvs(
-  stackName: string,
-  region: string,
-  outputFile?: string,
-  envs?: { [key: string]: string }
-) {
-  if (outputFile) {
-    const stackEnvs = await setEnvsForStacks([stackName], region);
-    const allEnvs = { ...envs, ...stackEnvs };
-    const lines = Object.keys(allEnvs)
-      .map((envKey) => `${envKey}='${allEnvs[envKey]}'`)
-      .join("\n");
-    console.log(chalk.green("Printing Stack outputs to " + outputFile));
-    fs.writeFileSync(outputFile, lines);
-  }
+  await printStackOutputs([stackName], region, outputFile, envs);
 }

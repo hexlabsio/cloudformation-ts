@@ -41,7 +41,7 @@ export function dynamoTable(
   name?: string
 ): Table {
 
-  const table = aws.dynamodb.table({...camelCase(props), ...(name ? {tableName: name }: {})});
+  const table = aws.dynamodb.table({...camelCase(props), ...(name ? {tableName: name }: {})} as any);
   if(name){
     return table.withLogicalName(normalize(name));
   }

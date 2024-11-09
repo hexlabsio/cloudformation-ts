@@ -4,6 +4,7 @@ import { Command } from "commander";
 import { deleteStack } from './delete-stack';
 import { deployStack } from './deploy-stack';
 import { generateStackCli } from './generate-stack';
+import { getStackOutputs } from './stack-outputs';
 
 const program = new Command();
 
@@ -79,11 +80,31 @@ function translateCommand(): any {
     .action(generateStackCli);
 }
 
+function stackOutputsCommand(): any {
+  return program
+    .command("stack-outputs")
+    .option(
+      "-s, --stack-info <stacks...>",
+      "A space separated list of stacks to get outputs as environment variables"
+    )
+    .option(
+      "-r, --region <region>",
+      "The region to gather stack outputs from",
+      "eu-west-1"
+    )
+    .option(
+      "-o, --output-file <fileName>",
+      "A file to output key-value pairs from stack-info"
+    )
+    .action(getStackOutputs);
+}
+
 (async () => {
   try {
     translateCommand();
     deployCommand();
     deleteCommand();
+    stackOutputsCommand();
     await program.parseAsync(process.argv);
   } catch (e) {
     process.exit(1);
