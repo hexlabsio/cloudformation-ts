@@ -1,5 +1,5 @@
 import * as commonmark from "commonmark";
-import request from "request-promise";
+import axios from "axios";
 
 export default class DocsCache {
   private docs: { [url: string]: Documentation } = {};
@@ -18,8 +18,8 @@ export default class DocsCache {
     try {
       const fileName = url.substring(url.lastIndexOf('/') + 1).slice(0,-5);
       const githubUri = `https://raw.githubusercontent.com/awsdocs/aws-cloudformation-user-guide/master/doc_source/${fileName}.md`
-      const content = await request({uri: githubUri});
-      return Documentation.build(content);
+      const content = await axios.get(githubUri);
+      return Documentation.build(content.data);
     } catch(e) {
       return undefined;
     }

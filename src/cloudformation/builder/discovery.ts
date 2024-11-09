@@ -1,5 +1,5 @@
+import axios from 'axios';
 import * as fs from "fs";
-import request from "request-promise";
 import DocsCache, {Documentation} from "../docs/docs";
 import {PropertyInfo, Specification, Typed} from "./model";
 
@@ -224,7 +224,8 @@ const missingResources: Partial<Specification> = {
 };
 
 (async () => {
-  const original: Specification = await request({ gzip: true, uri: 'https://dnwj8swjjbsbt.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json', json: true});
+  const originalResult = await axios.get('https://dnwj8swjjbsbt.cloudfront.net/latest/gzip/CloudFormationResourceSpecification.json', { decompress: true });
+  const original = originalResult.data as Specification;
   // const original: Specification = (await import('../../../fallback.json')).default;
   const spec: Specification =  {
     ...original,
